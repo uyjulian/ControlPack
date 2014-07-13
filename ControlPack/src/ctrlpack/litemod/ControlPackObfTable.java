@@ -6,6 +6,9 @@ public class ControlPackObfTable extends Obf {
 	public static ControlPackObfTable GuiFurnace = new ControlPackObfTable("net/minecraft/client/gui/inventory/GuiFurnace","bfr");
 	public static ControlPackObfTable GuiScreen = new ControlPackObfTable("net/minecraft/client/gui/GuiScreen","bdw");
 	public static ControlPackObfTable GuiContainer = new ControlPackObfTable("net/minecraft/client/gui/inventory/GuiContainer","bex");
+	public static ControlPackObfTable GuiControls = new ControlPackObfTable("net/minecraft/client/gui/GuiControls","bew");
+	public static ControlPackObfTable GuiListExtended = new ControlPackObfTable("net/minecraft/client/gui/GuiListExtended","bch");
+	public static ControlPackObfTable Tessellator = new ControlPackObfTable("net/minecraft/client/renderer/Tessellator","bmh");
 	
 	public static ControlPackObfTable KeyBinding = new ControlPackObfTable("net/minecraft/client/settings/KeyBinding","bal");
 	public static ControlPackObfTable KeyBinding_setKeyBindState = new ControlPackObfTable("func_74510_a","a", "setKeyBindState");
@@ -15,8 +18,10 @@ public class ControlPackObfTable extends Obf {
 	
 	public static ControlPackObfTable GuiFurnace_tileFurnace = new ControlPackObfTable("field_147086_v", "v", "tileFurnace");
 	public static ControlPackObfTable GuiScreen_mouseClicked = new ControlPackObfTable("func_73864_a", "a", "mouseClicked");
+	public static ControlPackObfTable GuiScreen_mouseReleased = new ControlPackObfTable("func_146286_b", "b", "mouseReleased");
 	public static ControlPackObfTable GuiContainer_xSize = new ControlPackObfTable("field_146999_f", "f", "xSize");
 	public static ControlPackObfTable GuiContainer_ySize = new ControlPackObfTable("field_147000_g", "g", "ySize");
+	public static ControlPackObfTable GuiListExtended_drawSlot = new ControlPackObfTable("func_148126_a", "a", "drawSlot");
 	
 	public static ControlPackObfTable EntityRenderer_debugCamPitch = new ControlPackObfTable("func_78467_g", "g", "orientCamera");
 	

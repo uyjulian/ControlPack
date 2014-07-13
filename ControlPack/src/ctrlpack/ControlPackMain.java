@@ -312,14 +312,19 @@ public class ControlPackMain implements Runnable {
 						field = currentScreen.getClass().getDeclaredField("a"); //NoSuchFieldException may happen in non-reobf mode
 					}
 					catch (NoSuchFieldException ex) {
-						field = currentScreen.getClass().getDeclaredField("inputField");
+						try {
+							field = currentScreen.getClass().getDeclaredField("field_146415_a"); //NoSuchFieldException may happen in non-reobf mode
+						}
+						catch (NoSuchFieldException ezx) {
+							field = currentScreen.getClass().getDeclaredField("inputField");
+						}
 					}
 					field.setAccessible(true);
 					GuiTextField tf = (GuiTextField) field.get(currentScreen); //IllegalAccessException			
 					tf.setText(tf.getText() + " " + getLocation(true) + " ");
 				}
 				catch(Exception ex) {
-System.out.println(ex.toString());
+					ex.printStackTrace();
 				}
 //mc.thePlayer.addChatMessage("saying location.");
 				// chat position

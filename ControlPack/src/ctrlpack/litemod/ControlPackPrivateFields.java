@@ -3,6 +3,8 @@ package ctrlpack.litemod;
 import com.mumfrey.liteloader.client.util.PrivateFields;
 import com.mumfrey.liteloader.core.runtime.Obf;
 
+import net.minecraft.client.gui.GuiControls;
+import net.minecraft.client.gui.GuiKeyBindingList;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiFurnace;
 import net.minecraft.client.renderer.EntityRenderer;
@@ -21,4 +23,5 @@ public class ControlPackPrivateFields<P,T> extends PrivateFields {
 	public static final ControlPackPrivateFields<GuiFurnace, TileEntityFurnace> GuiFurnace_tileFurnace = new ControlPackPrivateFields<GuiFurnace, TileEntityFurnace>(GuiFurnace.class, ControlPackObfTable.GuiFurnace_tileFurnace);
 	public static final ControlPackPrivateFields<GuiContainer, Integer> GuiContainer_xSize = new ControlPackPrivateFields<GuiContainer, Integer>(GuiContainer.class, ControlPackObfTable.GuiContainer_xSize);
 	public static final ControlPackPrivateFields<GuiContainer, Integer> GuiContainer_ySize = new ControlPackPrivateFields<GuiContainer, Integer>(GuiContainer.class, ControlPackObfTable.GuiContainer_ySize);
+	public static final ControlPackPrivateFields<GuiControls, GuiKeyBindingList> GuiControls_keyBindingList = new ControlPackPrivateFields<GuiControls, GuiKeyBindingList>(GuiControls.class, ControlPackObfTable.GuiScreen_mouseReleased);
 }

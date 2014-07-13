@@ -3,9 +3,13 @@ package ctrlpack.litemod;
 import java.io.File;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiControls;
+import net.minecraft.client.gui.GuiKeyBindingList;
+import net.minecraft.client.gui.GuiListExtended;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiFurnace;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.tileentity.TileEntityFurnace;
 
@@ -116,6 +120,26 @@ public class LiteModControlPack implements LiteMod, RenderListener, InitComplete
                 ControlPackMain.instance.runAutoTool(false);
             }
         }
+    }
+    
+    @SuppressWarnings("unchecked")
+	public static void guiControlsMouseReleased(EventInfo<GuiControls> eventinfo, int p_146286_1_, int p_146286_2_, int p_146286_3_) {
+    	GuiKeyBindingList currentgc = (GuiKeyBindingList) ControlPackPrivateFields.GuiControls_keyBindingList.get(eventinfo.getSource());
+    	try
+    	{
+    		currentgc.func_148181_b(p_146286_1_, p_146286_2_, p_146286_3_);
+    	}
+    	catch(Exception z)
+    	{
+    		eventinfo.cancel();
+    	}
+    }
+    
+    public static void guiListExtendedDrawSlot(EventInfo<GuiListExtended> eventinfo, int p_148126_1_, int p_148126_2_, int p_148126_3_, int p_148126_4_, Tessellator p_148126_5_, int p_148126_6_, int p_148126_7_) {
+    	if (eventinfo.getSource().getListEntry(p_148126_1_) == null) 
+    	{
+    		eventinfo.cancel();
+    	}
     }
     
 	@Override
