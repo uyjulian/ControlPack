@@ -1,4 +1,4 @@
-package controlpack.litemod;
+package ctrlpack.litemod;
 
 import java.io.File;
 
@@ -16,7 +16,7 @@ import com.mumfrey.liteloader.core.LiteLoader;
 import com.mumfrey.liteloader.transformers.event.EventInfo;
 import com.mumfrey.liteloader.transformers.event.ReturnEventInfo;
 
-import controlpack.ControlPackMain;
+import ctrlpack.ControlPackMain;
 
 public class LiteModControlPack implements LiteMod, RenderListener, InitCompleteListener {
 

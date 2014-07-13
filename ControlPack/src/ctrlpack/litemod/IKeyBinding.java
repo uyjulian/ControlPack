@@ -1,4 +1,4 @@
-package controlpack.litemod;
+package ctrlpack.litemod;
 
 public interface IKeyBinding {
 	public abstract boolean isDown();

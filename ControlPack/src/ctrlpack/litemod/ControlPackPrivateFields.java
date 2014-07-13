@@ -1,4 +1,4 @@
-package controlpack.litemod;
+package ctrlpack.litemod;
 
 import com.mumfrey.liteloader.client.util.PrivateFields;
 import com.mumfrey.liteloader.core.runtime.Obf;

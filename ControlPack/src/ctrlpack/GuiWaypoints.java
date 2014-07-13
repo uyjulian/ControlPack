@@ -1,4 +1,4 @@
-package controlpack;
+package ctrlpack;
 
 import java.util.List;
 

@@ -4,5 +4,5 @@
     "revision": "${git.revision}",
     "author": "${author}",
     "description": "This mod is a set of useful utilities",
-    "classTransformerClasses": "controlpack.litemod.ControlPackEventTransformer,controlpack.litemod.KeyBindingOverlayTransformer"
+    "classTransformerClasses": "ctrlpack.litemod.ControlPackEventTransformer,ctrlpack.litemod.KeyBindingOverlayTransformer"
 }

@@ -1,6 +1,6 @@
 // mod_controlpack
 
-package controlpack;
+package ctrlpack;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;

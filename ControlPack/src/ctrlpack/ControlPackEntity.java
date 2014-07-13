@@ -1,4 +1,4 @@
-package controlpack;
+package ctrlpack;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -20,7 +20,7 @@ import org.lwjgl.opengl.*;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.util.glu.GLU;
 
-import controlpack.*;
+import ctrlpack.*;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;

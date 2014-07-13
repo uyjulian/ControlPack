@@ -1,4 +1,4 @@
-package controlpack;
+package ctrlpack;
 
 public enum ControlPackEnumOptions {
     LESSRAIN("options.lessrain", false, true), // dead, but left in here just so the enum is stable...

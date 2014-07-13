@@ -1,4 +1,4 @@
-package controlpack;
+package ctrlpack;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiTextField;

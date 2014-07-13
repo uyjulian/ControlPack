@@ -1,4 +1,4 @@
-package controlpack;
+package ctrlpack;
 
 //import net.minecraft.client.Minecraft;
 
@@ -51,8 +51,8 @@ import org.lwjgl.input.*;
 import org.lwjgl.opengl.*;
 import org.lwjgl.util.glu.GLU;
 
-import controlpack.*;
-import controlpack.litemod.IKeyBinding;
+import ctrlpack.*;
+import ctrlpack.litemod.IKeyBinding;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;

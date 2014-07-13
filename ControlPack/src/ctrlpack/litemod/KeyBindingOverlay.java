@@ -1,4 +1,4 @@
-package controlpack.litemod;
+package ctrlpack.litemod;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
