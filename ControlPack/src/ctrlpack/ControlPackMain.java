@@ -1,3 +1,16 @@
+/* Copyright (c) 2014, Julian Uy
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+ * 
+ * 2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ */
+
 package ctrlpack;
 
 //import net.minecraft.client.Minecraft;
@@ -1918,7 +1931,7 @@ public class ControlPackMain implements Runnable {
 			if (this.cpEntity == null) {
 				this.wrappedEntity = this.mc.renderViewEntity;
 				this.cpEntity =
-					new ControlPackEntity(this.mc, this.mc.theWorld, new Session(null, null, null, null), 0/*dimension??*/);
+					new ControlPackEntity(this.mc, this.mc.theWorld, new Session("LookBehind", "LookBehind", "LookBehind", "Legacy"), 0/*dimension??*/);
 //System.out.println("ControlPack: Wrapped Entity.");
 			}
 			if (this.mc.renderViewEntity != ControlPackMain.instance.cpEntity) {
@@ -2016,7 +2029,7 @@ public class ControlPackMain implements Runnable {
             return true;
         }
        
-        if (code == 63 && down && booleanOptions.get(ControlPackEnumOptions.FRONTVIEW)) {
+        if (code == Keyboard.KEY_F5 && down && booleanOptions.get(ControlPackEnumOptions.FRONTVIEW)) {
             toggleThirdPersonView();
             return true;
         }
