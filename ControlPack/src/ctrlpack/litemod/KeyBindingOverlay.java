@@ -13,8 +13,8 @@ public abstract class KeyBindingOverlay implements IKeyBinding {
 	private static KeyBinding __TARGET;
 	
 	// TODO Minecraft 1.7.10
-	@Obfuscated({"field_74512_d", "d"}) private int keyCode;
-	@Obfuscated({"field_74513_e", "e"}) private boolean pressed;
+	@Obfuscated({"field_74512_d", "g"}) private int keyCode;
+	@Obfuscated({"field_74513_e", "h"}) private boolean pressed;
 	@Obfuscated({"field_151474_i","i"}) private int pressTime;
 	
 	// Mod stuff
