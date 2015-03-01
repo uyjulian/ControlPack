@@ -28,7 +28,7 @@ public class GuiTextFieldCP extends GuiTextField {
 	public boolean isIdList;
 	
     public GuiTextFieldCP(FontRenderer thefontRenderer, String thelabel, int x, int y, int width, int h, ControlPackEnumOptions opt) {
-		super(thefontRenderer, x + 80, y, width - 80, h);
+		super(1, thefontRenderer, x + 80, y, width - 80, h);
 		xpos = x;
 		ypos = y;
 		label = thelabel;

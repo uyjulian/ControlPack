@@ -1,7 +1,7 @@
 package ctrlpack.litemod;
 
-import com.mumfrey.liteloader.client.util.PrivateFields;
 import com.mumfrey.liteloader.core.runtime.Obf;
+import com.mumfrey.liteloader.util.PrivateFields;
 
 import net.minecraft.client.gui.GuiControls;
 import net.minecraft.client.gui.GuiKeyBindingList;

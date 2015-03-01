@@ -23,7 +23,9 @@ import java.util.*;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.stats.StatFileWriter;
 import net.minecraft.util.Session;
 import net.minecraft.world.World;
 
@@ -42,8 +44,8 @@ import java.lang.reflect.Method;
 // used to hook a little bit into the EntityRenderer process. Provides the hook I need to make 3rd person and Look Behind work.
 
 public class ControlPackEntity extends EntityPlayerSP {
-	public ControlPackEntity(Minecraft par1Minecraft, World par2World, Session par3Session, int par4) {
-		super(par1Minecraft, par2World, par3Session, par4);
+	public ControlPackEntity(Minecraft mcIn, World worldIn, NetHandlerPlayClient p_i46278_3_, StatFileWriter p_i46278_4_) {
+		super(mcIn, worldIn, p_i46278_3_, p_i46278_4_);
 	}
 	
 	public void updatePos() {
@@ -88,7 +90,7 @@ public class ControlPackEntity extends EntityPlayerSP {
 					// restore renderViewEntity, as it being a different instance messes with rendering entities
 					// since it thinks YOU are not YOURSELF and renders YOU even in 1st person view, teehee
 					// this is what made it too hard for me to make void fog not require changes to EntityRenderer :(
-					ControlPackMain.instance.mc.renderViewEntity = ControlPackMain.instance.wrappedEntity;
+					ControlPackMain.instance.mc.setRenderViewEntity(ControlPackMain.instance.wrappedEntity);
 					break;
 				}
 				else {

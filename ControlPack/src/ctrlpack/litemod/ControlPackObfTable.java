@@ -21,7 +21,7 @@ public class ControlPackObfTable extends Obf {
 	public static ControlPackObfTable GuiScreen_mouseReleased = new ControlPackObfTable("func_146286_b", "b", "mouseReleased");
 	public static ControlPackObfTable GuiContainer_xSize = new ControlPackObfTable("field_146999_f", "f", "xSize");
 	public static ControlPackObfTable GuiContainer_ySize = new ControlPackObfTable("field_147000_g", "g", "ySize");
-	public static ControlPackObfTable GuiListExtended_drawSlot = new ControlPackObfTable("func_148126_a", "a", "drawSlot");
+	public static ControlPackObfTable GuiListExtended_drawSlot = new ControlPackObfTable("func_146977_a", "a", "drawSlot");
 	
 	public static ControlPackObfTable EntityRenderer_debugCamPitch = new ControlPackObfTable("func_78467_g", "g", "orientCamera");
 	

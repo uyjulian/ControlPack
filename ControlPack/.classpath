@@ -9,9 +9,8 @@
 	<classpathentry kind="lib" path="/Client/jars/libraries/com/paulscode/codecjorbis/20101023/codecjorbis-20101023.jar"/>
 	<classpathentry kind="lib" path="/Client/jars/libraries/com/paulscode/codecwav/20101023/codecwav-20101023.jar"/>
 	<classpathentry kind="lib" path="/Client/jars/libraries/commons-io/commons-io/2.4/commons-io-2.4.jar"/>
-	<classpathentry kind="lib" path="/Client/jars/libraries/org/apache/commons/commons-lang3/3.1/commons-lang3-3.1.jar"/>
 	<classpathentry kind="lib" path="/Client/jars/libraries/com/paulscode/librarylwjglopenal/20100824/librarylwjglopenal-20100824.jar"/>
-	<classpathentry kind="lib" path="/Client/jars/libraries/org/lwjgl/lwjgl/lwjgl/2.9.1/lwjgl-2.9.1.jar"/>
-	<classpathentry kind="lib" path="/Client/jars/libraries/org/lwjgl/lwjgl/lwjgl_util/2.9.1/lwjgl_util-2.9.1.jar"/>
+	<classpathentry kind="lib" path="/Client/jars/libraries/org/lwjgl/lwjgl/lwjgl/2.9.2-nightly-20140822/lwjgl-2.9.2-nightly-20140822.jar"/>
+	<classpathentry kind="lib" path="/Client/jars/libraries/org/lwjgl/lwjgl/lwjgl_util/2.9.2-nightly-20140822/lwjgl_util-2.9.2-nightly-20140822.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

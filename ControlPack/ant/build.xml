@@ -5,13 +5,13 @@
 <project name="ControlPack" basedir="." default="main">
 	
 	<!-- Change this into the directory of the MCP folder. -->
-	<property name="mcp.dir"            location="../../../../Documents/MinecraftModding/mcp908" />
+	<property name="mcp.dir"            location="../../../../Documents/MinecraftModding/mcp910-pre1" />
 	<!-- Path to the python executable -->
 	<property name="python"             location="/usr/bin/python" />
 
     <property name="version"            value="0.1" />
-    <property name="mcversion"          value="1.7.10" />
-    <property name="litemodversion"     value="1.7.10" />
+    <property name="mcversion"          value="1.8" />
+    <property name="litemodversion"     value="1.8" />
     <property name="author"             value="uyjulian" />
     <property name="project"            value="ControlPack" />
     <property name="md5set"             value="liteloader" />

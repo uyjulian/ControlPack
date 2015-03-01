@@ -13,7 +13,9 @@
 
 package ctrlpack;
 
+import java.io.IOException;
 import java.util.List;
+
 
 
 
@@ -21,6 +23,7 @@ import java.util.List;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
+
 
 
 //import net.minecraft.client.Minecraft;
@@ -44,7 +47,7 @@ public class GuiWaypoints extends GuiScreen
     {
         screenTitle = ControlPackMain.translate("controlPack.waypointsTitle");
         
-        isNether = ControlPackMain.instance.mc.theWorld != null && ControlPackMain.instance.mc.theWorld.provider.isHellWorld;
+        isNether = ControlPackMain.instance.mc.theWorld != null && (ControlPackMain.instance.mc.theWorld.provider.getDimensionName() == "Nether");
 
         ControlPackEnumOptions options[] = isNether ? ControlPackMain.instance.waypointNetherOptions : ControlPackMain.instance.waypointOptions;
         for(int k = 0; k < options.length; k++) {
@@ -61,12 +64,12 @@ public class GuiWaypoints extends GuiScreen
             int y = 100 + k * 25;
             
             // name
-            waypointNames[k] = new GuiTextField( fontRendererObj, x, y, 75, 20);
+            waypointNames[k] = new GuiTextField(1, fontRendererObj, x, y, 75, 20);
 			waypointNames[k].setText(name);
             waypointNames[k].setMaxStringLength(12);
             x+= 85;
             // location
-            waypointLocations[k] = new GuiTextField(fontRendererObj, x, y, 125, 20);
+            waypointLocations[k] = new GuiTextField(1, fontRendererObj, x, y, 125, 20);
 			waypointLocations[k].setText(location);
             waypointLocations[k].setMaxStringLength("-1000000, -1000000, -999".length());
             x += 135;
@@ -100,7 +103,7 @@ public class GuiWaypoints extends GuiScreen
     }
 
     @Override
-	protected void keyTyped(char c, int code) {
+	protected void keyTyped(char c, int code) throws IOException {
         if(c == '\r') {
             closeGui();
         }
@@ -116,7 +119,7 @@ public class GuiWaypoints extends GuiScreen
     }  
     
     @Override
-	protected void mouseClicked(int i, int j, int k) {
+	protected void mouseClicked(int i, int j, int k) throws IOException {
         super.mouseClicked(i, j, k);
         for (int l = 0; l < waypointNames.length; l++) {
             if (waypointNames[l] != null) {

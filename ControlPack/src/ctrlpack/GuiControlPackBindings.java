@@ -13,7 +13,9 @@
 
 package ctrlpack;
 
+import java.io.IOException;
 import java.util.List;
+
 
 
 
@@ -24,6 +26,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+
 
 
 
@@ -102,7 +105,7 @@ public class GuiControlPackBindings extends GuiScreen
     }
 
     @Override
-	protected void mouseClicked(int i, int j, int k) {
+	protected void mouseClicked(int i, int j, int k) throws IOException {
         if(buttonId >= 0 && buttonId < 100) {
             ControlPackMain.instance.keyBindings[buttonId].setKeyCode(-100 + k);
             ControlPackMain.instance.saveOptions();
@@ -124,7 +127,7 @@ public class GuiControlPackBindings extends GuiScreen
 
 						((GuiButton)buttonList.get(guibutton.id)).displayString = getOptionDisplayString(guibutton.id);
 						buttonId = -1;
-						this.mc.getSoundHandler().playSound(PositionedSoundRecord.playSound1(new ResourceLocation("random.click"), 1.0F));
+						this.mc.getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("random.click"), 1.0F));
 						return;
 					}
 				}
@@ -135,7 +138,7 @@ public class GuiControlPackBindings extends GuiScreen
     }
 
     @Override
-	protected void keyTyped(char c, int i) {
+	protected void keyTyped(char c, int i) throws IOException {
         if(buttonId >= 0 && buttonId < 100) {
             ControlPackMain.instance.keyBindings[buttonId].setKeyCode(i);
             ControlPackMain.instance.saveOptions();

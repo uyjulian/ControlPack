@@ -13,9 +13,12 @@
 
 package ctrlpack;
 
+import java.io.IOException;
+
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
+
 
 
 //import net.minecraft.client.Minecraft;
@@ -35,14 +38,14 @@ public class GuiMeasure extends GuiScreen
     {
         int i = height / 4 + 48;
         buttonList.add(new GuiButton(0, width / 2 - 100, i, "Go"));
-        measureDistance = new GuiTextField(fontRendererObj, width / 2 - 25, i - 35, 50, 20);
+        measureDistance = new GuiTextField(1, fontRendererObj, width / 2 - 25, i - 35, 50, 20);
 		measureDistance.setText("0".equalsIgnoreCase(defaultDistance) ? "" : defaultDistance);
         measureDistance.setFocused(true);
         measureDistance.setMaxStringLength(7);
     }
     
     @Override
-	protected void keyTyped(char c, int i) {
+	protected void keyTyped(char c, int i) throws IOException {
         if(measureDistance.isFocused() && ((c >= '0' && c <= '9') || i == Keyboard.KEY_BACK)) {
         	measureDistance.textboxKeyTyped(c, i);
         }
@@ -53,7 +56,7 @@ public class GuiMeasure extends GuiScreen
     }    
     
     @Override
-	protected void mouseClicked(int i, int j, int k) {
+	protected void mouseClicked(int i, int j, int k) throws IOException {
         super.mouseClicked(i, j, k);
         measureDistance.mouseClicked(i, j, k);
     }    

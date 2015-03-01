@@ -13,8 +13,10 @@
 
 package ctrlpack;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.ArrayList;
+
 
 
 
@@ -24,6 +26,7 @@ import net.minecraft.client.gui.GuiScreen;
 
 
 import net.minecraft.client.gui.GuiTextField;
+
 
 //import net.minecraft.client.Minecraft;
 import org.lwjgl.input.*;
@@ -130,7 +133,7 @@ public class GuiControlPackOptions extends GuiScreen
     }
 	
     @Override
-	protected void mouseClicked(int i, int j, int k) {
+	protected void mouseClicked(int i, int j, int k) throws IOException {
         super.mouseClicked(i, j, k);
         for (int l = 0; l < textFields.size(); l++) {
             if (textFields.get(l) != null) {
@@ -140,7 +143,7 @@ public class GuiControlPackOptions extends GuiScreen
     }  
 
 	@Override
-	protected void keyTyped(char c, int code) {
+	protected void keyTyped(char c, int code) throws IOException {
         for (int i = 0; i < textFields.size(); i++) {
             if (textFields.get(i) != null && ((GuiTextField)(textFields.get(i))).isFocused()) {
                 keyTyped(textFields.get(i), c, code);

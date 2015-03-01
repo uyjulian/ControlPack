@@ -37,6 +37,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiFurnace;
+import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.EntityLivingBase;
@@ -51,9 +52,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.item.ItemTool;
 import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.client.C0EPacketClickWindow;
 import net.minecraft.profiler.Profiler;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.util.Session;
@@ -63,6 +66,8 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.input.*;
 import org.lwjgl.opengl.*;
 import org.lwjgl.util.glu.GLU;
+
+import com.mojang.authlib.GameProfile;
 
 import ctrlpack.*;
 import ctrlpack.litemod.IKeyBinding;
@@ -382,7 +387,7 @@ public class ControlPackMain implements Runnable {
                 //drawArrow(10, 10, 100, 100);
                 //drawArrow(200, 200, 100, 175);
                 
-                boolean isNether = mc.theWorld != null && mc.theWorld.provider.isHellWorld;
+                boolean isNether = mc.theWorld != null && (mc.theWorld.provider.getDimensionName() == "Nether");
 
                 for (int i = 0; i < (isNether ? waypointNetherOptions.length : waypointOptions.length); i++) {
                     ControlPackEnumOptions locationOption = isNether ? waypointNetherOptions[i] : waypointOptions[i];
@@ -403,21 +408,21 @@ public class ControlPackMain implements Runnable {
                             double wpX = Integer.parseInt(parts[0].trim()) + 0.5;
                             double wpZ = Integer.parseInt(parts[1].trim()) + 0.5;
 							double wpY = Integer.parseInt(parts[2].trim()) + 0.5;
-                            Vec3 v_waypoint = Vec3.createVectorHelper(wpX, 0, wpZ);
-                            Vec3 v_current = mc.thePlayer.getPosition(1F);
-                            v_current.yCoord = 0;
+                            Vec3 v_waypoint = new Vec3(wpX, 0, wpZ);
+                            BlockPos v_currents = mc.thePlayer.getPosition();
+                            BlockPos v_current = new BlockPos(v_currents.getX(),0,v_currents.getZ());
 
 							int currentX = (int) wpX;
 							int currentY = (int) wpY;
 							int currentZ = (int) wpZ;
 							location = stringOptions.get(ControlPackEnumOptions.COORDINATE_FORMAT).replace("{X}", ""+currentX).replace("{Y}", ""+currentY).replace("{Z}", ""+currentZ);
 							
-                            Vec3 v_directionFromHere = v_waypoint.subtract(v_current);
+                            Vec3 v_directionFromHere = v_waypoint.subtract(v_current.getX(), v_current.getY(), v_current.getZ());
                             if (v_directionFromHere.lengthVector() <= 0.5) {
                                 DrawString((name == null || name.length() == 0) ? location : (name + ": " + location), coordLocation, lineNum, 0xbbbbbb, null, true);
                             }
                             else {
-                                v_directionFromHere.rotateAroundY((mc.thePlayer.rotationYaw * 0.01745329F));
+                                v_directionFromHere.rotateYaw((mc.thePlayer.rotationYaw * 0.01745329F));
                                 v_directionFromHere = v_directionFromHere.normalize();
                                 DrawString((name == null || name.length() == 0) ? location : (name + ": " + location), coordLocation, lineNum, 0xbbbbbb, v_directionFromHere);
                             }
@@ -444,9 +449,9 @@ public class ControlPackMain implements Runnable {
 				if (!mc.playerController.isInCreativeMode() && booleanOptions.get(ControlPackEnumOptions.USECOUNT)) {
 					ItemStack currentStack = mc.thePlayer.inventory.mainInventory[mc.thePlayer.inventory.currentItem];
 					if (currentStack != null) {
-						int maxdmg = currentStack.getMaxDurability();
+						int maxdmg = currentStack.getMaxDamage();
 						if (maxdmg > 0) {
-							int dmg = currentStack.getCurrentDurability();
+							int dmg = currentStack.getItemDamage();
 							int remaining = (maxdmg - dmg + 1);
 							String text = "Uses: " + remaining;
 							// bow? show arrow count
@@ -454,7 +459,7 @@ public class ControlPackMain implements Runnable {
 								int count = 0;
 								for (int i = 0; i < mc.thePlayer.inventory.mainInventory.length; i++)
 								{
-									if (mc.thePlayer.inventory.mainInventory[i] != null && mc.thePlayer.inventory.mainInventory[i] == new ItemStack(Item.itemRegistry.getObject("minecraft:arrow")))
+									if (mc.thePlayer.inventory.mainInventory[i] != null && mc.thePlayer.inventory.mainInventory[i] == new ItemStack((Item)Item.itemRegistry.getObject("minecraft:arrow")))
 									{
 										count += mc.thePlayer.inventory.mainInventory[i].stackSize;
 									}
@@ -488,7 +493,7 @@ public class ControlPackMain implements Runnable {
             previouslyPlacedBlockID = stack == null ? -1 : Item.getIdFromItem(stack.getItem());
          }
 		 
-		if (booleanOptions.get(ControlPackEnumOptions.HOLDTOATTACK) && mc.gameSettings.keyBindAttack.getIsKeyPressed()) {
+		if (booleanOptions.get(ControlPackEnumOptions.HOLDTOATTACK) && mc.gameSettings.keyBindAttack.isKeyDown()) {
 			if (--toggleCounter <= 0) {
 				// holding down attach should also mean toggle attack!
 				keyBindingSetPressTime(mc.gameSettings.keyBindAttack,1);
@@ -555,10 +560,10 @@ public class ControlPackMain implements Runnable {
 
         // handle measure distance mode
         if (measureDistanceState) {
-			Vec3 currentPos = mc.thePlayer.getPosition(1F);
-			int currentX = (int) (currentPos.xCoord < 0 ? Math.ceil(currentPos.xCoord) : Math.floor(currentPos.xCoord));
-			int currentY = (int) (currentPos.yCoord < 0 ? Math.ceil(currentPos.yCoord) : Math.floor(currentPos.yCoord));
-			int currentZ = (int) (currentPos.zCoord < 0 ? Math.ceil(currentPos.zCoord) : Math.floor(currentPos.zCoord));
+			BlockPos currentPos = mc.thePlayer.getPosition();
+			int currentX = (int) (currentPos.getX() < 0 ? Math.ceil(currentPos.getX()) : Math.floor(currentPos.getX()));
+			int currentY = (int) (currentPos.getY() < 0 ? Math.ceil(currentPos.getY()) : Math.floor(currentPos.getY()));
+			int currentZ = (int) (currentPos.getZ() < 0 ? Math.ceil(currentPos.getZ()) : Math.floor(currentPos.getZ()));
 
         	double traveled = Math.max(Math.abs(measureDistanceStartX - currentX), Math.abs(measureDistanceStartZ - currentZ));
             measureDistanceRemaining = lastMeasureDistance - traveled;
@@ -1005,55 +1010,56 @@ public class ControlPackMain implements Runnable {
     }	
 	
 	public void applyLastWindowSize() {
-		if (booleanOptions.get(ControlPackEnumOptions.WINDOWRESTORE) && lastPositionExists) {
-			try {
-                //Component c = Display.getParent();// mc.mcCanvas;
-                //for (; c.getParent() != null; c = c.getParent()) {}
-                //Frame parent = (Frame)c;
-				//Frame parent = (Frame) mc.mcCanvas.getParent().getParent().getParent();
-				if (lastFullscreen) {
-					if (!Display.isFullscreen()) {
-						mc.toggleFullscreen();
-					}
-				}
-				//else if (lastWindowState == Frame.MAXIMIZED_BOTH) {
-					//parent.setExtendedState(Frame.MAXIMIZED_BOTH);
-				//}
-				else {					
-					//parent.setBounds(lastBounds);
-					Display.setLocation(lastBounds.x, lastBounds.y);
-					Display.setDisplayMode(new DisplayMode(lastBounds.width, lastBounds.height));
-					
-					mc.resetSize();
-					
-//					// this code was copied from minecraft.java, it gets mc to notice the change in size
-//					this.mc.displayWidth = Display.getWidth();
-//					this.mc.displayHeight = Display.getHeight();
-//
-//					if (this.mc.displayWidth <= 0)
-//					{
-//						this.mc.displayWidth = 1;
+		//currently disabled 'cause this is ugly code
+//		if (booleanOptions.get(ControlPackEnumOptions.WINDOWRESTORE) && lastPositionExists) {
+//			try {
+//                //Component c = Display.getParent();// mc.mcCanvas;
+//                //for (; c.getParent() != null; c = c.getParent()) {}
+//                //Frame parent = (Frame)c;
+//				//Frame parent = (Frame) mc.mcCanvas.getParent().getParent().getParent();
+//				if (lastFullscreen) {
+//					if (!Display.isFullscreen()) {
+//						mc.toggleFullscreen();
 //					}
-//
-//					if (this.mc.displayHeight <= 0)
-//					{
-//						this.mc.displayHeight = 1;
-//					}
-//
-//
-//					// contents of: this.mc.resize(this.mc.displayWidth, this.mc.displayHeight);					
-//					if (this.mc.currentScreen != null) {
-//						ScaledResolution var3 = new ScaledResolution(this.mc, this.mc.displayWidth, this.mc.displayHeight);
-//						int var4 = var3.getScaledWidth();
-//						int var5 = var3.getScaledHeight();
-//						this.mc.currentScreen.setWorldAndResolution(this.mc, var4, var5);
-//					}
-//					// end copy
-				}
-			}
-			catch(Exception ex) {
-			}
-		}
+//				}
+//				//else if (lastWindowState == Frame.MAXIMIZED_BOTH) {
+//					//parent.setExtendedState(Frame.MAXIMIZED_BOTH);
+//				//}
+//				else {					
+//					//parent.setBounds(lastBounds);
+////					Display.setLocation(lastBounds.x, lastBounds.y);
+////					Display.setDisplayMode(new DisplayMode(lastBounds.width, lastBounds.height));
+////					
+////					mc.resetSize();
+////					
+////					// this code was copied from minecraft.java, it gets mc to notice the change in size
+////					this.mc.displayWidth = Display.getWidth();
+////					this.mc.displayHeight = Display.getHeight();
+////
+////					if (this.mc.displayWidth <= 0)
+////					{
+////						this.mc.displayWidth = 1;
+////					}
+////
+////					if (this.mc.displayHeight <= 0)
+////					{
+////						this.mc.displayHeight = 1;
+////					}
+////
+////
+////					// contents of: this.mc.resize(this.mc.displayWidth, this.mc.displayHeight);					
+////					if (this.mc.currentScreen != null) {
+////						ScaledResolution var3 = new ScaledResolution(this.mc, this.mc.displayWidth, this.mc.displayHeight);
+////						int var4 = var3.getScaledWidth();
+////						int var5 = var3.getScaledHeight();
+////						this.mc.currentScreen.setWorldAndResolution(this.mc, var4, var5);
+////					}
+////					// end copy
+//				}
+//			}
+//			catch(Exception ex) {
+//			}
+//		}
 	}
 	
 	public void checkGame() {
@@ -1136,14 +1142,14 @@ public class ControlPackMain implements Runnable {
 	
     private float blockStrength(Block block, Item item) {
 		// adapted from block.java
-        if(block.getBlockHardness(mc.theWorld, 1, 1, 1) < 0.0F) {
+        if(block.getBlockHardness(mc.theWorld, new BlockPos(1, 1, 1)) < 0.0F) {
             return 0.0F;
         }
 		if(item == null || !canHarvestBlock(item, block) || (getIsHarvestable(block) && item.getStrVsBlock(new ItemStack(block), block) == 1.0F)) {
-            return 1.0F / block.getBlockHardness(mc.theWorld, 1, 1, 1) / 100F;
+            return 1.0F / block.getBlockHardness(mc.theWorld, new BlockPos(1, 1, 1)) / 100F;
         }
 		else {
-            return item.getStrVsBlock(new ItemStack(block), block) / block.getBlockHardness(mc.theWorld, 1, 1, 1) / 30F;
+            return item.getStrVsBlock(new ItemStack(block), block) / block.getBlockHardness(mc.theWorld, new BlockPos(1, 1, 1)) / 30F;
         }
     }	
 	
@@ -1153,7 +1159,7 @@ public class ControlPackMain implements Runnable {
 	
 	private boolean canHarvestBlock(Item item, Block block, boolean forReals) {
 		if (!forReals && getIsHarvestable(block)) return true;
-		boolean canHarvest = item.canHarvest(block);
+		boolean canHarvest = item.canHarvestBlock(block);
 		if (canHarvest) return true;
 		
 		// shears are wierd.. they dont say they can harvest vines, and their str vs vines is 1,
@@ -1244,7 +1250,7 @@ public class ControlPackMain implements Runnable {
                 else if (testStrength == existingStrength) {
                     // if they have equal strength. It's better if it has a lower 'level' (e.g. wood pick on a furance vs. stone pick -- equal str but pick wood)
                     // cheap way to determine that is to look at the max uses.. less is lower level :)
-                    if (testTool.getMaxDurability() < tool.getMaxDurability()) {
+                    if (testTool.getMaxDamage() < tool.getMaxDamage()) {
                         return true;
                     }
                 }
@@ -1256,7 +1262,7 @@ public class ControlPackMain implements Runnable {
                 else if (testStrength == existingStrength) {
                     // if they have equal strength. It's better if it has a higher 'level' (e.g. wood pick on a furance vs. stone pick -- equal str but pick stone)
                     // cheap way to determine that is to look at the max uses.. less is lower level :)
-                    if (testTool.getMaxDurability() > tool.getMaxDurability()) {
+                    if (testTool.getMaxDamage() > tool.getMaxDamage()) {
                         return true;
                     }
                 }
@@ -1286,7 +1292,7 @@ public class ControlPackMain implements Runnable {
                     return true;
                 }
                 else if (testStrength == existingStrength) {
-                    if (testTool.getMaxDurability() < tool.getMaxDurability()) {
+                    if (testTool.getMaxDamage() < tool.getMaxDamage()) {
                         return true;
                     }
                 }
@@ -1296,7 +1302,7 @@ public class ControlPackMain implements Runnable {
                     return true;
                 }
                 else if (testStrength == existingStrength) {
-                    if (testTool.getMaxDurability() < tool.getMaxDurability()) {
+                    if (testTool.getMaxDamage() < tool.getMaxDamage()) {
                         return true;
                     }
                 }
@@ -1313,12 +1319,12 @@ public class ControlPackMain implements Runnable {
 		
 		Integer mode = intOptions.get(ControlPackEnumOptions.AUTOTOOLMODE);
 		if (mode == 0) { // weakest
-			if (testTool.getMaxDurability() < tool.getMaxDurability()) {
+			if (testTool.getMaxDamage() < tool.getMaxDamage()) {
 				return true;
 			}
 		}
 		else { 
-			if (testTool.getMaxDurability() > tool.getMaxDurability()) {
+			if (testTool.getMaxDamage() > tool.getMaxDamage()) {
 				return true;
 			}
 		}
@@ -1513,7 +1519,7 @@ public class ControlPackMain implements Runnable {
 		int inventoryIndex = mc.thePlayer.inventory.currentItem;
 		ItemStack currentStack = mc.thePlayer.inventory.getCurrentItem();
 		Item currentItem = currentStack == null ? null : currentStack.getItem();
-		boolean easilyBreakable = block.getBlockHardness(mc.theWorld, 1, 1, 1) <= 0.20001F; // leaves are 0.2. Saplings, redstone dust, etc are 0 (1 hit).
+		boolean easilyBreakable = block.getBlockHardness(mc.theWorld, new BlockPos(1, 1, 1)) <= 0.20001F; // leaves are 0.2. Saplings, redstone dust, etc are 0 (1 hit).
 		boolean harvestable = getIsHarvestable(block);
 		boolean hasSword = currentItem != null && isSword(currentItem);
 		boolean hasTool = isTool(currentItem);
@@ -1578,10 +1584,10 @@ public class ControlPackMain implements Runnable {
 	public void runAutoTool(boolean proactive) {
 		// proactive means we're doing this before the keybinding is even logged yet.
 		// currently mining? and not using swap command?
-		if (swappedInventoryState == 0 && (proactive || mc.gameSettings.keyBindAttack.getIsKeyPressed()) && mc.objectMouseOver != null) {
+		if (swappedInventoryState == 0 && (proactive || mc.gameSettings.keyBindAttack.isKeyDown()) && mc.objectMouseOver != null) {
 			// get the block being targetted
 			if (!mc.playerController.isInCreativeMode() && booleanOptions.get(ControlPackEnumOptions.AUTOTOOL) && mc.objectMouseOver.typeOfHit == MovingObjectType.BLOCK) {
-				Block block = mc.theWorld.getBlock(mc.objectMouseOver.blockX, mc.objectMouseOver.blockY, mc.objectMouseOver.blockZ);
+				Block block = mc.theWorld.getBlockState(mc.objectMouseOver.getBlockPos()).getBlock();
 				if (block != null) {
 					ensureCorrectToolSelected(block);
 				}
@@ -1725,10 +1731,10 @@ public class ControlPackMain implements Runnable {
     
     public String getLocation(boolean shouldFormat) {
         if (mc == null || mc.thePlayer == null) return "";
-        Vec3 currentPos = mc.thePlayer.getPosition(1F);
-        int currentX = (int) Math.ceil(currentPos.xCoord) - 1;
-        int currentY = (int) Math.ceil(currentPos.yCoord) - 1;
-        int currentZ = (int) Math.ceil(currentPos.zCoord) - 1;
+        BlockPos currentPos = mc.thePlayer.getPosition();
+        int currentX = (int) Math.ceil(currentPos.getX()) - 1;
+        int currentY = (int) Math.ceil(currentPos.getY()) - 1;
+        int currentZ = (int) Math.ceil(currentPos.getZ()) - 1;
 		if (shouldFormat) {
 			return stringOptions.get(ControlPackEnumOptions.COORDINATE_FORMAT).replace("{X}", ""+currentX).replace("{Y}", ""+currentY).replace("{Z}", ""+currentZ);
 		}
@@ -1859,7 +1865,7 @@ public class ControlPackMain implements Runnable {
     }
 	
 	private void addDeathWaypoint() {
-		boolean isNether = this.mc.theWorld != null && this.mc.theWorld.provider.isHellWorld;
+		boolean isNether = this.mc.theWorld != null && (mc.theWorld.provider.getDimensionName() == "Nether");
 		ControlPackEnumOptions[] nameoptions = isNether ? this.waypointNetherNameOptions : this.waypointNameOptions;
 		ControlPackEnumOptions[] locationoptions = isNether ? this.waypointNetherOptions : this.waypointOptions;
 		ControlPackEnumOptions[] hudoptions = isNether ? this.waypointNetherHUDOptions : this.waypointHUDOptions;
@@ -1926,20 +1932,21 @@ public class ControlPackMain implements Runnable {
 	}
 	
 	public void setupRenderHook() {
-		if (this.lookBehindProgress != 0 && this.mc.renderViewEntity != null) {
-			this.renderingWorld = true;
-			if (this.cpEntity == null) {
-				this.wrappedEntity = this.mc.renderViewEntity;
-				this.cpEntity =
-					new ControlPackEntity(this.mc, this.mc.theWorld, new Session("LookBehind", "LookBehind", "LookBehind", "Legacy"), 0/*dimension??*/);
-//System.out.println("ControlPack: Wrapped Entity.");
-			}
-			if (this.mc.renderViewEntity != ControlPackMain.instance.cpEntity) {
-				this.wrappedEntity = this.mc.renderViewEntity;
-				this.mc.renderViewEntity = this.cpEntity;
-//System.out.println("ControlPack: Fixed Wrapped Entity.");
-			}
-			this.cpEntity.updatePos();
+		if (this.lookBehindProgress != 0 && this.mc.getRenderViewEntity() != null) {
+			//look behind is disabled for now
+//			this.renderingWorld = true;
+//			if (this.cpEntity == null) {
+//				this.wrappedEntity = this.mc.getRenderViewEntity();
+//				this.cpEntity =
+//					new ControlPackEntity(this.mc, this.mc.theWorld, new NetHandlerPlayClient(mc, null, null, null), null);
+////System.out.println("ControlPack: Wrapped Entity.");
+//			}
+//			if (this.mc.getRenderViewEntity() != ControlPackMain.instance.cpEntity) {
+//				this.wrappedEntity = this.mc.getRenderViewEntity();
+//				this.mc.renderViewEntity = this.cpEntity;
+////System.out.println("ControlPack: Fixed Wrapped Entity.");
+//			}
+//			this.cpEntity.updatePos();
 		}	
 		else {
 //System.out.println("ControlPack: No need to wrap entity right now...");
@@ -1952,8 +1959,8 @@ public class ControlPackMain implements Runnable {
 	public void syncThirdPersonRotation() {
 		// SELF: check fields.csv for the private field name when there are updates!
 		//dumpFields(EntityRenderer.class, null);
-		setPrivateValue(EntityRenderer.class, this.mc.entityRenderer, "debugCamPitch", "field_78487_F", frontView_rotationPitch);
-		setPrivateValue(EntityRenderer.class, this.mc.entityRenderer, "debugCamYaw", "field_78485_D", frontView_rotationYaw);
+		setPrivateValue(EntityRenderer.class, this.mc.entityRenderer, "cameraPitch", "field_78509_X", frontView_rotationPitch);
+		setPrivateValue(EntityRenderer.class, this.mc.entityRenderer, "cameraYaw", "field_78502_W", frontView_rotationYaw);
 	}
 	
     private void openGUIRunDistance() {
@@ -1963,9 +1970,9 @@ public class ControlPackMain implements Runnable {
 	
     public void moveByDistance(int numTiles) {
     	lastMeasureDistance = numTiles;
-    	Vec3 pos = mc.thePlayer.getPosition(1F);
-    	measureDistanceStartX = (int) (pos.xCoord < 0 ? Math.ceil(pos.xCoord) : Math.floor(pos.xCoord));
-    	measureDistanceStartZ = (int) (pos.zCoord < 0 ? Math.ceil(pos.zCoord) : Math.floor(pos.zCoord));
+    	BlockPos pos = mc.thePlayer.getPosition();
+    	measureDistanceStartX = (int) (pos.getX() < 0 ? Math.ceil(pos.getX()) : Math.floor(pos.getX()));
+    	measureDistanceStartZ = (int) (pos.getZ() < 0 ? Math.ceil(pos.getZ()) : Math.floor(pos.getZ()));
     	measureDistanceState = true;
     	keyBindingToggle(mc.gameSettings.keyBindForward,true);
     }
@@ -2058,7 +2065,7 @@ public class ControlPackMain implements Runnable {
             placeTorch();
         }
 
-		if (down && code == keyBindSprint.getKeyCode() && mc.gameSettings.keyBindForward.getIsKeyPressed()) {
+		if (down && code == keyBindSprint.getKeyCode() && mc.gameSettings.keyBindForward.isKeyDown()) {
 			mc.thePlayer.setSprinting(true);
 		}
         
@@ -2215,7 +2222,7 @@ public class ControlPackMain implements Runnable {
             if (code == keyBindToggleRun.getKeyCode()) {
                 cancelMeasureDistance();
 				// if they are already running backward then auto run will run backward...
-				if (mc.gameSettings.keyBindBack.getIsKeyPressed()) {
+				if (mc.gameSettings.keyBindBack.isKeyDown()) {
 					keyBindingToggle(mc.gameSettings.keyBindBack);
 				}
 				else {
@@ -2354,7 +2361,7 @@ public class ControlPackMain implements Runnable {
            // can smelt if it has a recipe...
            boolean canSmelt = itemStack != null && FurnaceRecipes.instance().getSmeltingResult(itemStack) != null;
            // and the burningStack is empty, or it has the same item type and subtype in it.
-           canSmelt = canSmelt && (burningStack == null || (burningStack.getItem() == itemStack.getItem() && (!itemStack.getItem().getHasSubtypes() || burningStack.getCurrentDurability() == itemStack.getCurrentDurability())));
+           canSmelt = canSmelt && (burningStack == null || (burningStack.getItem() == itemStack.getItem() && (!itemStack.getItem().getHasSubtypes() || burningStack.getItemDamage() == itemStack.getItemDamage())));
            if (canSmelt) {
            	// fill it up as much as we can
            	if (burningStack == null) {
@@ -2403,7 +2410,7 @@ public class ControlPackMain implements Runnable {
            	int burnTime = TileEntityFurnace.getItemBurnTime(itemStack);
            	if (burnTime > 0) {
            		// see if the existing fuel is the same type
-           		if (fuelStack != null && (fuelStack.getItem() != itemStack.getItem() || fuelStack.getCurrentDurability() != itemStack.getCurrentDurability())) {
+           		if (fuelStack != null && (fuelStack.getItem() != itemStack.getItem() || fuelStack.getItemDamage() != itemStack.getItemDamage())) {
            			putItBack(currentItemStack, emptySlot, inventorySlots);
            			return true;
            		}
@@ -2506,7 +2513,7 @@ public class ControlPackMain implements Runnable {
     			continue;
     		}
     		ItemStack existingStack = slot.getStack();
-    		if (existingStack == null || existingStack.getItem() != stack.getItem() || existingStack.getCurrentDurability() != stack.getCurrentDurability()) {
+    		if (existingStack == null || existingStack.getItem() != stack.getItem() || existingStack.getItemDamage() != stack.getItemDamage()) {
     			continue;
     		}
 			int canDrop = existingStack.getMaxStackSize() - existingStack.stackSize;
