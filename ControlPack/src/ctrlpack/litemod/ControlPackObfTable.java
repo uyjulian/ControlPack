@@ -3,14 +3,14 @@ package ctrlpack.litemod;
 import com.mumfrey.liteloader.core.runtime.Obf;
 
 public class ControlPackObfTable extends Obf {
-	public static ControlPackObfTable GuiFurnace = new ControlPackObfTable("net/minecraft/client/gui/inventory/GuiFurnace","bfr");
-	public static ControlPackObfTable GuiScreen = new ControlPackObfTable("net/minecraft/client/gui/GuiScreen","bdw");
-	public static ControlPackObfTable GuiContainer = new ControlPackObfTable("net/minecraft/client/gui/inventory/GuiContainer","bex");
-	public static ControlPackObfTable GuiControls = new ControlPackObfTable("net/minecraft/client/gui/GuiControls","bew");
-	public static ControlPackObfTable GuiListExtended = new ControlPackObfTable("net/minecraft/client/gui/GuiListExtended","bch");
-	public static ControlPackObfTable Tessellator = new ControlPackObfTable("net/minecraft/client/renderer/Tessellator","bmh");
+	public static ControlPackObfTable GuiFurnace = new ControlPackObfTable("net/minecraft/client/gui/inventory/GuiFurnace","bzg");
+	public static ControlPackObfTable GuiScreen = new ControlPackObfTable("net/minecraft/client/gui/GuiScreen","bxf");
+	public static ControlPackObfTable GuiContainer = new ControlPackObfTable("net/minecraft/client/gui/inventory/GuiContainer","byl");
+	public static ControlPackObfTable GuiControls = new ControlPackObfTable("net/minecraft/client/gui/GuiControls","byj");
+	public static ControlPackObfTable GuiListExtended = new ControlPackObfTable("net/minecraft/client/gui/GuiListExtended","buu");
+	public static ControlPackObfTable Tessellator = new ControlPackObfTable("net/minecraft/client/renderer/Tessellator","ckx");
 	
-	public static ControlPackObfTable KeyBinding = new ControlPackObfTable("net/minecraft/client/settings/KeyBinding","bal");
+	public static ControlPackObfTable KeyBinding = new ControlPackObfTable("net/minecraft/client/settings/KeyBinding","bsr");
 	public static ControlPackObfTable KeyBinding_setKeyBindState = new ControlPackObfTable("func_74510_a","a", "setKeyBindState");
 	public static ControlPackObfTable KeyBinding_unPressAllKeys = new ControlPackObfTable("func_74506_a","a", "unPressAllKeys");
 	public static ControlPackObfTable KeyBinding_resetKeyBindingArrayAndHash = new ControlPackObfTable("func_74508_b","b", "resetKeyBindingArrayAndHash");
@@ -21,7 +21,7 @@ public class ControlPackObfTable extends Obf {
 	public static ControlPackObfTable GuiScreen_mouseReleased = new ControlPackObfTable("func_146286_b", "b", "mouseReleased");
 	public static ControlPackObfTable GuiContainer_xSize = new ControlPackObfTable("field_146999_f", "f", "xSize");
 	public static ControlPackObfTable GuiContainer_ySize = new ControlPackObfTable("field_147000_g", "g", "ySize");
-	public static ControlPackObfTable GuiListExtended_drawSlot = new ControlPackObfTable("func_146977_a", "a", "drawSlot");
+	public static ControlPackObfTable GuiListExtended_drawSlot = new ControlPackObfTable("func_180791_a", "a", "drawSlot");
 	
 	public static ControlPackObfTable EntityRenderer_debugCamPitch = new ControlPackObfTable("func_78467_g", "g", "orientCamera");
 	
