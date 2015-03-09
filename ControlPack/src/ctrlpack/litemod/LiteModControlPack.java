@@ -11,6 +11,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiFurnace;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntityFurnace;
 
 import com.mumfrey.liteloader.InitCompleteListener;
@@ -32,6 +33,14 @@ public class LiteModControlPack implements LiteMod, RenderListener, InitComplete
 	@Override
 	public String getVersion() {
 		return "5.9";
+	}
+	
+	public static void regKeys(KeyBinding[] lolz) {
+		for (KeyBinding currentKey : lolz) {
+			if (currentKey != null) {
+				LiteLoader.getInput().registerKeyBinding(currentKey);
+			}
+		}
 	}
 
 	@Override
@@ -68,7 +77,7 @@ public class LiteModControlPack implements LiteMod, RenderListener, InitComplete
     	GuiContainer currentGuiFurnacez = eventinfo.getSource();
     	if (currentGuiFurnacez instanceof GuiFurnace) {
     		GuiFurnace currentGuiFurnace = (GuiFurnace) currentGuiFurnacez;
-	    	TileEntityFurnace tileFurnace = (TileEntityFurnace) ControlPackPrivateFields.GuiFurnace_tileFurnace.get(currentGuiFurnace);
+	    	IInventory tileFurnace = (IInventory) ControlPackPrivateFields.GuiFurnace_tileFurnace.get(currentGuiFurnace);
 	    	int xSize = (Integer) ControlPackPrivateFields.GuiContainer_xSize.get(currentGuiFurnace);
 	    	int ySize = (Integer) ControlPackPrivateFields.GuiContainer_ySize.get(currentGuiFurnace);
 			boolean currentStatus = ControlPackMain.instance.furnaceMouseClicked(currentGuiFurnace, tileFurnace, currentGuiFurnace.inventorySlots, row, col, mouseButton, currentGuiFurnace.width, currentGuiFurnace.height, xSize, ySize);

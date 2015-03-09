@@ -42,6 +42,7 @@ import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -71,6 +72,7 @@ import com.mojang.authlib.GameProfile;
 
 import ctrlpack.*;
 import ctrlpack.litemod.IKeyBinding;
+import ctrlpack.litemod.LiteModControlPack;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -112,6 +114,7 @@ public class ControlPackMain implements Runnable {
             keyBindToggleSneak, keyBindToggleRun, keyBindToggleJump, keyBindToggleMine, keyBindToggleUse,
             keyBindWalkDistance, keyBindLookBehind, keyBindToggleGamma, keyBindSayLocation, keyBindWaypoints
         };		
+        LiteModControlPack.regKeys(keyBindings);
 		
 		optionsFile = new File(this.mc.mcDataDir, "controlpack.txt");
 		loadOptions();
@@ -2319,7 +2322,7 @@ public class ControlPackMain implements Runnable {
 		return "";
     }
     
-    public boolean furnaceMouseClicked(GuiFurnace gf, TileEntityFurnace tef, Container inventorySlots, int row, int col, int mouseButton, int width, int height, int xSize, int ySize) {
+    public boolean furnaceMouseClicked(GuiFurnace gf, IInventory tef, Container inventorySlots, int row, int col, int mouseButton, int width, int height, int xSize, int ySize) {
     	boolean endcache = false;
         if (ControlPackMain.instance == null || !ControlPackMain.instance.booleanOptions.get(ControlPackEnumOptions.SMARTFURNACE)) {
             return true;
