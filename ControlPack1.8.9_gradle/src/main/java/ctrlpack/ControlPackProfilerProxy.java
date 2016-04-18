@@ -67,7 +67,7 @@ public class ControlPackProfilerProxy extends Profiler
     }
 
     @Override
-    public List<?> getProfilingData(String par1Str)
+    public List<Result> getProfilingData(String par1Str)
     {
 		this.wrapped.profilingEnabled = super.profilingEnabled;
 		return this.wrapped.getProfilingData(par1Str);

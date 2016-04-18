@@ -60,6 +60,7 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Session;
 import net.minecraft.util.Vec3;
 
@@ -462,7 +463,7 @@ public class ControlPackMain implements Runnable {
 								int count = 0;
 								for (int i = 0; i < mc.thePlayer.inventory.mainInventory.length; i++)
 								{
-									if (mc.thePlayer.inventory.mainInventory[i] != null && mc.thePlayer.inventory.mainInventory[i] == new ItemStack((Item)Item.itemRegistry.getObject("minecraft:arrow")))
+									if (mc.thePlayer.inventory.mainInventory[i] != null && mc.thePlayer.inventory.mainInventory[i] == new ItemStack((Item)Item.itemRegistry.getObject(new ResourceLocation("minecraft:arrow"))))
 									{
 										count += mc.thePlayer.inventory.mainInventory[i].stackSize;
 									}
@@ -604,6 +605,8 @@ public class ControlPackMain implements Runnable {
                 }
             }
 		}
+		//avoid sprint glitch
+		mc.thePlayer.setSprinting(isSprinting);
 	}
 	
     
@@ -1826,7 +1829,7 @@ public class ControlPackMain implements Runnable {
     
     private void DrawString(String str, int position, int lineNum, int color, Vec3 arrow, Boolean square) {
         FontRenderer fr = mc.fontRendererObj;
-        ScaledResolution sr = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
+        ScaledResolution sr = new ScaledResolution(mc);
         int xPos;
         int yPos;
         
@@ -2069,7 +2072,8 @@ public class ControlPackMain implements Runnable {
         }
 
 		if (down && code == keyBindSprint.getKeyCode() && mc.gameSettings.keyBindForward.isKeyDown()) {
-			mc.thePlayer.setSprinting(true);
+			isSprinting = !isSprinting;
+			mc.thePlayer.setSprinting(isSprinting);
 		}
         
         // open controlpack options
@@ -2735,6 +2739,8 @@ public class ControlPackMain implements Runnable {
     private int swapBackTo;
     private boolean altKey;
     private boolean nagged;
+    
+    private boolean isSprinting = false;
 	
 	public boolean cameraStandMode;
 	public boolean renderingWorld;

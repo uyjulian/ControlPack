@@ -1,8 +1,0 @@
-{
-    "name": "${ant.project.name}",
-    "mcversion": "${litemodversion}",
-    "revision": "${git.revision}",
-    "author": "${author}",
-    "description": "This mod is a set of useful utilities",
-    "classTransformerClasses": "ctrlpack.litemod.ControlPackEventTransformer,ctrlpack.litemod.KeyBindingOverlayTransformer"
-}
