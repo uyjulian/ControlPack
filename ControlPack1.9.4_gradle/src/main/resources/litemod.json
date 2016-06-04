@@ -1,0 +1,5 @@
+{
+    "name": "LitemodStub",
+    "mcversion": "1.9.4",
+    "classTransformerClasses": "ctrlpack.litemod.ControlPackEventTransformer,ctrlpack.litemod.KeyBindingOverlayTransformer"
+}
