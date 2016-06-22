@@ -1,5 +1,7 @@
 {
     "name": "LitemodStub",
     "mcversion": "1.8.9",
-    "classTransformerClasses": "ctrlpack.litemod.ControlPackEventTransformer,ctrlpack.litemod.KeyBindingOverlayTransformer"
+    "mixinConfigs": [
+        "mixins.ControlPack.json"
+    ]
 }

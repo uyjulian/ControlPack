@@ -1,0 +1,14 @@
+{
+    "required": true,
+    "minVersion": "0.5.3",
+    "package": "ctrlpack.litemod.mixin",
+    "refmap": "mixins.ControlPack.refmap.json",
+    "mixins": [
+        "MixinKeyBinding",
+        "MixinGuiFurnace",
+        "MixinMinecraft"
+    ],
+    "injectors": {
+        "defaultRequire": 1
+    }
+}

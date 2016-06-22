@@ -37,7 +37,7 @@ minecraft {
 sourceSets {
     main {
         // Refmap declaration must match the refmap name specified in the json config
-        refMap = "mixins.example.refmap.json"
+        refMap = "mixins.ControlPack.refmap.json"
     }
 }
 
@@ -49,8 +49,7 @@ litemod {
     json {
         name = "ControlPack"
         mcversion = "1.8.9"
-        classTransformerClasses = ["ctrlpack.litemod.ControlPackEventTransformer", "ctrlpack.litemod.KeyBindingOverlayTransformer"]
-        // mixinConfigs += "mixins.example.json"
+        mixinConfigs += "mixins.ControlPack.json"
     }
 }
 

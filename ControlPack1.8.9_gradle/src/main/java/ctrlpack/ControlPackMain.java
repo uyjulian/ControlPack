@@ -19,6 +19,8 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
+import java.awt.Component;
+import java.awt.Frame;
 import java.awt.Rectangle;
 import java.io.*;
 import java.util.*;
@@ -73,6 +75,7 @@ import com.mojang.authlib.GameProfile;
 
 import ctrlpack.*;
 import ctrlpack.litemod.IKeyBinding;
+import ctrlpack.litemod.IMinecraft;
 import ctrlpack.litemod.LiteModControlPack;
 
 import java.lang.reflect.Field;
@@ -87,6 +90,7 @@ public class ControlPackMain implements Runnable {
 	private static boolean checkedForImprovedChat;
 	//private static boolean checkedForForge;
 	public static Minecraft mc;
+	public static boolean windowResizedOverride = false;
 	private int toggleCounter = 10;
     
 	public ControlPackMain() throws Exception {
@@ -1016,56 +1020,58 @@ public class ControlPackMain implements Runnable {
     }	
 	
 	public void applyLastWindowSize() {
-		//currently disabled 'cause this is ugly code
-//		if (booleanOptions.get(ControlPackEnumOptions.WINDOWRESTORE) && lastPositionExists) {
-//			try {
-//                //Component c = Display.getParent();// mc.mcCanvas;
-//                //for (; c.getParent() != null; c = c.getParent()) {}
-//                //Frame parent = (Frame)c;
-//				//Frame parent = (Frame) mc.mcCanvas.getParent().getParent().getParent();
-//				if (lastFullscreen) {
-//					if (!Display.isFullscreen()) {
-//						mc.toggleFullscreen();
+		if (booleanOptions.get(ControlPackEnumOptions.WINDOWRESTORE) && lastPositionExists) {
+			try {
+//                Component c = Display.getParent();// mc.mcCanvas;
+//                for (; c.getParent() != null; c = c.getParent()) {}
+//                Frame parent = (Frame)c;
+				//Frame parent = (Frame) mc.mcCanvas.getParent().getParent().getParent();
+				if (lastFullscreen) {
+					if (!Display.isFullscreen()) {
+						mc.toggleFullscreen();
+					}
+				}
+				//else if (lastWindowState == Frame.MAXIMIZED_BOTH) {
+					//parent.setExtendedState(Frame.MAXIMIZED_BOTH);
+				//}
+				else {					
+//					parent.setBounds(lastBounds);
+					Display.setLocation(lastBounds.x, lastBounds.y);
+					Display.setDisplayMode(new DisplayMode(lastBounds.width, lastBounds.height));
+					IMinecraft imc = (IMinecraft)mc;
+					windowResizedOverride = true;
+					imc.pubCheckWindowResize();
+					windowResizedOverride = false;
+//					
+//					// this code was copied from minecraft.java, it gets mc to notice the change in size
+//					this.mc.displayWidth = Display.getWidth();
+//					this.mc.displayHeight = Display.getHeight();
+//
+//					if (this.mc.displayWidth <= 0)
+//					{
+//						this.mc.displayWidth = 1;
 //					}
-//				}
-//				//else if (lastWindowState == Frame.MAXIMIZED_BOTH) {
-//					//parent.setExtendedState(Frame.MAXIMIZED_BOTH);
-//				//}
-//				else {					
-//					//parent.setBounds(lastBounds);
-////					Display.setLocation(lastBounds.x, lastBounds.y);
-////					Display.setDisplayMode(new DisplayMode(lastBounds.width, lastBounds.height));
-////					
-////					mc.resetSize();
-////					
-////					// this code was copied from minecraft.java, it gets mc to notice the change in size
-////					this.mc.displayWidth = Display.getWidth();
-////					this.mc.displayHeight = Display.getHeight();
-////
-////					if (this.mc.displayWidth <= 0)
-////					{
-////						this.mc.displayWidth = 1;
-////					}
-////
-////					if (this.mc.displayHeight <= 0)
-////					{
-////						this.mc.displayHeight = 1;
-////					}
-////
-////
-////					// contents of: this.mc.resize(this.mc.displayWidth, this.mc.displayHeight);					
-////					if (this.mc.currentScreen != null) {
-////						ScaledResolution var3 = new ScaledResolution(this.mc, this.mc.displayWidth, this.mc.displayHeight);
-////						int var4 = var3.getScaledWidth();
-////						int var5 = var3.getScaledHeight();
-////						this.mc.currentScreen.setWorldAndResolution(this.mc, var4, var5);
-////					}
-////					// end copy
-//				}
-//			}
-//			catch(Exception ex) {
-//			}
-//		}
+//
+//					if (this.mc.displayHeight <= 0)
+//					{
+//						this.mc.displayHeight = 1;
+//					}
+//
+//
+//					// contents of: this.mc.resize(this.mc.displayWidth, this.mc.displayHeight);					
+//					if (this.mc.currentScreen != null) {
+//						ScaledResolution var3 = new ScaledResolution(this.mc, this.mc.displayWidth, this.mc.displayHeight);
+//						int var4 = var3.getScaledWidth();
+//						int var5 = var3.getScaledHeight();
+//						this.mc.currentScreen.setWorldAndResolution(this.mc, var4, var5);
+//					}
+//					// end copy
+				}
+			}
+			catch(Exception ex) {
+				ex.printStackTrace();
+			}
+		}
 	}
 	
 	public void checkGame() {
