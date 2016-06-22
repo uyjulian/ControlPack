@@ -32,8 +32,7 @@ public class GuiMeasure extends GuiScreen
     	defaultDistance = defaultDist;
     }
 
-    @SuppressWarnings("unchecked")
-	@Override
+    @Override
 	public void initGui()
     {
         int i = height / 4 + 48;
@@ -50,7 +49,7 @@ public class GuiMeasure extends GuiScreen
         	measureDistance.textboxKeyTyped(c, i);
         }
         if(c == '\r') {
-            actionPerformed((GuiButton)buttonList.get(0));
+            actionPerformed(buttonList.get(0));
         }
         super.keyTyped(c, i);
     }    

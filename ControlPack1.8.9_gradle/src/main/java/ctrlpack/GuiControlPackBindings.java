@@ -14,13 +14,6 @@
 package ctrlpack;
 
 import java.io.IOException;
-import java.util.List;
-
-
-
-
-
-
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -73,8 +66,7 @@ public class GuiControlPackBindings extends GuiScreen
     }
     // end lifted
     
-    @SuppressWarnings("unchecked")
-	@Override
+    @Override
 	public void initGui()
     {
         screenTitle = ControlPackMain.translate("controlPack.bindingsTitle");
@@ -92,7 +84,7 @@ public class GuiControlPackBindings extends GuiScreen
     @Override
 	protected void actionPerformed(GuiButton guibutton) {
         for(int i = 0; i < ControlPackMain.instance.keyBindings.length; i++) {
-            ((GuiButton)buttonList.get(i)).displayString = getOptionDisplayString(i);
+            buttonList.get(i).displayString = getOptionDisplayString(i);
         }
 
 		if(guibutton.id == 200) {
@@ -110,7 +102,7 @@ public class GuiControlPackBindings extends GuiScreen
             ControlPackMain.instance.keyBindings[buttonId].setKeyCode(-100 + k);
             ControlPackMain.instance.saveOptions();
 
-            ((GuiButton)buttonList.get(buttonId)).displayString = getOptionDisplayString(buttonId);
+            buttonList.get(buttonId).displayString = getOptionDisplayString(buttonId);
             buttonId = -1;
         }
         else {
@@ -118,14 +110,14 @@ public class GuiControlPackBindings extends GuiScreen
 			{
 				for (int ci = 0; ci < buttonList.size(); ci++)
 				{
-					GuiButton guibutton = (GuiButton)buttonList.get(ci);
+					GuiButton guibutton = buttonList.get(ci);
 
 					if (guibutton.mousePressed(mc, i, j))
 					{
 						ControlPackMain.instance.keyBindings[guibutton.id].setKeyCode(99999);
 						ControlPackMain.instance.saveOptions();
 
-						((GuiButton)buttonList.get(guibutton.id)).displayString = getOptionDisplayString(guibutton.id);
+						buttonList.get(guibutton.id).displayString = getOptionDisplayString(guibutton.id);
 						buttonId = -1;
 						this.mc.getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("random.click"), 1.0F));
 						return;
@@ -143,7 +135,7 @@ public class GuiControlPackBindings extends GuiScreen
             ControlPackMain.instance.keyBindings[buttonId].setKeyCode(i);
             ControlPackMain.instance.saveOptions();
             
-            ((GuiButton)buttonList.get(buttonId)).displayString = getOptionDisplayString(buttonId);
+            buttonList.get(buttonId).displayString = getOptionDisplayString(buttonId);
             buttonId = -1;
         }
         else {
@@ -175,13 +167,13 @@ public class GuiControlPackBindings extends GuiScreen
 
             int j1 = l;
             if(buttonId == l) {
-                ((GuiButton)buttonList.get(j1)).displayString = "\247f> \247e??? \247f<";
+                buttonList.get(j1).displayString = "\247f> \247e??? \247f<";
             }
             else if(flag) {
-                ((GuiButton)buttonList.get(j1)).displayString = (new StringBuilder()).append("\247c").append(getOptionDisplayString(j1)).toString();
+                buttonList.get(j1).displayString = (new StringBuilder()).append("\247c").append(getOptionDisplayString(j1)).toString();
             }
             else {
-                ((GuiButton)buttonList.get(j1)).displayString = getOptionDisplayString(j1);
+                buttonList.get(j1).displayString = getOptionDisplayString(j1);
             }
             //drawString(fontRenderer, getKeyBindingDescription(l), k + (l % 2) * 160 + 70 + 6, height / 6 + 24 * (l >> 1) + 7, -1);
 			drawString(fontRendererObj, getKeyBindingDescription(l), k + (l % 2) * 160 + 70 + 6, height / 6 + 20 * (l >> 1) + 7, -1);

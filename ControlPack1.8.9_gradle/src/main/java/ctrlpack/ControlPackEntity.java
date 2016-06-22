@@ -13,33 +13,12 @@
 
 package ctrlpack;
 
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
-
-import java.awt.*;
-import java.io.*;
-import java.util.*;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.stats.StatFileWriter;
-import net.minecraft.util.Session;
 import net.minecraft.world.World;
-
-import org.lwjgl.LWJGLException;
-import org.lwjgl.input.*;
-import org.lwjgl.opengl.*;
-import org.lwjgl.opengl.DisplayMode;
-import org.lwjgl.util.glu.GLU;
-
-import ctrlpack.*;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 // used to hook a little bit into the EntityRenderer process. Provides the hook I need to make 3rd person and Look Behind work.
 
@@ -90,7 +69,7 @@ public class ControlPackEntity extends EntityPlayerSP {
 					// restore renderViewEntity, as it being a different instance messes with rendering entities
 					// since it thinks YOU are not YOURSELF and renders YOU even in 1st person view, teehee
 					// this is what made it too hard for me to make void fog not require changes to EntityRenderer :(
-					ControlPackMain.instance.mc.setRenderViewEntity(ControlPackMain.instance.wrappedEntity);
+					ControlPackMain.mc.setRenderViewEntity(ControlPackMain.instance.wrappedEntity);
 					break;
 				}
 				else {

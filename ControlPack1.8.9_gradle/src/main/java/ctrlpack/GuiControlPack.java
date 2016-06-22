@@ -13,16 +13,8 @@
 
 package ctrlpack;
 
-import java.util.List;
-
-
-
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
-
-
-//import net.minecraft.client.Minecraft;
-import org.lwjgl.input.*;
 
 
 public class GuiControlPack extends GuiScreen
@@ -32,8 +24,7 @@ public class GuiControlPack extends GuiScreen
         screenTitle = "Control Pack " + ControlPackMain.instance.currentVersion();
     }
     
-    @SuppressWarnings("unchecked")
-	@Override
+    @Override
 	public void initGui()
     {
 		screenTitle = ControlPackMain.translate("controlPack.title");

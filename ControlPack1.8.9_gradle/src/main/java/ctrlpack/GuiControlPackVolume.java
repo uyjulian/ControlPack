@@ -13,18 +13,8 @@
 
 package ctrlpack;
 
-import java.util.List;
-
-
-
-
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
-
-
-
-//import net.minecraft.client.Minecraft;
-import org.lwjgl.input.*;
 
 public class GuiControlPackVolume extends GuiScreen
 {
@@ -47,8 +37,7 @@ public class GuiControlPackVolume extends GuiScreen
     
     // end lifted
     
-    @SuppressWarnings("unchecked")
-	@Override
+    @Override
 	public void initGui()
     {
         screenTitle = ControlPackMain.translate("controlPack.volumeTitle");

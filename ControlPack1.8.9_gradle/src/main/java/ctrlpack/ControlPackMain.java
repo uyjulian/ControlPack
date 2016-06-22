@@ -19,8 +19,6 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
-import java.awt.Component;
-import java.awt.Frame;
 import java.awt.Rectangle;
 import java.io.*;
 import java.util.*;
@@ -39,7 +37,6 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiFurnace;
-import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.EntityLivingBase;
@@ -55,7 +52,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.item.ItemTool;
 import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.client.C0EPacketClickWindow;
 import net.minecraft.profiler.Profiler;
 import net.minecraft.tileentity.TileEntityFurnace;
@@ -63,17 +59,9 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Session;
 import net.minecraft.util.Vec3;
 
-import org.lwjgl.LWJGLException;
-import org.lwjgl.input.*;
 import org.lwjgl.opengl.*;
-import org.lwjgl.util.glu.GLU;
-
-import com.mojang.authlib.GameProfile;
-
-import ctrlpack.*;
 import ctrlpack.litemod.IKeyBinding;
 import ctrlpack.litemod.IMinecraft;
 import ctrlpack.litemod.LiteModControlPack;
@@ -121,7 +109,7 @@ public class ControlPackMain implements Runnable {
         };		
         LiteModControlPack.regKeys(keyBindings);
 		
-		optionsFile = new File(this.mc.mcDataDir, "controlpack.txt");
+		optionsFile = new File(ControlPackMain.mc.mcDataDir, "controlpack.txt");
 		loadOptions();
 
 		/*
@@ -373,11 +361,11 @@ public class ControlPackMain implements Runnable {
 	}
 	
 	public void tickInGame() {
-		if (!setProfiler && this.mc.mcProfiler != null) {
+		if (!setProfiler && ControlPackMain.mc.mcProfiler != null) {
 			setProfiler = true;
-			boolean profilingEnabled = this.mc.mcProfiler.profilingEnabled;
-			this.profilerProxy = new ControlPackProfilerProxy(this.mc.mcProfiler);
-			setPrivateValueByType(Minecraft.class, this.mc, Profiler.class, profilerProxy);
+			//boolean profilingEnabled = ControlPackMain.mc.mcProfiler.profilingEnabled;
+			this.profilerProxy = new ControlPackProfilerProxy(ControlPackMain.mc.mcProfiler);
+			setPrivateValueByType(Minecraft.class, ControlPackMain.mc, Profiler.class, profilerProxy);
 //System.out.println("ControlPack: Hooked the profiler.");
 		}
 
@@ -467,7 +455,7 @@ public class ControlPackMain implements Runnable {
 								int count = 0;
 								for (int i = 0; i < mc.thePlayer.inventory.mainInventory.length; i++)
 								{
-									if (mc.thePlayer.inventory.mainInventory[i] != null && mc.thePlayer.inventory.mainInventory[i] == new ItemStack((Item)Item.itemRegistry.getObject(new ResourceLocation("minecraft:arrow"))))
+									if (mc.thePlayer.inventory.mainInventory[i] != null && mc.thePlayer.inventory.mainInventory[i] == new ItemStack(Item.itemRegistry.getObject(new ResourceLocation("minecraft:arrow"))))
 									{
 										count += mc.thePlayer.inventory.mainInventory[i].stackSize;
 									}
@@ -559,10 +547,10 @@ public class ControlPackMain implements Runnable {
     		}
 			
 			if (lookBehindProgress > 0 && startProgress == 0) {
-				this.mc.gameSettings.hideGUI = true;
+				ControlPackMain.mc.gameSettings.hideGUI = true;
 			}
 			else if (lookBehindProgress == 0 && startProgress > 0) {
-				this.mc.gameSettings.hideGUI = false; // todo: restore from settings
+				ControlPackMain.mc.gameSettings.hideGUI = false; // todo: restore from settings
 			}
         }
 
@@ -570,7 +558,7 @@ public class ControlPackMain implements Runnable {
         if (measureDistanceState) {
 			BlockPos currentPos = mc.thePlayer.getPosition();
 			int currentX = (int) (currentPos.getX() < 0 ? Math.ceil(currentPos.getX()) : Math.floor(currentPos.getX()));
-			int currentY = (int) (currentPos.getY() < 0 ? Math.ceil(currentPos.getY()) : Math.floor(currentPos.getY()));
+			//int currentY = (int) (currentPos.getY() < 0 ? Math.ceil(currentPos.getY()) : Math.floor(currentPos.getY()));
 			int currentZ = (int) (currentPos.getZ() < 0 ? Math.ceil(currentPos.getZ()) : Math.floor(currentPos.getZ()));
 
         	double traveled = Math.max(Math.abs(measureDistanceStartX - currentX), Math.abs(measureDistanceStartZ - currentZ));
@@ -1195,7 +1183,7 @@ public class ControlPackMain implements Runnable {
 	private boolean isSword(Item item) {
 		if (item instanceof ItemSword) return true;
 		String swordIdList = "," + stringOptions.get(ControlPackEnumOptions.ITEM_SWORDS) + ",";
-		return swordIdList.contains("," + item.getIdFromItem(item) + ",");
+		return swordIdList.contains("," + Item.getIdFromItem(item) + ",");
 	}
 	
 	public void ensureSwordSelected() {
@@ -1676,7 +1664,7 @@ public class ControlPackMain implements Runnable {
         ItemStack currentItem = mc.thePlayer.inventory.getCurrentItem();
         if (currentItem == null || isTool(currentItem.getItem())) {
             Integer mode = intOptions.get(ControlPackEnumOptions.AUTOBLOCKMODE);
-            int foundBlockId = -1;
+            //int foundBlockId = -1;
             if (mode == 0) { // leftmost
                 for (int i = 0; i < 9; i++) {
                     ItemStack possibleBlock = mc.thePlayer.inventory.mainInventory[i];
@@ -1877,7 +1865,7 @@ public class ControlPackMain implements Runnable {
     }
 	
 	private void addDeathWaypoint() {
-		boolean isNether = this.mc.theWorld != null && (mc.theWorld.provider.getDimensionName() == "Nether");
+		boolean isNether = ControlPackMain.mc.theWorld != null && (mc.theWorld.provider.getDimensionName() == "Nether");
 		ControlPackEnumOptions[] nameoptions = isNether ? this.waypointNetherNameOptions : this.waypointNameOptions;
 		ControlPackEnumOptions[] locationoptions = isNether ? this.waypointNetherOptions : this.waypointOptions;
 		ControlPackEnumOptions[] hudoptions = isNether ? this.waypointNetherHUDOptions : this.waypointHUDOptions;
@@ -1932,7 +1920,7 @@ public class ControlPackMain implements Runnable {
 	
 	public void updateCameraAngle() {
 		// called before game renders from my entity renderer proxy. The modloader OnTickInGame will be post rendering.
-        if (this.mc.gameSettings.debugCamEnable) {
+        if (ControlPackMain.mc.gameSettings.debugCamEnable) {
             if (Mouse.isButtonDown(2)) {
                 int dx = Mouse.getDX();
                 int dy = Mouse.getDY();
@@ -1944,7 +1932,7 @@ public class ControlPackMain implements Runnable {
 	}
 	
 	public void setupRenderHook() {
-		if (this.lookBehindProgress != 0 && this.mc.getRenderViewEntity() != null) {
+		if (this.lookBehindProgress != 0 && ControlPackMain.mc.getRenderViewEntity() != null) {
 			//look behind is disabled for now
 //			this.renderingWorld = true;
 //			if (this.cpEntity == null) {
@@ -1971,8 +1959,8 @@ public class ControlPackMain implements Runnable {
 	public void syncThirdPersonRotation() {
 		// SELF: check fields.csv for the private field name when there are updates!
 		//dumpFields(EntityRenderer.class, null);
-		setPrivateValue(EntityRenderer.class, this.mc.entityRenderer, "cameraPitch", "field_78509_X", frontView_rotationPitch);
-		setPrivateValue(EntityRenderer.class, this.mc.entityRenderer, "cameraYaw", "field_78502_W", frontView_rotationYaw);
+		setPrivateValue(EntityRenderer.class, ControlPackMain.mc.entityRenderer, "cameraPitch", "field_78509_X", frontView_rotationPitch);
+		setPrivateValue(EntityRenderer.class, ControlPackMain.mc.entityRenderer, "cameraYaw", "field_78502_W", frontView_rotationYaw);
 	}
 	
     private void openGUIRunDistance() {
@@ -2132,7 +2120,7 @@ public class ControlPackMain implements Runnable {
 		}
 
         
-        if (code == keyBindLookBehind.getKeyCode() && !this.mc.gameSettings.debugCamEnable && this.mc.gameSettings.thirdPersonView == 0) {
+        if (code == keyBindLookBehind.getKeyCode() && !ControlPackMain.mc.gameSettings.debugCamEnable && ControlPackMain.mc.gameSettings.thirdPersonView == 0) {
             lookBehind = down;
             lookBehindProgressTicksLast = System.currentTimeMillis();
             return true;
@@ -2613,7 +2601,7 @@ public class ControlPackMain implements Runnable {
     
     private Slot getSlotAtPosition(int i, int j, Container inventorySlots, int width, int height, int xSize, int ySize) {
         for(int k = 0; k < inventorySlots.inventorySlots.size(); k++) {
-            Slot slot = (Slot)inventorySlots.inventorySlots.get(k);
+            Slot slot = inventorySlots.inventorySlots.get(k);
             if(getIsMouseOverSlot(slot, i, j, width, height,xSize, ySize)) {
                 return slot;
             }

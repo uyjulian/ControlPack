@@ -16,8 +16,6 @@ package ctrlpack;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiTextField;
 
-import org.lwjgl.opengl.GL11;
-
 public class GuiTextFieldCP extends GuiTextField {
 	public ControlPackEnumOptions option;
 	public String label;

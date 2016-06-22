@@ -50,8 +50,7 @@ public class GuiControlPackOptions extends GuiScreen
         return width / 2 - 155;
     }
     
-    @SuppressWarnings("unchecked")
-	@Override
+    @Override
 	public void initGui()
     {
         int i = func_20080_j();
@@ -86,7 +85,7 @@ public class GuiControlPackOptions extends GuiScreen
 		for (int i = 0; i < textFields.size(); i++) {
 			GuiTextFieldCP tf = textFields.get(i);
 			ControlPackEnumOptions option = tf.option;
-			String value = ControlPackMain.instance.stringOptions.get(option);
+			//String value = ControlPackMain.instance.stringOptions.get(option);
 			ControlPackMain.instance.stringOptions.put(option, tf.getText());
 		}
 		ControlPackMain.instance.saveOptions();

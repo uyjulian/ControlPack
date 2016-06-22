@@ -3,24 +3,12 @@ package ctrlpack.litemod;
 import java.io.File;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiControls;
-import net.minecraft.client.gui.GuiKeyBindingList;
-import net.minecraft.client.gui.GuiListExtended;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.gui.inventory.GuiFurnace;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.tileentity.TileEntityFurnace;
-
 import com.mumfrey.liteloader.InitCompleteListener;
 import com.mumfrey.liteloader.LiteMod;
 import com.mumfrey.liteloader.RenderListener;
 import com.mumfrey.liteloader.core.LiteLoader;
-import com.mumfrey.liteloader.transformers.event.EventInfo;
-import com.mumfrey.liteloader.transformers.event.ReturnEventInfo;
-
 import ctrlpack.ControlPackMain;
 
 public class LiteModControlPack implements LiteMod, RenderListener, InitCompleteListener {
@@ -61,7 +49,7 @@ public class LiteModControlPack implements LiteMod, RenderListener, InitComplete
 	
 	@Override
 	public void onRenderGui(GuiScreen currentScreen) {
-		if (!(currentScreen == null))
+		if (currentScreen != null)
 		{
 			ControlPackMain.instance.tickInGui(currentScreen);
 		}
