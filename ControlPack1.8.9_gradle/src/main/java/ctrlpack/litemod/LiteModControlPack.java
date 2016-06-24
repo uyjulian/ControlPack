@@ -30,7 +30,7 @@ public class LiteModControlPack implements LiteMod, RenderListener, InitComplete
 
 	@Override
 	public String getVersion() {
-		return "5.91";
+		return "5.92";
 	}
 	
 	public static void regKeys(KeyBinding[] lolz) {

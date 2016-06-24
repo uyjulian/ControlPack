@@ -6,7 +6,9 @@
     "mixins": [
         "MixinKeyBinding",
         "MixinGuiFurnace",
-        "MixinMinecraft"
+        "MixinMinecraft",
+        "MixinEntityRenderer",
+        "MixinSoundManager"
     ],
     "injectors": {
         "defaultRequire": 1

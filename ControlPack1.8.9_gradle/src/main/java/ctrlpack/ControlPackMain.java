@@ -33,13 +33,9 @@ import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.gui.inventory.GuiFurnace;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemBow;
@@ -48,10 +44,7 @@ import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.item.ItemTool;
-import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.network.play.client.C0EPacketClickWindow;
 import net.minecraft.profiler.Profiler;
-import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
@@ -64,15 +57,11 @@ import ctrlpack.litemod.IMinecraft;
 import ctrlpack.litemod.LiteModControlPack;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 public class ControlPackMain implements Runnable {
 	public static ControlPackMain instance;
 	//public static boolean customSoundManager = false;
-	private static Class<?> improvedChat;
     //public static Class forge;
-	private static boolean checkedForImprovedChat;
 	//private static boolean checkedForForge;
 	public static Minecraft mc;
 	public static boolean windowResizedOverride = false;
@@ -311,12 +300,13 @@ public class ControlPackMain implements Runnable {
 	}
 	
 	public String currentVersion() {
-		return "5.9";
+		return "5.92";
 	}
 	
 	public void tickInGui(GuiScreen currentScreen) {
 		if (currentScreen instanceof GuiChat) {
 			if (keyBindSayLocation.getKeyCode() != 99999 && Keyboard.isKeyDown(keyBindSayLocation.getKeyCode()) && !chat_insertedPosition) {
+				//TODO: get rid of this field hack
 				try {
 					Field field;
 					try {
@@ -337,18 +327,7 @@ public class ControlPackMain implements Runnable {
 				catch(Exception ex) {
 					ex.printStackTrace();
 				}
-//mc.thePlayer.addChatMessage("saying location.");
-				// chat position
-				//mc.ingameGUI.field_933_a = "[" + getLocation() + "] ";
-                //try {
-                //    invokePrivateMethod(currentScreen, GuiChat.class, "mouseClicked", "a", new Object[] { 0, 0, 0 });
-                //}
-                //catch(Exception ex) {
-                    // improved chat throws on this for some reason
-//mc.thePlayer.addChatMessage("say location error." + ex.toString());
-                //}
-//mc.thePlayer.addChatMessage("location said.");
-				//mc.ingameGUI.field_933_a = null;
+
 				chat_insertedPosition = true;
 			}
 			else if (keyBindSayLocation.getKeyCode() != 99999 && !Keyboard.isKeyDown(keyBindSayLocation.getKeyCode())) {
@@ -358,13 +337,7 @@ public class ControlPackMain implements Runnable {
 	}
 	
 	public void tickInGame() {
-		if (!setProfiler && ControlPackMain.mc.mcProfiler != null) {
-			setProfiler = true;
-			//boolean profilingEnabled = ControlPackMain.mc.mcProfiler.profilingEnabled;
-			this.profilerProxy = new ControlPackProfilerProxy(ControlPackMain.mc.mcProfiler);
-			setPrivateValueByType(Minecraft.class, ControlPackMain.mc, Profiler.class, profilerProxy);
-//System.out.println("ControlPack: Hooked the profiler.");
-		}
+
 
 		setDeathWaypoint();
 		
@@ -598,134 +571,6 @@ public class ControlPackMain implements Runnable {
 		mc.thePlayer.setSprinting(isSprinting);
 	}
 	
-    
-    public Object invokePrivateMethod (Object o, Class<?> objClass, String methodName, String obfuscatedName, Object[] params) {   
-        // Go and find the private method... 
-        final Method methods[] = objClass.getDeclaredMethods();
-		Object ret = null;
-        for (int i = 0; i < methods.length; ++i) {
-            if (methodName.equals(methods[i].getName()) || obfuscatedName.equals(methods[i].getName())) {
-				if (methods[i].getParameterTypes().length != (params == null ? 0 : params.length)) {
-//mc.thePlayer.addChatMessage("not a good match for " + methodName + " param count -- " + methods[i].getParameterTypes().length);		
-					continue;
-				}
-                try {
-                    methods[i].setAccessible(true);
-                    //mc.thePlayer.addChatMessage("INVOKING");
-//mc.thePlayer.addChatMessage("invoking " + methodName + ", " + methods[i].getParameterTypes().length + "/" + methods[i].getParameterTypes()[0]);		
-                    ret = methods[i].invoke(o, params);
-                } 
-                catch (IllegalAccessException ex) {
-                    //mc.thePlayer.addChatMessage("FAILED");
-                    //Assert.fail ("IllegalAccessException accessing " + methodName);
-                }
-                catch (InvocationTargetException ite) {
-                    //mc.thePlayer.addChatMessage("FAILED");
-                    //Assert.fail ("InvocationTargetException accessing " + methodName);	        	
-                }
-                catch (IllegalArgumentException iae) {
-                    //mc.thePlayer.addChatMessage("FAILED");
-                    //Assert.fail ("InvocationTargetException accessing " + methodName);	        	
-                }
-            }
-        }
-        //mc.thePlayer.addChatMessage("FAILED TO FIND IT");
-        //Assert.fail ("Method '" + methodName +"' not found");
-        return ret;
-    }  
-
-/*    
-    public static boolean forgeHook(String name, Object[] args) {
-        if (!checkedForForge) {
-            checkedForForge = true;
-			try {
-				forge = Class.forName("forge.ForgeHooksClient");
-			}
-			catch(Exception ex) {
-			}
-        }
-        if (forge == null) {
-            return false;
-        }
-		Object o = instance.invokePrivateMethod(null, forge, name, name, args);
-		if (o instanceof Boolean) {
-			return ((Boolean)o).booleanValue();
-		} else {
-			return false;
-		}		
-    }*/
-    
-	public static void improvedChatCompat(int i, boolean flag) {
-		if (mc == null) {
-			return;
-		}
-		if (!checkedForImprovedChat) {
-			checkedForImprovedChat = true;
-			try {
-				improvedChat = Class.forName("net.minecraft.src.ImprovedChat");
-			}
-			catch(Exception ex) {
-			}
-		}
-		if (improvedChat == null) {
-			return;
-		}
-		if (!flag) {
-			ControlPackMain.instance.invokePrivateMethod(null, improvedChat, "keyPressed", "keyPressed", new Object[] { i });
-			//ImprovedChat.keyPressed(i);
-		}
-		else if ((Keyboard.isKeyDown(29) || Keyboard.isKeyDown(157)) && Keyboard.isKeyDown(15)) {
-			Object server = ControlPackMain.instance.invokePrivateMethod(null, improvedChat, "getCurrentServer", "getCurrentServer", new Object[] {});
-			if(Keyboard.isKeyDown(42)) {
-				ControlPackMain.instance.invokePrivateMethod(server, server.getClass(), "previosTab", "previousTab", new Object[] {});
-				//ImprovedChat.getCurrentServer().previosTab();
-			}
-			else {
-				ControlPackMain.instance.invokePrivateMethod(server, server.getClass(), "nextTab", "nextTab", new Object[] {});
-				//ImprovedChat.getCurrentServer().nextTab();
-			}
-		}
-	}	
-	
-	public static void dumpFields(Class<?> c, Class<?> throwIf) {
-		Field[] fields = c.getDeclaredFields();
-		for (int i = 0; i < fields.length; i++) {
-			String s = fields[i].getName() + ": " + fields[i].getType().getName();
-			System.out.println(s);
-			if (throwIf == fields[i].getType()) {
-				throw new RuntimeException(s);
-			}
-		}
-	}
-
-/*	
-	public static Object getPrivateValue(Class c, Object obj, String fieldName, String fieldNameObf) {
-		try {
-			Field field;
-			try {
-				field = c.getDeclaredField(fieldNameObf); //NoSuchFieldException may happen in non-reobf mode
-			}
-			catch (NoSuchFieldException ex) {
-				field = c.getDeclaredField(fieldName);
-			}
-			field.setAccessible(true);
-			Object ret = field.get(obj);
-			return ret;
-		}
-		catch(IllegalAccessException ex) {
-			return null;
-		}
-		catch(NoSuchFieldException ex) {
-			return null;
-		}
-	}*/
-
-	/*	
-	public static StringTranslate getStringTranslate() {
-		StringTranslate stringtranslate = (StringTranslate) mod_ControlPack.instance.getPrivateValue(StringTranslate.class, null, "instance", "field_74817_a"); // fields.csv
-		return stringtranslate == null ? new StringTranslate() : null;
-	}
-	*/
 	public static String translate(String key) {
 		return locStrings.get(key);
 		//return I18n.func_135053_a(key);
@@ -1007,50 +852,18 @@ public class ControlPackMain implements Runnable {
 	public void applyLastWindowSize() {
 		if (booleanOptions.get(ControlPackEnumOptions.WINDOWRESTORE) && lastPositionExists) {
 			try {
-//                Component c = Display.getParent();// mc.mcCanvas;
-//                for (; c.getParent() != null; c = c.getParent()) {}
-//                Frame parent = (Frame)c;
-				//Frame parent = (Frame) mc.mcCanvas.getParent().getParent().getParent();
 				if (lastFullscreen) {
 					if (!Display.isFullscreen()) {
 						mc.toggleFullscreen();
 					}
 				}
-				//else if (lastWindowState == Frame.MAXIMIZED_BOTH) {
-					//parent.setExtendedState(Frame.MAXIMIZED_BOTH);
-				//}
 				else {					
-//					parent.setBounds(lastBounds);
 					Display.setLocation(lastBounds.x, lastBounds.y);
 					Display.setDisplayMode(new DisplayMode(lastBounds.width, lastBounds.height));
 					IMinecraft imc = (IMinecraft)mc;
 					windowResizedOverride = true;
 					imc.pubCheckWindowResize();
 					windowResizedOverride = false;
-//					
-//					// this code was copied from minecraft.java, it gets mc to notice the change in size
-//					this.mc.displayWidth = Display.getWidth();
-//					this.mc.displayHeight = Display.getHeight();
-//
-//					if (this.mc.displayWidth <= 0)
-//					{
-//						this.mc.displayWidth = 1;
-//					}
-//
-//					if (this.mc.displayHeight <= 0)
-//					{
-//						this.mc.displayHeight = 1;
-//					}
-//
-//
-//					// contents of: this.mc.resize(this.mc.displayWidth, this.mc.displayHeight);					
-//					if (this.mc.currentScreen != null) {
-//						ScaledResolution var3 = new ScaledResolution(this.mc, this.mc.displayWidth, this.mc.displayHeight);
-//						int var4 = var3.getScaledWidth();
-//						int var5 = var3.getScaledHeight();
-//						this.mc.currentScreen.setWorldAndResolution(this.mc, var4, var5);
-//					}
-//					// end copy
 				}
 			}
 			catch(Exception ex) {
@@ -1061,17 +874,10 @@ public class ControlPackMain implements Runnable {
 	
 	public void checkGame() {
 		try {
-            //Component c = Display.getParent(); //mc.mcCanvas;
-            //for (; c.getParent() != null; c = c.getParent()) {}
-            //Frame parent = (Frame)c;
-			//Frame parent = (Frame)mc.mcCanvas.getParent().getParent().getParent();
-			//Rectangle bounds = parent.getBounds();
 			Rectangle bounds = new Rectangle(Display.getX(), Display.getY(), Display.getWidth(), Display.getHeight());
-			//if (!bounds.equals(lastBounds) || (lastFullscreen != Display.isFullscreen()) || (lastWindowState != parent.getExtendedState())) {
 			if (!bounds.equals(lastBounds) || (lastFullscreen != Display.isFullscreen())) {
 				lastFullscreen = Display.isFullscreen();
-				//lastWindowState = parent.getExtendedState();
-				if (!lastFullscreen) {// && lastWindowState != Frame.MAXIMIZED_BOTH) {
+				if (!lastFullscreen) {
 					lastBounds = bounds;
 				}
 				saveOptions();
@@ -1930,8 +1736,7 @@ public class ControlPackMain implements Runnable {
 	
 	public void setupRenderHook() {
 		if (this.lookBehindProgress != 0 && ControlPackMain.mc.getRenderViewEntity() != null) {
-			//look behind is disabled for now
-//			this.renderingWorld = true;
+			this.renderingWorld = true;
 //			if (this.cpEntity == null) {
 //				this.wrappedEntity = this.mc.getRenderViewEntity();
 //				this.cpEntity =
@@ -1950,9 +1755,6 @@ public class ControlPackMain implements Runnable {
 		}
 	}
     
-	private boolean setProfiler = false;
-	private ControlPackProfilerProxy profilerProxy;
-
 	public void syncThirdPersonRotation() {
 		// SELF: check fields.csv for the private field name when there are updates!
 		//dumpFields(EntityRenderer.class, null);
@@ -2007,20 +1809,6 @@ public class ControlPackMain implements Runnable {
             altKey = down;
         }
         
-        //if (Keyboard.getEventKey() == 31 && Keyboard.isKeyDown(61)) {
-            //invokePrivateMethod(mc, Minecraft.class, "forceReload", "func_71358_L", new Object[] {}); // methods.csv
-            //System.out.println("(FROM CONTROLPACK)!");
-            //mc.thePlayer.addChatMessage("RELOADED");
-            // handle 'force reload' so we can also reset the sound manager
-            // invoke private mc.forceReload()
-			//if (!customSoundManager) {
-				//System.out.println("ControlPack: Custom sound manager was not found, wrapping instead.");
-				//mc.sndManager = new ControlPackSoundManager(mc, mc.sndManager);
-			//}
-            // dont let MC handle it too
-            //return true;
-        //}
-		
 		if (down && code == mc.gameSettings.keyBindAttack.getKeyCode()) {
 			// if they just hit the 'left click' button then proactively run autotool
 			// so that it swaps items BEFORE processing the event.
@@ -2266,8 +2054,6 @@ public class ControlPackMain implements Runnable {
     }	
     
     public String getOptionDesc(ControlPackEnumOptions option) {
-		//StringTranslate stringtranslate = (StringTranslate) this.invokePrivateMethod(null, StringTranslate.class, "getInstance", "getInstance", new Object[0]);
-        //StringTranslate stringtranslate = StringTranslate.getInstance();
         String s = (new StringBuilder()).append(translate(option.getLocKey())).append(": ").toString();
         if (option.getIsBool()) {
             boolean value = booleanOptions.get(option);
@@ -2316,305 +2102,6 @@ public class ControlPackMain implements Runnable {
         }
 		return "";
     }
-    
-    public boolean furnaceMouseClicked(GuiFurnace gf, IInventory tef, Container inventorySlots, int row, int col, int mouseButton, int width, int height, int xSize, int ySize) {
-    	boolean endcache = false;
-        if (ControlPackMain.instance == null || !ControlPackMain.instance.booleanOptions.get(ControlPackEnumOptions.SMARTFURNACE)) {
-            return true;
-        }
-       	if (mouseButton != 0 || (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) && !Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) ||
-       			getSlotAtPosition(row, col, inventorySlots, width, height, xSize, ySize) == null ||
-       			getSlotAtPosition(row, col, inventorySlots, width, height, xSize, ySize).getStack() == null) {
-       		return true;
-       	}
-       	ItemStack currentItemStack = mc.thePlayer.inventory.getItemStack();
-       	Slot emptySlot = null;
-       	// temporarily drop off anything currently being held
-       	if (currentItemStack != null) {
-       		// they have something held already. See if we can drop it off temporarily.
-       		emptySlot = findEmptySlot(inventorySlots);
-       		if (emptySlot == null) {
-       			return true;
-       		}
-       		// drop it there
-       		addToSendQueue(emptySlot.slotNumber, 0, null, inventorySlots);
-       	}
-           Slot slot = getSlotAtPosition(row, col, inventorySlots, width, height, xSize, ySize);
-           ItemStack itemStack = slot.getStack();
-           // if they shift clicked a furnace item, dump it into inventory
-       	if (slot.slotNumber < 3) {
-       		// dump it into the inventory
-       		dumpLoad(slot, inventorySlots);
-       		putItBack(currentItemStack, emptySlot, inventorySlots);
-       		return false;
-       	}
-   		// 1. If they clicked on a smeltable material, put it into the to-bake slot as much as we can,
-   		//    unless there's already something there that is a different type.
-   		// 2. If they clicked on a burnable material, put it into the bottom slot as much as it takes
-   		//    to burn # of items in top slot, unless bottom slot already has a different material in it.
-           
-           // slots: 0 = top, 1 = fuel, 2 = result
-           ItemStack fuelStack = tef.getStackInSlot(1); 
-           ItemStack burningStack = tef.getStackInSlot(0);
-           // can smelt if it has a recipe...
-           boolean canSmelt = itemStack != null && FurnaceRecipes.instance().getSmeltingResult(itemStack) != null;
-           // and the burningStack is empty, or it has the same item type and subtype in it.
-           canSmelt = canSmelt && (burningStack == null || (burningStack.getItem() == itemStack.getItem() && (!itemStack.getItem().getHasSubtypes() || burningStack.getItemDamage() == itemStack.getItemDamage())));
-           if (canSmelt) {
-           	// fill it up as much as we can
-           	if (burningStack == null) {
-           		// No burning stack yet, dropping the entire thing.
-           		tef.setInventorySlotContents(0, itemStack.copy());
-           		slot.putStack(null);
-           		// pick it up
-           		addToSendQueue(slot.slotNumber, 0, itemStack, inventorySlots);
-           		// and drop it
-           		addToSendQueue(0, 0, null, inventorySlots);
-           		
-           		putItBack(currentItemStack, emptySlot, inventorySlots);
-           	}
-           	else if (burningStack.stackSize + itemStack.stackSize <= itemStack.getMaxStackSize()) {
-           		// Burning stack has stuff on it, and all of it will fit, so, dropping it all.
-           		ItemStack burningStackCopy = burningStack.copy();
-   				burningStack.stackSize = burningStack.stackSize + itemStack.stackSize;
-   				tef.setInventorySlotContents(0, burningStack);
-           		slot.putStack(null);
-           		// pick it up
-           		addToSendQueue(slot.slotNumber, 0, itemStack, inventorySlots);
-           		// and drop it
-           		addToSendQueue(0, 0, burningStackCopy, inventorySlots);
-           		
-           		putItBack(currentItemStack, emptySlot, inventorySlots);
-           	}
-           	else {
-           		// Burning stack has stuff on it, but wont fit all of it, so filling to max size.
-           		int remainingSizeLeft = itemStack.getMaxStackSize() - burningStack.stackSize;
-           		ItemStack burningStackcopy = burningStack.copy();
-           		ItemStack itemStackCopy = itemStack.copy();
-           		burningStack.stackSize = itemStack.getMaxStackSize();
-   				tef.setInventorySlotContents(0, burningStack);
-           		slot.decrStackSize(remainingSizeLeft);
-           		// pick it up
-           		addToSendQueue(slot.slotNumber, 0, itemStackCopy, inventorySlots);
-           		// and drop it on the furnace slot
-           		addToSendQueue(0, 0, burningStackcopy, inventorySlots);
-           		// then put it back down in the inventory
-           		addToSendQueue(slot.slotNumber, 0, null, inventorySlots);
-           		
-           		putItBack(currentItemStack, emptySlot, inventorySlots);
-           	}
-           }
-           else {
-           	int burnTime = TileEntityFurnace.getItemBurnTime(itemStack);
-           	if (burnTime > 0) {
-           		// see if the existing fuel is the same type
-           		if (fuelStack != null && (fuelStack.getItem() != itemStack.getItem() || fuelStack.getItemDamage() != itemStack.getItemDamage())) {
-           			putItBack(currentItemStack, emptySlot, inventorySlots);
-           			return true;
-           		}
-           		float smeltsPerItem = (burnTime) / 200F;
-           		int stacksNeeded = burningStack == null ? 0 : (int)Math.ceil(burningStack.stackSize / smeltsPerItem);
-           		int existingFuelSize = fuelStack == null ? 0 : fuelStack.stackSize;
-   				// need stacksNeeded, have existingFuelSize, stacksize = itemStack.stackSize
-           		if (existingFuelSize < stacksNeeded) {
-           			int toDrop = Math.min(itemStack.stackSize, stacksNeeded - existingFuelSize);
-           			if (fuelStack == null) {
-           			    // No fuel yet, so creating new fuel stack.
-   						ItemStack itemStackCopy = itemStack.copy();
-   						ItemStack fuelStackCopy = itemStack.copy();
-   						fuelStackCopy.stackSize = 0;
-           				fuelStack = itemStack.splitStack(toDrop);
-           				tef.setInventorySlotContents(1, fuelStack);
-           				// pick it up
-                   		addToSendQueue(slot.slotNumber, 0, itemStackCopy, inventorySlots);
-           				if (itemStack.stackSize <= 0) {
-           					// all of the picked up fuel was dropped
-           					// local client, clear clicked slot
-           					slot.putStack(null);
-           					// remote, drop it all on the furnace slot (null=there wasnt any there already)
-           					addToSendQueue(1, 0, null, inventorySlots);
-           				}
-           				else {
-                       		// drop the needed item count one at a time with right clicks
-                       		addToSendQueueDrop1(1, toDrop, fuelStackCopy, inventorySlots);
-                       		// drop remaining amount back into the inventory
-                   			addToSendQueue(slot.slotNumber, 0, null, inventorySlots);
-           				}
-           			}
-           			else {
-           				toDrop = Math.min(toDrop, fuelStack.getMaxStackSize() - fuelStack.stackSize);
-           				// Existing fuel, so increase size
-   						ItemStack itemStackCopy = itemStack.copy();
-   						ItemStack fuelStackCopy = fuelStack.copy();
-   						// client side
-           				fuelStack.stackSize += toDrop;
-           				slot.decrStackSize(toDrop);
-           				// server side
-           				// pick it up
-                   		addToSendQueue(slot.slotNumber, 0, itemStackCopy, inventorySlots);
-                   		if (slot.getStack() != null) {
-                   			// e.g. We need 4 more, but we're holding 5. Right click 4 of them onto
-                   			// the slot, then drop the remaining 1 in inventory where we got it from
-                       		// drop the needed item count one at a time with right clicks
-                       		addToSendQueueDrop1(1, toDrop, fuelStackCopy, inventorySlots);
-                       		// drop remaining amount back into the inventory, if any
-                   			addToSendQueue(slot.slotNumber, 0, null, inventorySlots);
-                   		}
-                   		else {
-                       		// drop all we are holding
-                   			// e.g. We need 4 more, but we're only holding 3. Just left click drop them.
-                   			addToSendQueue(1, 0, itemStackCopy, inventorySlots);
-                   		}
-           			}
-           		}
-           		else {
-           			// note: We could TAKE fuel away since it has too much, but naw, might not be a place to put it..
-           			// would have to look for unfilled existing fuel slots, then empty slots, then give up, or a combo of all of these.
-           		}
-           		putItBack(currentItemStack, emptySlot, inventorySlots);
-           	}
-           	else {
-           		putItBack(currentItemStack, emptySlot, inventorySlots);
-           		endcache = true;
-           	}
-           }
-           slot.onSlotChanged();
-           tef.markDirty();
-           inventorySlots.detectAndSendChanges();
-           return endcache;
-    }
-
-    private void putItBack(ItemStack stack, Slot emptySlot, Container inventorySlots) {
-       	if (stack != null && emptySlot != null) {
-       		addToSendQueue(emptySlot.slotNumber, 0, null, inventorySlots);
-       	}
-       }
-       
-    
-    private Slot findEmptySlot(Container inventorySlots) {
-    	for (int i = 3; i < inventorySlots.inventorySlots.size(); i++) {
-    		Slot slot = inventorySlots.getSlot(i);
-    		if (slot != null && !slot.getHasStack()) {
-    			return slot;
-    		}
-    	}
-    	return null;
-    }
-    
-    private void dumpLoad(Slot fromSlot, Container inventorySlots) {
-    	ItemStack stack = fromSlot.getStack();
-    	// first look for non-empty slots of the same type with room to add stuff to
-    	boolean holdingStack = false;
-    	for (int i = 3; i < inventorySlots.inventorySlots.size(); i++) {
-    		Slot slot = inventorySlots.getSlot(i);
-    		if (slot == null) {
-    			continue;
-    		}
-    		ItemStack existingStack = slot.getStack();
-    		if (existingStack == null || existingStack.getItem() != stack.getItem() || existingStack.getItemDamage() != stack.getItemDamage()) {
-    			continue;
-    		}
-			int canDrop = existingStack.getMaxStackSize() - existingStack.stackSize;
-			if (canDrop > 0) {
-				if (stack.stackSize <= canDrop) {
-					// there's enough room to drop everything
-					ItemStack existingStackCopy = existingStack.copy();
-					ItemStack stackCopy = stack.copy();
-					// client:
-					existingStack.stackSize += stack.stackSize;
-					stack.stackSize = 0;
-					fromSlot.putStack(null);
-					// server:
-					if (!holdingStack) {
-						// pick it up
-						addToSendQueue(fromSlot.slotNumber, 0, stackCopy, inventorySlots);
-						holdingStack = true;
-					}
-					// and drop it
-					addToSendQueue(slot.slotNumber, 0, existingStackCopy, inventorySlots);
-					return;
-				}
-				else {
-					// not enough room for everything, drop as much as we can
-					ItemStack existingStackCopy = existingStack.copy();
-					ItemStack stackCopy = stack.copy();
-					// client:
-					existingStack.stackSize += canDrop;
-					stack.stackSize -= canDrop;
-					// server:
-					if (!holdingStack) {
-						// 	pick it up
-						addToSendQueue(fromSlot.slotNumber, 0, stackCopy, inventorySlots);
-						holdingStack = true;
-					}
-					// and drop as much as we can onto it
-					addToSendQueue(slot.slotNumber, 0, existingStackCopy, inventorySlots);
-				}
-			}
-    	}
-    	// then look for empty slots to add the rest to
-    	for (int i = 3; i < inventorySlots.inventorySlots.size(); i++) {
-    		Slot slot = inventorySlots.getSlot(i);
-    		if (slot == null) {
-    			continue;
-    		}
-    		ItemStack existingStack = slot.getStack();
-    		if (existingStack != null) {
-    			continue;
-    		}
-    		// drop it all
-			ItemStack stackCopy = stack.copy();
-    		// client:
-			slot.putStack(stack.copy());
-			stack.stackSize = 0;
-			fromSlot.putStack(null);
-			// server:
-			if (!holdingStack) {
-				// pick it up
-				addToSendQueue(fromSlot.slotNumber, 0, stackCopy, inventorySlots);
-				holdingStack = true;
-			}
-			// and drop it off
-			addToSendQueue(slot.slotNumber, 0, null, inventorySlots);
-			return;
-    	}
-    }
-    
-    private void addToSendQueue(int slotNumber, int mouseButton, ItemStack stack, Container inventorySlots) {
-        //if (mc.isMultiplayerWorld()) {
-            short actionnum = mc.thePlayer.openContainer.getNextTransactionID(mc.thePlayer.inventory);
-            // i = windowid, slot num, mouse, shift, itemstack, action
-            mc.getNetHandler().addToSendQueue(new C0EPacketClickWindow(inventorySlots.windowId, slotNumber, mouseButton, 0, stack, actionnum));
-        //}
-    }
-    
-    private void addToSendQueueDrop1(int slotNumber, int count, ItemStack stack, Container inventorySlots) {
-    	for (int i = 0; i < count; i++) {
-    		ItemStack copy = stack.copy();
-    		addToSendQueue(slotNumber, 1, copy.stackSize == 0 ? null : copy, inventorySlots);
-    		stack.stackSize++;
-    	}
-    }
-    
-    private Slot getSlotAtPosition(int i, int j, Container inventorySlots, int width, int height, int xSize, int ySize) {
-        for(int k = 0; k < inventorySlots.inventorySlots.size(); k++) {
-            Slot slot = inventorySlots.inventorySlots.get(k);
-            if(getIsMouseOverSlot(slot, i, j, width, height,xSize, ySize)) {
-                return slot;
-            }
-        }
-
-        return null;
-    }
-    
-    private boolean getIsMouseOverSlot(Slot slot, int i, int j, int width, int height, int xSize, int ySize)
-    {
-        int k = (width - xSize) / 2;
-        int l = (height - ySize) / 2;
-        i -= k;
-        j -= l;
-        return i >= slot.xDisplayPosition - 1 && i < slot.xDisplayPosition + 16 + 1 && j >= slot.yDisplayPosition - 1 && j < slot.yDisplayPosition + 16 + 1;
-    }	
     
     public void chatMsg(String msg)
     {
@@ -2735,8 +2222,7 @@ public class ControlPackMain implements Runnable {
 	
 	public boolean cameraStandMode;
 	public boolean renderingWorld;
-	public ControlPackEntity cpEntity;
-	public EntityLivingBase wrappedEntity;
+
     
     private boolean previouslyPlacedBlock;
     private int previouslyPlacedBlockID;

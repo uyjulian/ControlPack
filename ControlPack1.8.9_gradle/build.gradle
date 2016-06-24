@@ -26,7 +26,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
         classpath 'org.spongepowered:mixingradle:0.4-SNAPSHOT'
     }
 }
@@ -34,7 +34,7 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle.liteloader'
 apply plugin: 'org.spongepowered.mixin'
 
-version = "1.8.9-r1"
+version = "5.92-beta1"
 group = "ctrlpack" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "ControlPack"
 

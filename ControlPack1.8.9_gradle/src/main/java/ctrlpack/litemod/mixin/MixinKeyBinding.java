@@ -33,7 +33,7 @@ public abstract class MixinKeyBinding implements Comparable<KeyBinding>, IKeyBin
 	@Inject(method="setKeyBindState", at=@At("HEAD"), cancellable=true)
 	private static void onSetKeyBindState(int p_74510_0_, boolean p_74510_1_, CallbackInfo ci) {
     	//methodhead
-		ControlPackMain.improvedChatCompat(p_74510_0_, p_74510_1_);
+
         // mod_controlpack
         // called on every mouse AND keyboard event (mouse button - 100 to avoid colliding numbers)
         if (ControlPackMain.instance.handleInputEvent(p_74510_0_, p_74510_1_)) {
