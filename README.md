@@ -1,6 +1,6 @@
 ControlPack
 ===========
-See http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/1274134 for more information.
+See http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/2469613 for more information.
 
 Licensing
 =========
