@@ -74,7 +74,7 @@ public class GuiControlPackBindings extends GuiScreen
         	buttonList.add(new GuiSmallButtonCP(j, i + (j % 2) * 160, height / 6 + 20 * (j >> 1), 70, 20, getOptionDisplayString(j)));
         }
 
-        buttonList.add(new GuiButton(200, width / 2 - 100, height / 9 + 190, 200, 20, ControlPackMain.translate("gui.done")));
+        buttonList.add(new GuiButton(200, width / 2 - 100, height / 9 + 215, 200, 20, ControlPackMain.translate("gui.done")));
     }
     
     @Override

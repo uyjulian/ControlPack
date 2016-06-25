@@ -129,6 +129,7 @@ public class ControlPackMain implements Runnable {
 		locStrings.put("options.cpoptions", "Configure Options...");
 		locStrings.put("options.cpwaypoints", "Waypoints...");
 		locStrings.put("options.itemSettings", "Other Options...");
+		locStrings.put("options.cpopendocs", "Open Documentation...");
         locStrings.put("options.set", "Set");
 		
 		locStrings.put("options.item_swords",      "Sword Item Ids");
