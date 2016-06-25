@@ -8,7 +8,8 @@
         "MixinGuiFurnace",
         "MixinMinecraft",
         "MixinEntityRenderer",
-        "MixinSoundManager"
+        "MixinSoundManager",
+        "MixinGuiChat"
     ],
     "injectors": {
         "defaultRequire": 1

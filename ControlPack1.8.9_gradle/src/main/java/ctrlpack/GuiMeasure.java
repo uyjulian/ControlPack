@@ -16,9 +16,6 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 
-
-
-//import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
 
 public class GuiMeasure extends GuiScreen

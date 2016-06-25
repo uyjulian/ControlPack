@@ -13,9 +13,10 @@ package ctrlpack;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 
-
 public class GuiControlPack extends GuiScreen
 {
+    protected String screenTitle;
+    
     public GuiControlPack()
     {
         screenTitle = "Control Pack " + ControlPackMain.instance.currentVersion();
@@ -31,8 +32,9 @@ public class GuiControlPack extends GuiScreen
 		buttonList.add(new GuiButton(202, width / 2 - 75, height / 9 + 130, 150, 20, ControlPackMain.translate("options.cpbindings")));
 		buttonList.add(new GuiButton(201, width / 2 - 75, height / 9 + 155, 150, 20, ControlPackMain.translate("options.volume")));
 		buttonList.add(new GuiButton(205, width / 2 - 75, height / 9 + 180, 150, 20, ControlPackMain.translate("options.itemSettings")));
+		buttonList.add(new GuiButton(206, width / 2 - 75, height / 9 + 205, 150, 20, ControlPackMain.translate("options.cpmoreinfo")));
 
-        buttonList.add(new GuiButton(200, width / 2 - 100, height / 9 + 205, 200, 20, ControlPackMain.translate("gui.done")));
+        buttonList.add(new GuiButton(200, width / 2 - 100, height / 9 + 230, 200, 20, ControlPackMain.translate("gui.done")));
     }
     
     @Override
@@ -60,17 +62,15 @@ public class GuiControlPack extends GuiScreen
     @Override
 	public void drawScreen(int i, int j, float f) {
         drawDefaultBackground();
-        //drawCenteredString(fontRenderer, screenTitle, width / 2, 15, 0xffffff);
         drawCenteredString(fontRendererObj, screenTitle, width / 2, 5, 0xffffff);
 
-        drawCenteredString(fontRendererObj, "Here you can configure all of ControlPacks key bindings, turn", width / 2, 30, 0xffffff);
-        drawCenteredString(fontRendererObj, "features on and off, and adjust sound effect volume levels.", width / 2, 45, 0xffffff);
+        drawCenteredString(fontRendererObj, "Here you can configure all of the key bindings used in ControlPack,", width / 2, 30, 0xffffff);
+        drawCenteredString(fontRendererObj, "turn features on and off, and adjust sound effect volume levels.", width / 2, 45, 0xffffff);
         
-        drawCenteredString(fontRendererObj, "***** ALSO READ \"README.TXT\" THAT SHIPS WITH THE MOD! *****", width / 2, 70, 0xff0000);
+        drawCenteredString(fontRendererObj, "***** ALSO CLICK GET INFO TO OPEN YOUR WEB BROWSER *****", width / 2, 70, 0xff0000);
         drawCenteredString(fontRendererObj, "It contains great information about the features that you", width / 2, 85, 0xaaaaaa);
         drawCenteredString(fontRendererObj, " WILL NOT figure out on your own!", width / 2, 100, 0xaaaaaa);
         super.drawScreen(i, j, f);
     }
 
-    protected String screenTitle;
 }

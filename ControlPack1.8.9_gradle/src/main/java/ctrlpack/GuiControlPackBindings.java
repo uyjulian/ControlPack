@@ -11,21 +11,21 @@
 package ctrlpack;
 
 import java.io.IOException;
+
+import org.lwjgl.input.Keyboard;
+
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
-
-
-
-//import net.minecraft.client.Minecraft;
-import org.lwjgl.input.*;
-
 public class GuiControlPackBindings extends GuiScreen
 {
-
+	private GuiScreen parentScreen;
+    protected String screenTitle;
+    private int buttonId;
+    
     public GuiControlPackBindings(GuiScreen parent)
     {
         screenTitle = "Control Pack " + ControlPackMain.instance.currentVersion();
@@ -71,8 +71,7 @@ public class GuiControlPackBindings extends GuiScreen
         int i = func_20080_j();
         int j = 0;
         for(; j < ControlPackMain.instance.keyBindings.length; j++) {
-            //buttonList.add(new GuiSmallButton(j, i + (j % 2) * 160, height / 6 + 24 * (j >> 1), 70, 20, getOptionDisplayString(j)));
-			buttonList.add(new GuiSmallButtonCP(j, i + (j % 2) * 160, height / 6 + 20 * (j >> 1), 70, 20, getOptionDisplayString(j)));
+        	buttonList.add(new GuiSmallButtonCP(j, i + (j % 2) * 160, height / 6 + 20 * (j >> 1), 70, 20, getOptionDisplayString(j)));
         }
 
         buttonList.add(new GuiButton(200, width / 2 - 100, height / 9 + 190, 200, 20, ControlPackMain.translate("gui.done")));
@@ -143,9 +142,7 @@ public class GuiControlPackBindings extends GuiScreen
     @Override
 	public void drawScreen(int i, int j, float f) {
         drawDefaultBackground();
-        //drawCenteredString(fontRenderer, screenTitle, width / 2, 5, 0xffffff);
-		drawCenteredString(fontRendererObj, screenTitle, width / 2, 2, 0xffffff);
-		//drawCenteredString(fontRenderer, "You may RIGHT CLICK to disable a command.", width / 2, 25, 0x5555ff);
+        drawCenteredString(fontRendererObj, screenTitle, width / 2, 2, 0xffffff);
 		drawCenteredString(fontRendererObj, "You may RIGHT CLICK to disable a command.", width / 2, 15, 0x5555ff);
         
         int k = func_20080_j();
@@ -172,14 +169,10 @@ public class GuiControlPackBindings extends GuiScreen
             else {
                 buttonList.get(j1).displayString = getOptionDisplayString(j1);
             }
-            //drawString(fontRenderer, getKeyBindingDescription(l), k + (l % 2) * 160 + 70 + 6, height / 6 + 24 * (l >> 1) + 7, -1);
-			drawString(fontRendererObj, getKeyBindingDescription(l), k + (l % 2) * 160 + 70 + 6, height / 6 + 20 * (l >> 1) + 7, -1);
+            drawString(fontRendererObj, getKeyBindingDescription(l), k + (l % 2) * 160 + 70 + 6, height / 6 + 20 * (l >> 1) + 7, -1);
         }
 
         super.drawScreen(i, j, f);
     }
 
-    private GuiScreen parentScreen;
-    protected String screenTitle;
-    private int buttonId;
 }

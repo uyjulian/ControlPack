@@ -11,18 +11,23 @@
 package ctrlpack.litemod.mixin;
 
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import ctrlpack.ControlPackMain;
+import ctrlpack.litemod.IEntityRenderer;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.resources.IResourceManagerReloadListener;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 
 @Mixin(EntityRenderer.class)
-public abstract class MixinEntityRenderer implements IResourceManagerReloadListener {
+public abstract class MixinEntityRenderer implements IResourceManagerReloadListener, IEntityRenderer {
+	
+	@Shadow private double cameraPitch;
+	@Shadow private double cameraYaw;
 	
 	@Inject(method="orientCamera", at=@At("HEAD"))
 	private void onOrientCamera(float partialTicks, CallbackInfo ci){
@@ -43,5 +48,15 @@ public abstract class MixinEntityRenderer implements IResourceManagerReloadListe
 	@Inject(method="updateCameraAndRender", at=@At("RETURN"))
 	private void onUpdateCameraAndRenderRETURN(float partialTicks, long nanoTime, CallbackInfo ci) {
 		ControlPackMain.instance.updateCameraAngle();
+	}
+	
+	@Override
+	public void setCameraPitch(float val) {
+		cameraPitch = val;
+	}
+	
+	@Override
+	public void setCameraYaw(float val) {
+		cameraYaw = val;
 	}
 }

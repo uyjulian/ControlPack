@@ -12,21 +12,15 @@ package ctrlpack;
 
 import java.io.IOException;
 import java.util.List;
+
+import org.lwjgl.input.Keyboard;
+
 import java.util.ArrayList;
-
-
-
-
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 
-
 import net.minecraft.client.gui.GuiTextField;
-
-
-//import net.minecraft.client.Minecraft;
-import org.lwjgl.input.*;
 
 public class GuiControlPackOptions extends GuiScreen
 {

@@ -10,15 +10,22 @@
 
 package ctrlpack;
 
-//import net.minecraft.client.Minecraft;
-
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.Rectangle;
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockColored;
@@ -29,11 +36,7 @@ import net.minecraft.block.BlockVine;
 import net.minecraft.block.BlockWeb;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiChat;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
@@ -44,25 +47,19 @@ import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.item.ItemTool;
-import net.minecraft.profiler.Profiler;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 
-import org.lwjgl.opengl.*;
+import ctrlpack.litemod.IEntityRenderer;
 import ctrlpack.litemod.IKeyBinding;
 import ctrlpack.litemod.IMinecraft;
 import ctrlpack.litemod.LiteModControlPack;
 
-import java.lang.reflect.Field;
-
 public class ControlPackMain implements Runnable {
 	public static ControlPackMain instance;
-	//public static boolean customSoundManager = false;
-    //public static Class forge;
-	//private static boolean checkedForForge;
 	public static Minecraft mc;
 	public static boolean windowResizedOverride = false;
 	private int toggleCounter = 10;
@@ -97,24 +94,6 @@ public class ControlPackMain implements Runnable {
 		
 		optionsFile = new File(ControlPackMain.mc.mcDataDir, "controlpack.txt");
 		loadOptions();
-
-		/*
-		if (booleanOptions.get(ControlPackEnumOptions.SOUNDMANAGER)) {
-			if (!customSoundManager) {
-				System.out.println("ControlPack: Custom sound manager was not found, wrapping instead.");
-				mc.sndManager = new ControlPackSoundManager(mc, mc.sndManager);
-			}
-			else {
-				System.out.println("ControlPack: Custom sound manager was found.");
-			}
-		}
-		else {
-			System.out.println("ControlPack: Custom sound manager is DISABLED.");
-			if (customSoundManager) {
-				System.out.println("ControlPack: HOWEVER... it appears the modified sound manager is present. You should be EXCLUDING that file from the install! Read the README!");
-			}
-		}*/
-
 		
 		locStrings.put("gui.done", "Done");
 		
@@ -279,9 +258,6 @@ public class ControlPackMain implements Runnable {
             if (mc.currentScreen != null) {
                 altKey = false;
             }
-//			if (!mc.running) {
-//				break;
-//			}
 			checkGame();
 			try {
 				Thread.sleep(1000L);
@@ -301,39 +277,6 @@ public class ControlPackMain implements Runnable {
 	
 	public String currentVersion() {
 		return "5.92";
-	}
-	
-	public void tickInGui(GuiScreen currentScreen) {
-		if (currentScreen instanceof GuiChat) {
-			if (keyBindSayLocation.getKeyCode() != 99999 && Keyboard.isKeyDown(keyBindSayLocation.getKeyCode()) && !chat_insertedPosition) {
-				//TODO: get rid of this field hack
-				try {
-					Field field;
-					try {
-						field = currentScreen.getClass().getDeclaredField("a"); //NoSuchFieldException may happen in non-reobf mode
-					}
-					catch (NoSuchFieldException ex) {
-						try {
-							field = currentScreen.getClass().getDeclaredField("field_146415_a"); //NoSuchFieldException may happen in non-reobf mode
-						}
-						catch (NoSuchFieldException ezx) {
-							field = currentScreen.getClass().getDeclaredField("inputField");
-						}
-					}
-					field.setAccessible(true);
-					GuiTextField tf = (GuiTextField) field.get(currentScreen); //IllegalAccessException			
-					tf.setText(tf.getText() + " " + getLocation(true) + " ");
-				}
-				catch(Exception ex) {
-					ex.printStackTrace();
-				}
-
-				chat_insertedPosition = true;
-			}
-			else if (keyBindSayLocation.getKeyCode() != 99999 && !Keyboard.isKeyDown(keyBindSayLocation.getKeyCode())) {
-				chat_insertedPosition = false;
-			}
-		}
 	}
 	
 	public void tickInGame() {
@@ -576,66 +519,6 @@ public class ControlPackMain implements Runnable {
 		//return I18n.func_135053_a(key);
 	}
 	
-	public static void setPrivateValueByType(Class<Minecraft> sourceClass, Object source, Class<Profiler> fieldClass, Object newValue)
-	{
-		Field[] fields = sourceClass.getDeclaredFields();
-		for (int i = 0; i < fields.length; i++) {
-			Field field = fields[i];
-			if (field.getType() == fieldClass) {
-				try {
-					field.setAccessible(true);
-					field.set(source, newValue);
-				}
-				catch (IllegalAccessException ex)
-				{
-					throw new RuntimeException("setPrivateValue: ", ex);
-				}
-				catch (IllegalArgumentException ex) {
-					throw new RuntimeException("setPrivateValue: ", ex);
-				}
-				catch (SecurityException ex) {
-					throw new RuntimeException("setPrivateValue: ", ex);
-				}
-				return;
-			}
-		}
-		throw new RuntimeException("setPrivateValueByType: Could not find type " + fieldClass.getName());
-	}
-	
-    public static void setPrivateValue(Class<EntityRenderer> var0, Object var1, String nonObfName, String obfName, Object var3)
-    {
-		// use this to find out what field is of the correct type...
-		//dumpFields(var0, Profiler.class);
-        try
-        {
-			Field field;
-			try {
-				field = var0.getDeclaredField(obfName);
-			}
-			catch(NoSuchFieldException ex) {
-				field = var0.getDeclaredField(nonObfName);
-			}
-
-            field.setAccessible(true);
-            field.set(var1, var3);
-        }
-        catch (IllegalAccessException ex)
-        {
-            throw new RuntimeException("setPrivateValue: ", ex);
-        }
-		catch (IllegalArgumentException ex) {
-            throw new RuntimeException("setPrivateValue: ", ex);
-		}
-		catch (SecurityException ex) {
-            throw new RuntimeException("setPrivateValue: ", ex);
-		}
-		catch (NoSuchFieldException ex) {
-            throw new RuntimeException("setPrivateValue: ", ex);
-		}
-    }
-	
-		
-
 		
     public void loadOptions() {
         try {
@@ -1546,7 +1429,7 @@ public class ControlPackMain implements Runnable {
 		}
     }
     
-	private boolean chat_insertedPosition = false;
+	public boolean chat_insertedPosition = false;
 
     
     private void drawSquare(double x, double y, int color) {
@@ -1737,29 +1620,13 @@ public class ControlPackMain implements Runnable {
 	public void setupRenderHook() {
 		if (this.lookBehindProgress != 0 && ControlPackMain.mc.getRenderViewEntity() != null) {
 			this.renderingWorld = true;
-//			if (this.cpEntity == null) {
-//				this.wrappedEntity = this.mc.getRenderViewEntity();
-//				this.cpEntity =
-//					new ControlPackEntity(this.mc, this.mc.theWorld, new NetHandlerPlayClient(mc, null, null, null), null);
-////System.out.println("ControlPack: Wrapped Entity.");
-//			}
-//			if (this.mc.getRenderViewEntity() != ControlPackMain.instance.cpEntity) {
-//				this.wrappedEntity = this.mc.getRenderViewEntity();
-//				this.mc.renderViewEntity = this.cpEntity;
-////System.out.println("ControlPack: Fixed Wrapped Entity.");
-//			}
-//			this.cpEntity.updatePos();
-		}	
-		else {
-//System.out.println("ControlPack: No need to wrap entity right now...");
 		}
 	}
     
 	public void syncThirdPersonRotation() {
-		// SELF: check fields.csv for the private field name when there are updates!
-		//dumpFields(EntityRenderer.class, null);
-		setPrivateValue(EntityRenderer.class, ControlPackMain.mc.entityRenderer, "cameraPitch", "field_78509_X", frontView_rotationPitch);
-		setPrivateValue(EntityRenderer.class, ControlPackMain.mc.entityRenderer, "cameraYaw", "field_78502_W", frontView_rotationYaw);
+		IEntityRenderer iEntityRenderer = (IEntityRenderer)ControlPackMain.mc.entityRenderer;
+		iEntityRenderer.setCameraPitch(frontView_rotationPitch);
+		iEntityRenderer.setCameraYaw(frontView_rotationYaw);
 	}
 	
     private void openGUIRunDistance() {

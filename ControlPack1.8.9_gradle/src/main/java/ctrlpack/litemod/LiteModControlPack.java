@@ -13,15 +13,13 @@ package ctrlpack.litemod;
 import java.io.File;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.settings.KeyBinding;
 import com.mumfrey.liteloader.InitCompleteListener;
 import com.mumfrey.liteloader.LiteMod;
-import com.mumfrey.liteloader.RenderListener;
 import com.mumfrey.liteloader.core.LiteLoader;
 import ctrlpack.ControlPackMain;
 
-public class LiteModControlPack implements LiteMod, RenderListener, InitCompleteListener {
+public class LiteModControlPack implements LiteMod, InitCompleteListener {
 
 	@Override
 	public String getName() {
@@ -33,8 +31,8 @@ public class LiteModControlPack implements LiteMod, RenderListener, InitComplete
 		return "5.92";
 	}
 	
-	public static void regKeys(KeyBinding[] lolz) {
-		for (KeyBinding currentKey : lolz) {
+	public static void regKeys(KeyBinding[] keyArray) {
+		for (KeyBinding currentKey : keyArray) {
 			if (currentKey != null) {
 				LiteLoader.getInput().registerKeyBinding(currentKey);
 			}
@@ -56,14 +54,6 @@ public class LiteModControlPack implements LiteMod, RenderListener, InitComplete
 			ControlPackMain.instance.tickInGame();
 		}
 	}
-	
-	@Override
-	public void onRenderGui(GuiScreen currentScreen) {
-		if (currentScreen != null)
-		{
-			ControlPackMain.instance.tickInGui(currentScreen);
-		}
-	}
 
 	@Override
 	public void onInitCompleted(Minecraft minecraft, LiteLoader loader) {
@@ -72,11 +62,5 @@ public class LiteModControlPack implements LiteMod, RenderListener, InitComplete
     
 	@Override
 	public void upgradeSettings(String version, File configPath, File oldConfigPath) {}
-
-	@Override
-	public void onRender() {}
-
-	@Override
-	public void onSetupCameraTransform() {}
 
 }

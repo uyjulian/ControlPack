@@ -11,14 +11,12 @@
 package ctrlpack;
 
 import java.io.IOException;
+
+import org.lwjgl.input.Keyboard;
+
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
-
-
-
-//import net.minecraft.client.Minecraft;
-import org.lwjgl.input.*;
 
 public class GuiWaypoints extends GuiScreen
 {
@@ -47,9 +45,7 @@ public class GuiWaypoints extends GuiScreen
             
             String location = ControlPackMain.instance.stringOptions.get(option);
             String name = ControlPackMain.instance.stringOptions.get(nameOption);
-            //Boolean showHUD = ControlPackMain.instance.booleanOptions.get(showHUDOption);
-            
-            // width = 75 + 125 + 50 + 50 = 300 + 10x3 = 330
+
             int x = width / 2 - (330 / 2);
             int y = 100 + k * 25;
             
