@@ -37,6 +37,7 @@ import net.minecraft.block.BlockWeb;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
@@ -94,94 +95,7 @@ public class ControlPackMain implements Runnable {
 		
 		optionsFile = new File(ControlPackMain.mc.mcDataDir, "controlpack.txt");
 		loadOptions();
-		
-		locStrings.put("gui.done", "Done");
-		
-		locStrings.put("key.walkDistance", "Run Distance");
-		locStrings.put("key.walkDistance", "Run Distance");
-		locStrings.put("key.lookBehind", "Look Behind");
-		locStrings.put("key.toggleMine", "Toggle Mining");
-		locStrings.put("key.toggleUse", "Toggle Use Item");
-		locStrings.put("key.autoJump", "Toggle Jump");
-		locStrings.put("key.autoRun", "Toggle Run");
-		locStrings.put("key.toggleSneak", "Toggle Sneak");
-		locStrings.put("key.altleft", "Swap L (Hold)");
-		locStrings.put("key.altright", "Swap R (Hold)");
-		locStrings.put("key.toggleGamma", "Toggle Brightness");
-		locStrings.put("key.startSprint", "Start Sprinting");
-		locStrings.put("key.placeTorch", "Place Torch");
-		locStrings.put("key.eatFood", "Eat Food");
-		locStrings.put("key.saylocation", "Chat Location");
-		locStrings.put("key.waypoints", "Waypoints");
-        
-		locStrings.put("measure.go", "Go");
-		locStrings.put("controlPack.settings", "Welcome to ControlPack");
-        locStrings.put("controlPack.title", "Welcome to ControlPack");
-		locStrings.put("controlPack.volumeTitle", "ControlPack Settings - SFX Volume");
-		locStrings.put("controlPack.optionsTitle", "ControlPack Settings - Options");
-		locStrings.put("controlPack.itemOptionsTitle", "ControlPack Settings - Other Options");
-		locStrings.put("controlPack.bindingsTitle", "ControlPack Settings - Key Bindings");
-        locStrings.put("controlPack.waypointsTitle", "ControlPack Settings - Waypoints");
 
-        locStrings.put("options.controlPack", "ControlPack...");
-		locStrings.put("options.volume", "SFX Volume...");
-		locStrings.put("options.cpbindings", "Extra Key Bindings...");
-		locStrings.put("options.cpoptions", "Configure Options...");
-		locStrings.put("options.cpwaypoints", "Waypoints...");
-		locStrings.put("options.itemSettings", "Other Options...");
-		locStrings.put("options.cpopendocs", "Open Documentation...");
-        locStrings.put("options.set", "Set");
-		
-		locStrings.put("options.item_swords",      "Sword Item Ids");
-		locStrings.put("options.coordinateformat", "Coord. Format");
-
-        locStrings.put("options.lessrain", "Render Less Rain");
-        locStrings.put("options.lookbehind-withback", "LookBehind w/ Back+Fwd");
-        locStrings.put("options.front3rdperson", "Better 3rd Person View");
-        locStrings.put("options.windowrestoration", "Auto Window Restore");
-        locStrings.put("options.smartfurnace", "Smart Furnace");
-		locStrings.put("options.holdtoattack", "Hold to Attack");
-		locStrings.put("options.corpselocation", "Auto Corpse Waypoint");
-        locStrings.put("options.volume_rain", "Rain Falling");
-        locStrings.put("options.volume_piston", "Piston In & Out");
-        locStrings.put("options.volume_splash", "Splashing Water");
-		locStrings.put("options.volume_water", "Flowing Water");
-		locStrings.put("options.volume_door", "Door & Chest");
-		locStrings.put("options.volume_explode", "Explosion");
-		locStrings.put("options.volume_bow", "Shoot With Bow");
-		locStrings.put("options.volume_portal", "Near a Portal");
-		locStrings.put("options.volume_eatdrink", "Eat & Drink");
-		// 5.4
-		locStrings.put("options.volume_animals", "Peaceful Animals");
-		locStrings.put("options.volume_slime", "Slimes");
-		locStrings.put("options.volume_minecart", "Minecarts");
-		locStrings.put("options.volume_hit", "Take Damage");
-		locStrings.put("options.volume_dig", "Dug/Put Block");
-		locStrings.put("options.volume_step", "Walk/Dig Sound");
-
-		locStrings.put("options.autotool", "Auto Tool");
-		locStrings.put("options.autotoolmode", "Auto Tool Mode");
-		locStrings.put("options.autosword", "Auto Sword");
-        locStrings.put("options.autoblock", "Auto Block");
-        locStrings.put("options.autoblockmode", "Auto Block Mode");
-        locStrings.put("options.voidfog", "Render Void Fog");
-		locStrings.put("options.usecount", "Uses Remaining");
-        locStrings.put("options.statuslocation", "Status Overlay");
-        locStrings.put("options.coordinateslocation", "My Coordinates");
-
-        locStrings.put("options.waypointhud1", "HUD");
-		locStrings.put("options.waypointhud2", "HUD");
-		locStrings.put("options.waypointhud3", "HUD");
-		locStrings.put("options.waypointhud4", "HUD");
-		locStrings.put("options.waypointhud5", "HUD");
-
-        locStrings.put("options.waypointhudnether1", "HUD");
-		locStrings.put("options.waypointhudnether2", "HUD");
-		locStrings.put("options.waypointhudnether3", "HUD");
-		locStrings.put("options.waypointhudnether4", "HUD");
-		locStrings.put("options.waypointhudnether5", "HUD");
-		
-        
         volumeSettingsMap = new HashMap<String, ControlPackEnumOptions>();
         volumeSettingsMap.put("tile.piston.in", ControlPackEnumOptions.VOLUMEPISTON);
         volumeSettingsMap.put("tile.piston.out", ControlPackEnumOptions.VOLUMEPISTON);
@@ -516,7 +430,7 @@ public class ControlPackMain implements Runnable {
 	}
 	
 	public static String translate(String key) {
-		return locStrings.get(key);
+		return I18n.format(key);
 		//return I18n.func_135053_a(key);
 	}
 	
@@ -2028,10 +1942,6 @@ public class ControlPackMain implements Runnable {
     	return kbs.getToggled();
     }
     
-
-	
-
-	
     public KeyBinding keyBindings[];
     public KeyBinding keyBindAlternateLeft;
     public KeyBinding keyBindAlternateRight;
@@ -2190,6 +2100,5 @@ public class ControlPackMain implements Runnable {
     public Map<ControlPackEnumOptions, Integer> intOptions;
     public Map<ControlPackEnumOptions, Integer> intOptionsMaxValue;
     public Map<String, ControlPackEnumOptions> volumeSettingsMap;
-	private static Map<String, String> locStrings = new HashMap<String, String>();
 }
 
