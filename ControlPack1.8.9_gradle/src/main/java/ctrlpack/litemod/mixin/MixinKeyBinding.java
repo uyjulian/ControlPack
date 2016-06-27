@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import ctrlpack.ControlPackMain;
-import ctrlpack.litemod.IKeyBinding;
+import ctrlpack.IKeyBinding;
 import net.minecraft.client.settings.KeyBinding;
 
 @Mixin(KeyBinding.class)

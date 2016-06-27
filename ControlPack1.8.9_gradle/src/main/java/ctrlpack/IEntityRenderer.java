@@ -8,8 +8,9 @@
  *
  */
 
-package ctrlpack.litemod;
+package ctrlpack;
 
-public interface IMinecraft {
-	public abstract void pubCheckWindowResize();
+public interface IEntityRenderer {
+	public abstract void setCameraPitch(float val);
+	public abstract void setCameraYaw(float val);
 }

@@ -14,7 +14,7 @@ import org.lwjgl.opengl.Display;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-import ctrlpack.litemod.IMinecraft;
+import ctrlpack.IMinecraft;
 import net.minecraft.client.Minecraft;
 import net.minecraft.profiler.IPlayerUsage;
 import net.minecraft.util.IThreadListener;

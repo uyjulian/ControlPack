@@ -53,16 +53,11 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
-
-import ctrlpack.litemod.IEntityRenderer;
-import ctrlpack.litemod.IKeyBinding;
-import ctrlpack.litemod.IMinecraft;
 import ctrlpack.litemod.LiteModControlPack;
 
 public class ControlPackMain implements Runnable {
 	public static ControlPackMain instance;
 	public static Minecraft mc;
-	public static boolean windowResizedOverride = false;
 	private int toggleCounter = 10;
     
 	public ControlPackMain() throws Exception {
@@ -659,9 +654,7 @@ public class ControlPackMain implements Runnable {
 					Display.setLocation(lastBounds.x, lastBounds.y);
 					Display.setDisplayMode(new DisplayMode(lastBounds.width, lastBounds.height));
 					IMinecraft imc = (IMinecraft)mc;
-					windowResizedOverride = true;
 					imc.pubCheckWindowResize();
-					windowResizedOverride = false;
 				}
 			}
 			catch(Exception ex) {
