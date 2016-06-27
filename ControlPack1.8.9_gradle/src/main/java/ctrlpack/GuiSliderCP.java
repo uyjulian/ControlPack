@@ -54,8 +54,8 @@ public class GuiSliderCP extends GuiButton
             {
                 sliderValue = maxValue;
             }
-            ControlPackMain.instance.floatOptions.put(idFloat, sliderValue);
-            ControlPackMain.instance.saveOptions();
+            ControlPackOptions.floatOptions.put(idFloat, sliderValue);
+            ControlPackOptions.saveOptions();
             displayString = ControlPackMain.instance.getOptionDesc(idFloat);
         }
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -78,8 +78,8 @@ public class GuiSliderCP extends GuiButton
             {
                 sliderValue = maxValue;
             }
-            ControlPackMain.instance.floatOptions.put(idFloat, sliderValue);
-            ControlPackMain.instance.saveOptions();
+            ControlPackOptions.floatOptions.put(idFloat, sliderValue);
+            ControlPackOptions.saveOptions();
             displayString = ControlPackMain.instance.getOptionDesc(idFloat);
             dragging = true;
             return true;

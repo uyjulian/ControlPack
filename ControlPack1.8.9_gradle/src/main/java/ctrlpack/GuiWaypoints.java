@@ -37,14 +37,14 @@ public class GuiWaypoints extends GuiScreen
         
         isNether = ControlPackMain.mc.theWorld != null && (ControlPackMain.mc.theWorld.provider.getDimensionName() == "Nether");
 
-        ControlPackEnumOptions options[] = isNether ? ControlPackMain.instance.waypointNetherOptions : ControlPackMain.instance.waypointOptions;
+        ControlPackEnumOptions options[] = isNether ? ControlPackOptions.waypointNetherOptions : ControlPackOptions.waypointOptions;
         for(int k = 0; k < options.length; k++) {
             ControlPackEnumOptions option = options[k];
-            ControlPackEnumOptions nameOption = isNether ? ControlPackMain.instance.waypointNetherNameOptions[k] : ControlPackMain.instance.waypointNameOptions[k];
-            ControlPackEnumOptions showHUDOption = isNether ? ControlPackMain.instance.waypointNetherHUDOptions[k] : ControlPackMain.instance.waypointHUDOptions[k];
+            ControlPackEnumOptions nameOption = isNether ? ControlPackOptions.waypointNetherNameOptions[k] : ControlPackOptions.waypointNameOptions[k];
+            ControlPackEnumOptions showHUDOption = isNether ? ControlPackOptions.waypointNetherHUDOptions[k] : ControlPackOptions.waypointHUDOptions[k];
             
-            String location = ControlPackMain.instance.stringOptions.get(option);
-            String name = ControlPackMain.instance.stringOptions.get(nameOption);
+            String location = ControlPackOptions.stringOptions.get(option);
+            String name = ControlPackOptions.stringOptions.get(nameOption);
 
             int x = width / 2 - (330 / 2);
             int y = 100 + k * 25;
@@ -75,7 +75,7 @@ public class GuiWaypoints extends GuiScreen
             point = value;
         }
         else {
-            String oldPoint = ControlPackMain.instance.stringOptions.get(option);
+            String oldPoint = ControlPackOptions.stringOptions.get(option);
             String newPoint = ControlPackMain.instance.getLocation(false);
             if (oldPoint != null && oldPoint.equals(newPoint)) {
                 point = "";
@@ -84,7 +84,7 @@ public class GuiWaypoints extends GuiScreen
                 point = newPoint;
             }
         }
-        ControlPackMain.instance.stringOptions.put(option, point);
+        ControlPackOptions.stringOptions.put(option, point);
         return point;
     }
 
@@ -126,13 +126,13 @@ public class GuiWaypoints extends GuiScreen
             if (waypointNames[i] == null) continue;
             String location = waypointLocations[i].getText();
             location = location == null ? "" : location;
-            setWaypoint(isNether ? ControlPackMain.instance.waypointNetherOptions[i] : ControlPackMain.instance.waypointOptions[i], location);
+            setWaypoint(isNether ? ControlPackOptions.waypointNetherOptions[i] : ControlPackOptions.waypointOptions[i], location);
             
             String name = waypointNames[i].getText();
             name = name == null ? "" : name;
-            ControlPackMain.instance.stringOptions.put(isNether ? ControlPackMain.instance.waypointNetherNameOptions[i] : ControlPackMain.instance.waypointNameOptions[i], name);
+            ControlPackOptions.stringOptions.put(isNether ? ControlPackOptions.waypointNetherNameOptions[i] : ControlPackOptions.waypointNameOptions[i], name);
         }
-        ControlPackMain.instance.saveOptions();
+        ControlPackOptions.saveOptions();
         mc.displayGuiScreen(parentScreen);
     }
     
@@ -147,8 +147,8 @@ public class GuiWaypoints extends GuiScreen
                 ControlPackEnumOptions cpOption = optionButton.getOption();
                 if (guibutton.id % 10 == 0) {
                     // it was a HUD button
-                    Boolean value = ControlPackMain.instance.booleanOptions.get(cpOption);
-                    ControlPackMain.instance.booleanOptions.put(cpOption, !value);
+                    Boolean value = ControlPackOptions.booleanOptions.get(cpOption);
+                    ControlPackOptions.booleanOptions.put(cpOption, !value);
                     guibutton.displayString = ControlPackMain.instance.getOptionDesc(cpOption);
                 }
                 else {
@@ -159,7 +159,7 @@ public class GuiWaypoints extends GuiScreen
                     waypointLocations[wayPointNum-1].setText(location);
                 }
 
-                ControlPackMain.instance.saveOptions();
+                ControlPackOptions.saveOptions();
             }
         }
     }

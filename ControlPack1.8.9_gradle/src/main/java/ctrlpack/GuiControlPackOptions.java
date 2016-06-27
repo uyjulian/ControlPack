@@ -33,7 +33,7 @@ public class GuiControlPackOptions extends GuiScreen
 		textFields = new ArrayList<GuiTextFieldCP>();
         parentScreen = parent;
         screenTitle = ControlPackMain.translate("controlPack.optionsTitle");
-		options = ControlPackMain.instance.allOptions;
+		options = ControlPackOptions.allOptions;
     }
 
     private int func_20080_j()
@@ -53,7 +53,7 @@ public class GuiControlPackOptions extends GuiScreen
 			if (option.getIsString()) {
 				//buttonList.add(new GuiSmallButtonCP(100 + option.getOrdinal(), i + (j % 2) * 160, height / 6 + 24 * (j >> 1), option, mod_ControlPack.instance.getOptionDesc(option)));
 				GuiTextFieldCP field = new GuiTextFieldCP(fontRendererObj, ControlPackMain.instance.getOptionDesc(option), i, height / 6 + 24 * j - 30, 300, 20, option);
-				field.setText(ControlPackMain.instance.stringOptions.get(option));
+				field.setText(ControlPackOptions.stringOptions.get(option));
 				textFields.add(field);
 				if (option == ControlPackEnumOptions.ITEM_SWORDS) {
 					field.isIdList = true;
@@ -77,9 +77,9 @@ public class GuiControlPackOptions extends GuiScreen
 			GuiTextFieldCP tf = textFields.get(i);
 			ControlPackEnumOptions option = tf.option;
 			//String value = ControlPackMain.instance.stringOptions.get(option);
-			ControlPackMain.instance.stringOptions.put(option, tf.getText());
+			ControlPackOptions.stringOptions.put(option, tf.getText());
 		}
-		ControlPackMain.instance.saveOptions();
+		ControlPackOptions.saveOptions();
 	}
 	
     @Override
@@ -93,19 +93,19 @@ public class GuiControlPackOptions extends GuiScreen
                 GuiSmallButtonCP optionButton = (GuiSmallButtonCP)guibutton;
                 ControlPackEnumOptions cpOption = optionButton.getOption();
                 if (cpOption.getIsBool()) {
-                    Boolean value = ControlPackMain.instance.booleanOptions.get(cpOption);
-                    ControlPackMain.instance.booleanOptions.put(cpOption, !value);
+                    Boolean value = ControlPackOptions.booleanOptions.get(cpOption);
+                    ControlPackOptions.booleanOptions.put(cpOption, !value);
                 }
                 else {
-                    Integer value = ControlPackMain.instance.intOptions.get(cpOption);
-                    Integer maxValue = ControlPackMain.instance.intOptionsMaxValue.get(cpOption);
+                    Integer value = ControlPackOptions.intOptions.get(cpOption);
+                    Integer maxValue = ControlPackOptions.intOptionsMaxValue.get(cpOption);
                     value++;
                     if (value > maxValue) {
                         value = 0;
                     }
-                    ControlPackMain.instance.intOptions.put(cpOption, value);
+                    ControlPackOptions.intOptions.put(cpOption, value);
                 }
-                ControlPackMain.instance.saveOptions();
+                ControlPackOptions.saveOptions();
                 guibutton.displayString = ControlPackMain.instance.getOptionDesc(optionButton.getOption());
             }
         }

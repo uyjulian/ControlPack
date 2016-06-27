@@ -16,14 +16,6 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 
-import java.awt.Rectangle;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.PrintWriter;
-import java.util.Collections;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -88,8 +80,8 @@ public class ControlPackMain implements Runnable {
         };		
         LiteModControlPack.regKeys(keyBindings);
 		
-		optionsFile = new File(ControlPackMain.mc.mcDataDir, "controlpack.txt");
-		loadOptions();
+		
+		ControlPackOptions.loadOptions();
 
         volumeSettingsMap = new HashMap<String, ControlPackEnumOptions>();
         volumeSettingsMap.put("tile.piston.in", ControlPackEnumOptions.VOLUMEPISTON);
@@ -195,8 +187,8 @@ public class ControlPackMain implements Runnable {
 		setDeathWaypoint();
 		
         if (!mc.gameSettings.showDebugInfo) {
-            int coordLocation = intOptions.get(ControlPackEnumOptions.COORDINATESLOCATION);
-            int statusLocation = intOptions.get(ControlPackEnumOptions.STATUSLOCATION);
+            int coordLocation = ControlPackOptions.intOptions.get(ControlPackEnumOptions.COORDINATESLOCATION);
+            int statusLocation = ControlPackOptions.intOptions.get(ControlPackEnumOptions.STATUSLOCATION);
             int lineNum = 0;
 			
             if (coordLocation != 4) {
@@ -208,14 +200,14 @@ public class ControlPackMain implements Runnable {
                 
                 boolean isNether = mc.theWorld != null && (mc.theWorld.provider.getDimensionName() == "Nether");
 
-                for (int i = 0; i < (isNether ? waypointNetherOptions.length : waypointOptions.length); i++) {
-                    ControlPackEnumOptions locationOption = isNether ? waypointNetherOptions[i] : waypointOptions[i];
-                    ControlPackEnumOptions nameOption = isNether ? waypointNetherNameOptions[i] : waypointNameOptions[i];
-                    ControlPackEnumOptions hudOption = isNether ? waypointNetherHUDOptions[i] : waypointHUDOptions[i];
+                for (int i = 0; i < (isNether ? ControlPackOptions.waypointNetherOptions.length : ControlPackOptions.waypointOptions.length); i++) {
+                    ControlPackEnumOptions locationOption = isNether ? ControlPackOptions.waypointNetherOptions[i] : ControlPackOptions.waypointOptions[i];
+                    ControlPackEnumOptions nameOption = isNether ? ControlPackOptions.waypointNetherNameOptions[i] : ControlPackOptions.waypointNameOptions[i];
+                    ControlPackEnumOptions hudOption = isNether ? ControlPackOptions.waypointNetherHUDOptions[i] : ControlPackOptions.waypointHUDOptions[i];
                     
-                    String location = stringOptions.get(locationOption);
-                    String name = stringOptions.get(nameOption);
-                    Boolean hud = booleanOptions.get(hudOption);
+                    String location = ControlPackOptions.stringOptions.get(locationOption);
+                    String name = ControlPackOptions.stringOptions.get(nameOption);
+                    Boolean hud = ControlPackOptions.booleanOptions.get(hudOption);
                     
                     if (!hud || location == null || location.length() == 0) {
                         continue;
@@ -234,7 +226,7 @@ public class ControlPackMain implements Runnable {
 							int currentX = (int) wpX;
 							int currentY = (int) wpY;
 							int currentZ = (int) wpZ;
-							location = stringOptions.get(ControlPackEnumOptions.COORDINATE_FORMAT).replace("{X}", ""+currentX).replace("{Y}", ""+currentY).replace("{Z}", ""+currentZ);
+							location = ControlPackOptions.stringOptions.get(ControlPackEnumOptions.COORDINATE_FORMAT).replace("{X}", ""+currentX).replace("{Y}", ""+currentY).replace("{Z}", ""+currentZ);
 							
                             Vec3 v_directionFromHere = v_waypoint.subtract(v_current.getX(), v_current.getY(), v_current.getZ());
                             if (v_directionFromHere.lengthVector() <= 0.5) {
@@ -265,7 +257,7 @@ public class ControlPackMain implements Runnable {
 					lineNum++;
 				}
 				
-				if (!mc.playerController.isInCreativeMode() && booleanOptions.get(ControlPackEnumOptions.USECOUNT)) {
+				if (!mc.playerController.isInCreativeMode() && ControlPackOptions.booleanOptions.get(ControlPackEnumOptions.USECOUNT)) {
 					ItemStack currentStack = mc.thePlayer.inventory.mainInventory[mc.thePlayer.inventory.currentItem];
 					if (currentStack != null) {
 						int maxdmg = currentStack.getMaxDamage();
@@ -300,7 +292,7 @@ public class ControlPackMain implements Runnable {
         
         if (previouslyPlacedBlock && previouslyPlacedBlockID != -1) {
             previouslyPlacedBlock = false;
-            if (booleanOptions.get(ControlPackEnumOptions.AUTOBLOCK)) {
+            if (ControlPackOptions.booleanOptions.get(ControlPackEnumOptions.AUTOBLOCK)) {
                 runAutoBlockOnExpend();
             }
         }
@@ -312,7 +304,7 @@ public class ControlPackMain implements Runnable {
             previouslyPlacedBlockID = stack == null ? -1 : Item.getIdFromItem(stack.getItem());
          }
 		 
-		if (booleanOptions.get(ControlPackEnumOptions.HOLDTOATTACK) && mc.gameSettings.keyBindAttack.isKeyDown()) {
+		if (ControlPackOptions.booleanOptions.get(ControlPackEnumOptions.HOLDTOATTACK) && mc.gameSettings.keyBindAttack.isKeyDown()) {
 			if (--toggleCounter <= 0) {
 				// holding down attach should also mean toggle attack!
 				keyBindingSetPressTime(mc.gameSettings.keyBindAttack,1);
@@ -325,7 +317,7 @@ public class ControlPackMain implements Runnable {
         
         if (!nagged) {
             nagged = true;
-            if (booleanOptions.get(ControlPackEnumOptions.WELCOMENAG)) {
+            if (ControlPackOptions.booleanOptions.get(ControlPackEnumOptions.WELCOMENAG)) {
                 chatMsg("Thanks for using ControlPack. Hit ALT+C to configure it.         I will nag you until you do :)");
             }
         }
@@ -430,229 +422,19 @@ public class ControlPackMain implements Runnable {
 	}
 	
 		
-    public void loadOptions() {
-        try {
-			lastBounds = new Rectangle();
-			lastPositionExists = false;
-            
-            // load defaults
-            floatOptions = new HashMap<ControlPackEnumOptions, Float>();
-			floatOptions.put(ControlPackEnumOptions.VOLUMERAIN, 1.0F);
-			floatOptions.put(ControlPackEnumOptions.VOLUMEPISTON, 1.0F);
-			floatOptions.put(ControlPackEnumOptions.VOLUMESPLASH, 1.0F);
-			floatOptions.put(ControlPackEnumOptions.VOLUMEWATER, 1.0F);
-			floatOptions.put(ControlPackEnumOptions.VOLUMEDOOR, 1.0F);
-			floatOptions.put(ControlPackEnumOptions.VOLUMEEXPLODE, 1.0F);
-			floatOptions.put(ControlPackEnumOptions.VOLUMEBOW, 1.0F);
-			floatOptions.put(ControlPackEnumOptions.VOLUMEPORTAL, 1.0F);
-			floatOptions.put(ControlPackEnumOptions.VOLUMEEATDRINK, 1.0F);
-			floatOptions.put(ControlPackEnumOptions.VOLUMEANIMALS, 1.0F);
-			floatOptions.put(ControlPackEnumOptions.VOLUMESLIME, 1.0F);
-			floatOptions.put(ControlPackEnumOptions.VOLUMEHIT, 1.0F);
-			floatOptions.put(ControlPackEnumOptions.VOLUMEDIG, 1.0F);
-			floatOptions.put(ControlPackEnumOptions.VOLUMESTEP, 1.0F);	
-            
-            stringOptions = new HashMap<ControlPackEnumOptions, String>();
-            stringOptions.put(ControlPackEnumOptions.WAYPOINT1, "");
-            stringOptions.put(ControlPackEnumOptions.WAYPOINT2, "");
-            stringOptions.put(ControlPackEnumOptions.WAYPOINT3, "");
-            stringOptions.put(ControlPackEnumOptions.WAYPOINT4, "");
-            stringOptions.put(ControlPackEnumOptions.WAYPOINT5, "");
-            stringOptions.put(ControlPackEnumOptions.WAYPOINTNETHER1, "");
-            stringOptions.put(ControlPackEnumOptions.WAYPOINTNETHER2, "");
-            stringOptions.put(ControlPackEnumOptions.WAYPOINTNETHER3, "");
-            stringOptions.put(ControlPackEnumOptions.WAYPOINTNETHER4, "");
-            stringOptions.put(ControlPackEnumOptions.WAYPOINTNETHER5, "");
-			
-			stringOptions.put(ControlPackEnumOptions.ITEM_SWORDS, "");
-			stringOptions.put(ControlPackEnumOptions.COORDINATE_FORMAT, "{X}, {Z}, {Y}");
 
-            stringOptions.put(ControlPackEnumOptions.WAYPOINTNAME1, "");
-            stringOptions.put(ControlPackEnumOptions.WAYPOINTNAME2, "");
-            stringOptions.put(ControlPackEnumOptions.WAYPOINTNAME3, "");
-            stringOptions.put(ControlPackEnumOptions.WAYPOINTNAME4, "");
-            stringOptions.put(ControlPackEnumOptions.WAYPOINTNAME5, "");
-            stringOptions.put(ControlPackEnumOptions.WAYPOINTNETHERNAME1, "");
-            stringOptions.put(ControlPackEnumOptions.WAYPOINTNETHERNAME2, "");
-            stringOptions.put(ControlPackEnumOptions.WAYPOINTNETHERNAME3, "");
-            stringOptions.put(ControlPackEnumOptions.WAYPOINTNETHERNAME4, "");
-            stringOptions.put(ControlPackEnumOptions.WAYPOINTNETHERNAME5, "");
-            
-            booleanOptions = new HashMap<ControlPackEnumOptions, Boolean>();
-            //booleanOptions.put(ControlPackEnumOptions.LESSRAIN, true);
-            booleanOptions.put(ControlPackEnumOptions.FRONTVIEW, true);
-            booleanOptions.put(ControlPackEnumOptions.WINDOWRESTORE, true);
-            booleanOptions.put(ControlPackEnumOptions.SMARTFURNACE, true);
-			booleanOptions.put(ControlPackEnumOptions.HOLDTOATTACK, false);
-            booleanOptions.put(ControlPackEnumOptions.LOOKBEHINDBACK, true);
-			booleanOptions.put(ControlPackEnumOptions.AUTOTOOL, true);
-			booleanOptions.put(ControlPackEnumOptions.AUTOSWORD, true);
-			booleanOptions.put(ControlPackEnumOptions.AUTOBLOCK, true);
-			//booleanOptions.put(ControlPackEnumOptions.VOIDFOG, true);
-			booleanOptions.put(ControlPackEnumOptions.USECOUNT, true);
-            booleanOptions.put(ControlPackEnumOptions.WELCOMENAG, true);
-			//booleanOptions.put(ControlPackEnumOptions.SOUNDMANAGER, true);
-			booleanOptions.put(ControlPackEnumOptions.CORPSELOCATION, true);
-            
-            booleanOptions.put(ControlPackEnumOptions.WAYPOINTHUD1, true);
-            booleanOptions.put(ControlPackEnumOptions.WAYPOINTHUD2, true);
-            booleanOptions.put(ControlPackEnumOptions.WAYPOINTHUD3, true);
-            booleanOptions.put(ControlPackEnumOptions.WAYPOINTHUD4, true);
-            booleanOptions.put(ControlPackEnumOptions.WAYPOINTHUD5, true);
-            booleanOptions.put(ControlPackEnumOptions.WAYPOINTNETHERHUD1, true);
-            booleanOptions.put(ControlPackEnumOptions.WAYPOINTNETHERHUD2, true);
-            booleanOptions.put(ControlPackEnumOptions.WAYPOINTNETHERHUD3, true);
-            booleanOptions.put(ControlPackEnumOptions.WAYPOINTNETHERHUD4, true);
-            booleanOptions.put(ControlPackEnumOptions.WAYPOINTNETHERHUD5, true);
-            
-            intOptions = new HashMap<ControlPackEnumOptions, Integer>();
-            intOptions.put(ControlPackEnumOptions.AUTOTOOLMODE, 0);
-            intOptions.put(ControlPackEnumOptions.AUTOBLOCKMODE, 0);
-            intOptions.put(ControlPackEnumOptions.STATUSLOCATION, 0);
-            intOptions.put(ControlPackEnumOptions.COORDINATESLOCATION, 1);
-
-            intOptionsMaxValue = new HashMap<ControlPackEnumOptions, Integer>();
-            intOptionsMaxValue.put(ControlPackEnumOptions.AUTOTOOLMODE, 3);
-            intOptionsMaxValue.put(ControlPackEnumOptions.AUTOBLOCKMODE, 10);
-            intOptionsMaxValue.put(ControlPackEnumOptions.STATUSLOCATION, 4);
-            intOptionsMaxValue.put(ControlPackEnumOptions.COORDINATESLOCATION, 4);
-            
-            if(!optionsFile.exists()) {
-                return;
-            }
-            BufferedReader bufferedreader = new BufferedReader(new FileReader(optionsFile));
-            for(String s = ""; (s = bufferedreader.readLine()) != null;) {
-                try {
-                    String as[] = s.split(":");
-					if (as.length < 2) continue;
-					
-                    if(as[0].equals("last-fullscreen")) {
-                        lastFullscreen = as[1].equals("true");
-                    }
-					else if(as[0].equals("last-pos-x")) {
-						lastBounds.x = Integer.parseInt(as[1]);
-						lastPositionExists = true;
-					}
-					else if(as[0].equals("last-pos-y")) {
-						lastBounds.y = Integer.parseInt(as[1]);
-						lastPositionExists = true;
-					}
-					else if(as[0].equals("last-width")) {
-						lastBounds.width = Integer.parseInt(as[1]);
-						lastPositionExists = true;
-					}
-					else if(as[0].equals("last-height")) {
-						lastBounds.height = Integer.parseInt(as[1]);
-						lastPositionExists = true;
-					}
-					else if(as[0].equals("last-windowstate")) {
-						lastWindowState = Integer.parseInt(as[1]);
-						lastPositionExists = true;
-					}
-					else {
-                        ControlPackEnumOptions option = ControlPackEnumOptions.getOption(as[0]);
-                        if (option != null) {
-                            if (option.getIsBool()) {
-                                booleanOptions.put(option, as[1].equals("true"));
-                            }
-                            else if (option.getIsFloat()) {
-                                floatOptions.put(option, Float.parseFloat(as[1]));
-                            }
-                            else if (option.getIsString()) {
-                                stringOptions.put(option, as[1]);
-                            }
-                            else {
-                                intOptions.put(option, Integer.parseInt(as[1]));
-                            }
-                        }
-					}
-                    
-                    int i = 0;
-                    while(i < keyBindings.length) {
-                        if(as[0].equals((new StringBuilder()).append(keyBindings[i].getKeyDescription()).toString())) {
-                            keyBindings[i].setKeyCode(Integer.parseInt(as[1]));
-                        }
-                        i++;
-                    }
-                }
-                catch(Exception ex) {
-                    System.out.println((new StringBuilder("Skipping bad controlpack option: ")).append(s).append(" --> ").append(ex.toString()).toString());
-                }
-            }
-
-            bufferedreader.close();
-        }
-        catch(Exception exception)
-        {
-            System.out.println("Failed to load options");
-            exception.printStackTrace();
-        }
-    }	
-	
-	public void saveOptions() {
-        try {
-            PrintWriter printwriter = new PrintWriter(new FileWriter(optionsFile));
-            printwriter.println((new StringBuilder("last-fullscreen:")).append(lastFullscreen).toString());
-            printwriter.println((new StringBuilder("last-pos-x:")).append(lastBounds.x).toString());
-            printwriter.println((new StringBuilder("last-pos-y:")).append(lastBounds.y).toString());
-            printwriter.println((new StringBuilder("last-width:")).append(lastBounds.width).toString());
-            printwriter.println((new StringBuilder("last-height:")).append(lastBounds.height).toString());
-            printwriter.println((new StringBuilder("last-windowstate:")).append(lastWindowState).toString());
-            for(int i = 0; i < keyBindings.length; i++) {
-                printwriter.println((new StringBuilder()).append(keyBindings[i].getKeyDescription()).append(":").append(keyBindings[i].getKeyCode()).toString());
-            }
-            
-			Enumeration<ControlPackEnumOptions> keys = Collections.enumeration(floatOptions.keySet());
-			while(keys.hasMoreElements()) {
-			  Object key = keys.nextElement();
-              ControlPackEnumOptions option = (ControlPackEnumOptions) key;
-			  Float value = floatOptions.get(option);
-			  printwriter.println((new StringBuilder(option.getName()).append(":").append(value)).toString());
-			}
-            
-			keys = Collections.enumeration(booleanOptions.keySet());
-			while(keys.hasMoreElements()) {
-			  Object key = keys.nextElement();
-              ControlPackEnumOptions option = (ControlPackEnumOptions) key;
-			  Boolean value = booleanOptions.get(option);
-			  printwriter.println((new StringBuilder(option.getName()).append(":").append(value)).toString());
-			}
-            
-			keys = Collections.enumeration(intOptions.keySet());
-			while(keys.hasMoreElements()) {
-			  Object key = keys.nextElement();
-              ControlPackEnumOptions option = (ControlPackEnumOptions) key;
-			  int value = intOptions.get(option);
-			  printwriter.println((new StringBuilder(option.getName()).append(":").append(value)).toString());
-			}
-            
-			keys = Collections.enumeration(stringOptions.keySet());
-			while(keys.hasMoreElements()) {
-			  Object key = keys.nextElement();
-              ControlPackEnumOptions option = (ControlPackEnumOptions) key;
-			  String value = stringOptions.get(option);
-			  printwriter.println((new StringBuilder(option.getName()).append(":").append(value)).toString());
-			}
-            
-            printwriter.close();
-        }
-        catch(Exception exception) {
-            System.out.println("Failed to save controlpack options");
-            exception.printStackTrace();
-        }
-    }	
 	
 	public void applyLastWindowSize() {
-		if (booleanOptions.get(ControlPackEnumOptions.WINDOWRESTORE) && lastPositionExists) {
+		if (ControlPackOptions.booleanOptions.get(ControlPackEnumOptions.WINDOWRESTORE) && ControlPackOptions.booleanOptions.get(ControlPackEnumOptions.LASTPOSITIONEXISTS)) {
 			try {
-				if (lastFullscreen) {
+				if (ControlPackOptions.booleanOptions.get(ControlPackEnumOptions.LASTFULLSCREEN)) {
 					if (!Display.isFullscreen()) {
 						mc.toggleFullscreen();
 					}
 				}
 				else {					
-					Display.setLocation(lastBounds.x, lastBounds.y);
-					Display.setDisplayMode(new DisplayMode(lastBounds.width, lastBounds.height));
+					Display.setLocation(ControlPackOptions.intOptions.get(ControlPackEnumOptions.LASTBOUNDSX), ControlPackOptions.intOptions.get(ControlPackEnumOptions.LASTBOUNDSY));
+					Display.setDisplayMode(new DisplayMode(ControlPackOptions.intOptions.get(ControlPackEnumOptions.LASTBOUNDSW), ControlPackOptions.intOptions.get(ControlPackEnumOptions.LASTBOUNDSH)));
 					IMinecraft imc = (IMinecraft)mc;
 					imc.pubCheckWindowResize();
 				}
@@ -665,13 +447,20 @@ public class ControlPackMain implements Runnable {
 	
 	public void checkGame() {
 		try {
-			Rectangle bounds = new Rectangle(Display.getX(), Display.getY(), Display.getWidth(), Display.getHeight());
-			if (!bounds.equals(lastBounds) || (lastFullscreen != Display.isFullscreen())) {
-				lastFullscreen = Display.isFullscreen();
-				if (!lastFullscreen) {
-					lastBounds = bounds;
+			int displayX = Display.getX(); 
+			int displayY = Display.getY();
+			int displayW = Display.getWidth(); 
+			int displayH = Display.getHeight();
+			if (ControlPackOptions.intOptions.get(ControlPackEnumOptions.LASTBOUNDSX) != displayX || ControlPackOptions.intOptions.get(ControlPackEnumOptions.LASTBOUNDSY) != displayY || ControlPackOptions.intOptions.get(ControlPackEnumOptions.LASTBOUNDSW) != displayW || ControlPackOptions.intOptions.get(ControlPackEnumOptions.LASTBOUNDSH) != displayH || (ControlPackOptions.booleanOptions.get(ControlPackEnumOptions.LASTFULLSCREEN) != Display.isFullscreen())) {
+				ControlPackOptions.booleanOptions.put(ControlPackEnumOptions.LASTFULLSCREEN, Display.isFullscreen());
+				if (!ControlPackOptions.booleanOptions.get(ControlPackEnumOptions.LASTFULLSCREEN)) {
+					ControlPackOptions.intOptions.put(ControlPackEnumOptions.LASTBOUNDSX, displayX);
+					ControlPackOptions.intOptions.put(ControlPackEnumOptions.LASTBOUNDSY, displayY);
+					ControlPackOptions.intOptions.put(ControlPackEnumOptions.LASTBOUNDSW, displayW);
+					ControlPackOptions.intOptions.put(ControlPackEnumOptions.LASTBOUNDSH, displayH);
 				}
-				saveOptions();
+				ControlPackOptions.booleanOptions.put(ControlPackEnumOptions.LASTPOSITIONEXISTS, true);
+				ControlPackOptions.saveOptions();
 			}
 		}
 		catch(Exception ex) {
@@ -722,7 +511,7 @@ public class ControlPackMain implements Runnable {
 		try {
 			ControlPackEnumOptions setting = volumeSettingsMap.get(name);
 			if (setting == null) { return 1F; }
-			float vol = floatOptions.get(setting);
+			float vol = ControlPackOptions.floatOptions.get(setting);
 			return vol;
 		}
 		catch(Exception ex) {
@@ -776,7 +565,7 @@ public class ControlPackMain implements Runnable {
 	
 	private boolean isSword(Item item) {
 		if (item instanceof ItemSword) return true;
-		String swordIdList = "," + stringOptions.get(ControlPackEnumOptions.ITEM_SWORDS) + ",";
+		String swordIdList = "," + ControlPackOptions.stringOptions.get(ControlPackEnumOptions.ITEM_SWORDS) + ",";
 		return swordIdList.contains("," + Item.getIdFromItem(item) + ",");
 	}
 	
@@ -836,7 +625,7 @@ public class ControlPackMain implements Runnable {
 			// both items can harvest it, so it's better if it has greater strength against the block (block has lower strength rating with it)
 			float testStrength = blockStrength(block, testTool);
 			float existingStrength = blockStrength(block, tool);
-            Integer mode = intOptions.get(ControlPackEnumOptions.AUTOTOOLMODE);
+            Integer mode = ControlPackOptions.intOptions.get(ControlPackEnumOptions.AUTOTOOLMODE);
             if (mode == 0) { // weakest
                 if (testStrength < existingStrength) {
                     return true;
@@ -880,7 +669,7 @@ public class ControlPackMain implements Runnable {
             }
             
             // tool vs tool (both good ones)
-            Integer mode = intOptions.get(ControlPackEnumOptions.AUTOTOOLMODE);
+            Integer mode = ControlPackOptions.intOptions.get(ControlPackEnumOptions.AUTOTOOLMODE);
             if (mode == 0) { // weakest
                 if (testStrength < existingStrength) {
                     return true;
@@ -911,7 +700,7 @@ public class ControlPackMain implements Runnable {
 			return true;
 		}
 		
-		Integer mode = intOptions.get(ControlPackEnumOptions.AUTOTOOLMODE);
+		Integer mode = ControlPackOptions.intOptions.get(ControlPackEnumOptions.AUTOTOOLMODE);
 		if (mode == 0) { // weakest
 			if (testTool.getMaxDamage() < tool.getMaxDamage()) {
 				return true;
@@ -997,7 +786,7 @@ public class ControlPackMain implements Runnable {
 	}
 	
 	private boolean swapToBestSword() {
-        Integer mode = intOptions.get(ControlPackEnumOptions.AUTOTOOLMODE);
+        Integer mode = ControlPackOptions.intOptions.get(ControlPackEnumOptions.AUTOTOOLMODE);
 
         if (mode == 2) {
             // first
@@ -1032,7 +821,7 @@ public class ControlPackMain implements Runnable {
 	}
     
 	private boolean swapToBestTool(Block block, Item currentItem, int currentItemIndex) {
-        Integer mode = intOptions.get(ControlPackEnumOptions.AUTOTOOLMODE);
+        Integer mode = ControlPackOptions.intOptions.get(ControlPackEnumOptions.AUTOTOOLMODE);
 
         if (mode == 2) {
             // first
@@ -1180,13 +969,13 @@ public class ControlPackMain implements Runnable {
 		// currently mining? and not using swap command?
 		if (swappedInventoryState == 0 && (proactive || mc.gameSettings.keyBindAttack.isKeyDown()) && mc.objectMouseOver != null) {
 			// get the block being targetted
-			if (!mc.playerController.isInCreativeMode() && booleanOptions.get(ControlPackEnumOptions.AUTOTOOL) && mc.objectMouseOver.typeOfHit == MovingObjectType.BLOCK) {
+			if (!mc.playerController.isInCreativeMode() && ControlPackOptions.booleanOptions.get(ControlPackEnumOptions.AUTOTOOL) && mc.objectMouseOver.typeOfHit == MovingObjectType.BLOCK) {
 				Block block = mc.theWorld.getBlockState(mc.objectMouseOver.getBlockPos()).getBlock();
 				if (block != null) {
 					ensureCorrectToolSelected(block);
 				}
 			}
-			else if (booleanOptions.get(ControlPackEnumOptions.AUTOSWORD) && (mc.objectMouseOver.typeOfHit == MovingObjectType.ENTITY && mc.objectMouseOver.entityHit instanceof EntityLivingBase)) {
+			else if (ControlPackOptions.booleanOptions.get(ControlPackEnumOptions.AUTOSWORD) && (mc.objectMouseOver.typeOfHit == MovingObjectType.ENTITY && mc.objectMouseOver.entityHit instanceof EntityLivingBase)) {
 				ensureSwordSelected();
 			}
 			// fyi change item: thePlayer.inventory.changeCurrentItem(k);, or thePlayer.inventory.currentItem = i;
@@ -1257,7 +1046,7 @@ public class ControlPackMain implements Runnable {
         // See if they have a tool currently selected, which won't do anything.
         ItemStack currentItem = mc.thePlayer.inventory.getCurrentItem();
         if (currentItem == null || isTool(currentItem.getItem())) {
-            Integer mode = intOptions.get(ControlPackEnumOptions.AUTOBLOCKMODE);
+            Integer mode = ControlPackOptions.intOptions.get(ControlPackEnumOptions.AUTOBLOCKMODE);
             //int foundBlockId = -1;
             if (mode == 0) { // leftmost
                 for (int i = 0; i < 9; i++) {
@@ -1330,7 +1119,7 @@ public class ControlPackMain implements Runnable {
         int currentY = (int) Math.ceil(currentPos.getY()) - 1;
         int currentZ = (int) Math.ceil(currentPos.getZ()) - 1;
 		if (shouldFormat) {
-			return stringOptions.get(ControlPackEnumOptions.COORDINATE_FORMAT).replace("{X}", ""+currentX).replace("{Y}", ""+currentY).replace("{Z}", ""+currentZ);
+			return ControlPackOptions.stringOptions.get(ControlPackEnumOptions.COORDINATE_FORMAT).replace("{X}", ""+currentX).replace("{Y}", ""+currentY).replace("{Z}", ""+currentZ);
 		}
 		else {
 			return currentX + ", " + currentZ + ", " + currentY;
@@ -1460,21 +1249,21 @@ public class ControlPackMain implements Runnable {
 	
 	private void addDeathWaypoint() {
 		boolean isNether = ControlPackMain.mc.theWorld != null && (mc.theWorld.provider.getDimensionName() == "Nether");
-		ControlPackEnumOptions[] nameoptions = isNether ? this.waypointNetherNameOptions : this.waypointNameOptions;
-		ControlPackEnumOptions[] locationoptions = isNether ? this.waypointNetherOptions : this.waypointOptions;
-		ControlPackEnumOptions[] hudoptions = isNether ? this.waypointNetherHUDOptions : this.waypointHUDOptions;
+		ControlPackEnumOptions[] nameoptions = isNether ? ControlPackOptions.waypointNetherNameOptions : ControlPackOptions.waypointNameOptions;
+		ControlPackEnumOptions[] locationoptions = isNether ? ControlPackOptions.waypointNetherOptions : ControlPackOptions.waypointOptions;
+		ControlPackEnumOptions[] hudoptions = isNether ? ControlPackOptions.waypointNetherHUDOptions : ControlPackOptions.waypointHUDOptions;
 		
 		// find 'corpse' waypoint
 		for (int i = 0; i < nameoptions.length; i++) {
 			ControlPackEnumOptions locationOption = locationoptions[i];
 			ControlPackEnumOptions nameoption = nameoptions[i];
 			ControlPackEnumOptions hudoption = hudoptions[i];
-			String name = stringOptions.get(nameoption);
+			String name = ControlPackOptions.stringOptions.get(nameoption);
 			if (name.equals("Corpse")) {
 				String newPoint = this.getLocation(false);
-				this.stringOptions.put(locationOption, newPoint);
-				this.booleanOptions.put(hudoption, true);
-				saveOptions();
+				ControlPackOptions.stringOptions.put(locationOption, newPoint);
+				ControlPackOptions.booleanOptions.put(hudoption, true);
+				ControlPackOptions.saveOptions();
 				return;
 			}
 		}
@@ -1484,13 +1273,13 @@ public class ControlPackMain implements Runnable {
 			ControlPackEnumOptions locationOption = locationoptions[i];
 			ControlPackEnumOptions nameoption = nameoptions[i];
 			ControlPackEnumOptions hudoption = hudoptions[i];
-			String name = stringOptions.get(nameoption);
+			String name = ControlPackOptions.stringOptions.get(nameoption);
 			if (name == null || name.length() == 0) {
 				String newPoint = this.getLocation(false);
-				this.stringOptions.put(nameoption, "Corpse");
-				this.stringOptions.put(locationOption, newPoint);
-				this.booleanOptions.put(hudoption, true);
-				saveOptions();
+				ControlPackOptions.stringOptions.put(nameoption, "Corpse");
+				ControlPackOptions.stringOptions.put(locationOption, newPoint);
+				ControlPackOptions.booleanOptions.put(hudoption, true);
+				ControlPackOptions.saveOptions();
 				return;
 			}
 		}
@@ -1499,7 +1288,7 @@ public class ControlPackMain implements Runnable {
 	
 	private boolean deathKnown;
 	private void setDeathWaypoint() {
-		if (booleanOptions.get(ControlPackEnumOptions.CORPSELOCATION)) {
+		if (ControlPackOptions.booleanOptions.get(ControlPackEnumOptions.CORPSELOCATION)) {
 			if (!mc.thePlayer.isEntityAlive()) {
 				if (!deathKnown) {
 					addDeathWaypoint();
@@ -1596,7 +1385,7 @@ public class ControlPackMain implements Runnable {
             return true;
         }
        
-        if (code == Keyboard.KEY_F5 && down && booleanOptions.get(ControlPackEnumOptions.FRONTVIEW)) {
+        if (code == Keyboard.KEY_F5 && down && ControlPackOptions.booleanOptions.get(ControlPackEnumOptions.FRONTVIEW)) {
             toggleThirdPersonView();
             return true;
         }
@@ -1633,8 +1422,8 @@ public class ControlPackMain implements Runnable {
         // open controlpack options
         if (down && altKey && code == Keyboard.KEY_C) {
             // open controlpack options gui
-            booleanOptions.put(ControlPackEnumOptions.WELCOMENAG, false);
-            saveOptions();
+        	ControlPackOptions.booleanOptions.put(ControlPackEnumOptions.WELCOMENAG, false);
+            ControlPackOptions.saveOptions();
             mc.displayGuiScreen(new GuiControlPack());
 			altKey = false;
             return true;
@@ -1642,40 +1431,40 @@ public class ControlPackMain implements Runnable {
 
         if (down && altKey && code == Keyboard.KEY_T) {
             // toggle auto tool
-            boolean enabled = !booleanOptions.get(ControlPackEnumOptions.AUTOTOOL);
-            booleanOptions.put(ControlPackEnumOptions.AUTOTOOL, enabled);
+            boolean enabled = !ControlPackOptions.booleanOptions.get(ControlPackEnumOptions.AUTOTOOL);
+            ControlPackOptions.booleanOptions.put(ControlPackEnumOptions.AUTOTOOL, enabled);
             chatMsg("Auto Tool " + (enabled ? "ENABLED" : "DISABLED"));
-            saveOptions();
+            ControlPackOptions.saveOptions();
             return true;
         }
         if (down && altKey && code == Keyboard.KEY_S) {
             // toggle auto sword
-            boolean enabled = !booleanOptions.get(ControlPackEnumOptions.AUTOSWORD);
-            booleanOptions.put(ControlPackEnumOptions.AUTOSWORD, enabled);
+            boolean enabled = !ControlPackOptions.booleanOptions.get(ControlPackEnumOptions.AUTOSWORD);
+            ControlPackOptions.booleanOptions.put(ControlPackEnumOptions.AUTOSWORD, enabled);
             chatMsg("Auto Sword " + (enabled ? "ENABLED" : "DISABLED"));
-            saveOptions();
+            ControlPackOptions.saveOptions();
             return true;
         }
         if (down && altKey && code == Keyboard.KEY_B) {
             // toggle auto block
-            boolean enabled = !booleanOptions.get(ControlPackEnumOptions.AUTOBLOCK);
-            booleanOptions.put(ControlPackEnumOptions.AUTOBLOCK, enabled);
+            boolean enabled = !ControlPackOptions.booleanOptions.get(ControlPackEnumOptions.AUTOBLOCK);
+            ControlPackOptions. booleanOptions.put(ControlPackEnumOptions.AUTOBLOCK, enabled);
             chatMsg("Auto Block " + (enabled ? "ENABLED" : "DISABLED"));
-            saveOptions();
+            ControlPackOptions. saveOptions();
             return true;
         }		
 		if (down && altKey && code == Keyboard.KEY_R) {
 			// cycle auto tool mode
-            int mode = intOptions.get(ControlPackEnumOptions.AUTOTOOLMODE);
+            int mode = ControlPackOptions.intOptions.get(ControlPackEnumOptions.AUTOTOOLMODE);
 			mode++;
-			int max = intOptionsMaxValue.get(ControlPackEnumOptions.AUTOTOOLMODE);
+			int max = ControlPackOptions.intOptionsMaxValue.get(ControlPackEnumOptions.AUTOTOOLMODE);
 			if (mode > max) {
 				mode = 0;
 			}
-			intOptions.put(ControlPackEnumOptions.AUTOTOOLMODE, mode);
+			ControlPackOptions.intOptions.put(ControlPackEnumOptions.AUTOTOOLMODE, mode);
             chatMsg("Auto Tool Mode = " + getIntOptionDesc(ControlPackEnumOptions.AUTOTOOLMODE, mode));
             
-            saveOptions();
+            ControlPackOptions.saveOptions();
             return true;
 		}
 
@@ -1710,7 +1499,7 @@ public class ControlPackMain implements Runnable {
         }
         
         // if pressing forward and back at the same time, lookbehind
-        if (mc.gameSettings.thirdPersonView == 0 && booleanOptions.get(ControlPackEnumOptions.LOOKBEHINDBACK) && (code == mc.gameSettings.keyBindForward.getKeyCode() || code == mc.gameSettings.keyBindBack.getKeyCode())) {
+        if (mc.gameSettings.thirdPersonView == 0 && ControlPackOptions.booleanOptions.get(ControlPackEnumOptions.LOOKBEHINDBACK) && (code == mc.gameSettings.keyBindForward.getKeyCode() || code == mc.gameSettings.keyBindBack.getKeyCode())) {
             boolean wasLookBehind = lookBehind;
             lookBehind = keyBindingIsDown(mc.gameSettings.keyBindForward) && keyBindingIsDown(mc.gameSettings.keyBindBack);
             lookBehindProgressTicksLast = System.currentTimeMillis();
@@ -1732,7 +1521,7 @@ public class ControlPackMain implements Runnable {
                 }
             }
             
-            if (booleanOptions.get(ControlPackEnumOptions.AUTOBLOCK) && code == mc.gameSettings.keyBindUseItem.getKeyCode()) {
+            if (ControlPackOptions.booleanOptions.get(ControlPackEnumOptions.AUTOBLOCK) && code == mc.gameSettings.keyBindUseItem.getKeyCode()) {
                 // they right clicked.
                 runAutoBlock();
                 
@@ -1831,15 +1620,15 @@ public class ControlPackMain implements Runnable {
     public String getOptionDesc(ControlPackEnumOptions option) {
         String s = (new StringBuilder()).append(translate(option.getLocKey())).append(": ").toString();
         if (option.getIsBool()) {
-            boolean value = booleanOptions.get(option);
+            boolean value = ControlPackOptions.booleanOptions.get(option);
             s += (value ? "ON" : "OFF");
         }
         else if (option.getIsFloat()) {
-            float value = floatOptions.get(option);
+            float value = ControlPackOptions.floatOptions.get(option);
             s += ((int)(value * 100)) + "%";
         }
         else {
-            Integer value = intOptions.get(option);
+            Integer value = ControlPackOptions.intOptions.get(option);
             s += " " + getIntOptionDesc(option, value);
         }
         return s;
@@ -1974,12 +1763,6 @@ public class ControlPackMain implements Runnable {
 	public float pitchSpeed = 0.2f;
 	public float yawSpeed = 0.2f;
 	
-    private File optionsFile;
-    private Rectangle lastBounds;
-    private boolean lastFullscreen;
-    private boolean lastPositionExists;
-    private int lastWindowState;
-    
     private boolean toggleGammaState;
     private float originalGamma;
     
@@ -1994,104 +1777,9 @@ public class ControlPackMain implements Runnable {
 	public boolean cameraStandMode;
 	public boolean renderingWorld;
 
-    
     private boolean previouslyPlacedBlock;
     private int previouslyPlacedBlockID;
     
-    public ControlPackEnumOptions allOptions[] = new ControlPackEnumOptions[] {
-		ControlPackEnumOptions.AUTOTOOL,
-        ControlPackEnumOptions.AUTOTOOLMODE,
-		ControlPackEnumOptions.AUTOBLOCK,
-		ControlPackEnumOptions.AUTOBLOCKMODE,
-		ControlPackEnumOptions.AUTOSWORD,
-        ControlPackEnumOptions.LOOKBEHINDBACK,
-        ControlPackEnumOptions.FRONTVIEW, ControlPackEnumOptions.WINDOWRESTORE,
-        ControlPackEnumOptions.SMARTFURNACE,
-		ControlPackEnumOptions.HOLDTOATTACK,
-        //ControlPackEnumOptions.LESSRAIN, 
-		ControlPackEnumOptions.USECOUNT,
-        ControlPackEnumOptions.STATUSLOCATION,
-        ControlPackEnumOptions.COORDINATESLOCATION,
-        //ControlPackEnumOptions.VOIDFOG,
-		ControlPackEnumOptions.CORPSELOCATION
-    };
-	
-	public ControlPackEnumOptions itemOptions[] = new ControlPackEnumOptions[] {
-		ControlPackEnumOptions.ITEM_SWORDS,
-		ControlPackEnumOptions.COORDINATE_FORMAT
-	};
-	
-    public ControlPackEnumOptions volumeOptions[] = new ControlPackEnumOptions[] {
-        ControlPackEnumOptions.VOLUMERAIN,
-        ControlPackEnumOptions.VOLUMEPISTON,
-        ControlPackEnumOptions.VOLUMESPLASH,
-		ControlPackEnumOptions.VOLUMEWATER,
-		ControlPackEnumOptions.VOLUMEDOOR,
-		ControlPackEnumOptions.VOLUMEEXPLODE,
-		ControlPackEnumOptions.VOLUMEBOW,
-        ControlPackEnumOptions.VOLUMEPORTAL,
-        ControlPackEnumOptions.VOLUMEEATDRINK,
-        ControlPackEnumOptions.VOLUMEANIMALS,
-        ControlPackEnumOptions.VOLUMESLIME,
-        ControlPackEnumOptions.VOLUMEHIT,
-		ControlPackEnumOptions.VOLUMEDIG,
-		ControlPackEnumOptions.VOLUMESTEP
-    };	
-    
-    public ControlPackEnumOptions waypointOptions[] = new ControlPackEnumOptions[] {
-        ControlPackEnumOptions.WAYPOINT1,
-        ControlPackEnumOptions.WAYPOINT2,
-        ControlPackEnumOptions.WAYPOINT3,
-        ControlPackEnumOptions.WAYPOINT4,
-        ControlPackEnumOptions.WAYPOINT5
-    };
-
-    public ControlPackEnumOptions waypointNetherOptions[] = new ControlPackEnumOptions[] {
-        ControlPackEnumOptions.WAYPOINTNETHER1,
-        ControlPackEnumOptions.WAYPOINTNETHER2,
-        ControlPackEnumOptions.WAYPOINTNETHER3,
-        ControlPackEnumOptions.WAYPOINTNETHER4,
-        ControlPackEnumOptions.WAYPOINTNETHER5
-    };
-    
-    public ControlPackEnumOptions waypointNameOptions[] = new ControlPackEnumOptions[] {
-        ControlPackEnumOptions.WAYPOINTNAME1,
-        ControlPackEnumOptions.WAYPOINTNAME2,
-        ControlPackEnumOptions.WAYPOINTNAME3,
-        ControlPackEnumOptions.WAYPOINTNAME4,
-        ControlPackEnumOptions.WAYPOINTNAME5
-    };
-
-    public ControlPackEnumOptions waypointNetherNameOptions[] = new ControlPackEnumOptions[] {
-        ControlPackEnumOptions.WAYPOINTNETHERNAME1,
-        ControlPackEnumOptions.WAYPOINTNETHERNAME2,
-        ControlPackEnumOptions.WAYPOINTNETHERNAME3,
-        ControlPackEnumOptions.WAYPOINTNETHERNAME4,
-        ControlPackEnumOptions.WAYPOINTNETHERNAME5
-    };
-    
-    public ControlPackEnumOptions waypointHUDOptions[] = new ControlPackEnumOptions[] {
-        ControlPackEnumOptions.WAYPOINTHUD1,
-        ControlPackEnumOptions.WAYPOINTHUD2,
-        ControlPackEnumOptions.WAYPOINTHUD3,
-        ControlPackEnumOptions.WAYPOINTHUD4,
-        ControlPackEnumOptions.WAYPOINTHUD5
-    };
-   
-    public ControlPackEnumOptions waypointNetherHUDOptions[] = new ControlPackEnumOptions[] {
-        ControlPackEnumOptions.WAYPOINTNETHERHUD1,
-        ControlPackEnumOptions.WAYPOINTNETHERHUD2,
-        ControlPackEnumOptions.WAYPOINTNETHERHUD3,
-        ControlPackEnumOptions.WAYPOINTNETHERHUD4,
-        ControlPackEnumOptions.WAYPOINTNETHERHUD5
-    };
-   
-    
-    public Map<ControlPackEnumOptions, Float> floatOptions;
-    public Map<ControlPackEnumOptions, Boolean> booleanOptions;
-    public Map<ControlPackEnumOptions, String> stringOptions;
-    public Map<ControlPackEnumOptions, Integer> intOptions;
-    public Map<ControlPackEnumOptions, Integer> intOptionsMaxValue;
     public Map<String, ControlPackEnumOptions> volumeSettingsMap;
 }
 

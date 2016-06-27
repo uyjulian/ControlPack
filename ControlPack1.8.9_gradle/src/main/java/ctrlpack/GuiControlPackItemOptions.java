@@ -15,7 +15,7 @@ import net.minecraft.client.gui.GuiScreen;
 public class GuiControlPackItemOptions extends GuiControlPackOptions {
     public GuiControlPackItemOptions(GuiScreen parent) {
 		super(parent);
-		options = ControlPackMain.instance.itemOptions;
+		options = ControlPackOptions.itemOptions;
 		screenTitle = ControlPackMain.translate("controlPack.itemOptionsTitle");
     }
 }

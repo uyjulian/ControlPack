@@ -86,7 +86,14 @@ public enum ControlPackEnumOptions {
     WAYPOINTNETHERHUD2("options.waypointhudnether2", false, true),
     WAYPOINTNETHERHUD3("options.waypointhudnether3", false, true),
     WAYPOINTNETHERHUD4("options.waypointhudnether4", false, true),
-    WAYPOINTNETHERHUD5("options.waypointhudnether5", false, true);
+    WAYPOINTNETHERHUD5("options.waypointhudnether5", false, true),
+	
+	LASTBOUNDSX("options.lastboundsx", false, false),
+	LASTBOUNDSY("options.lastboundsy", false, false),
+	LASTBOUNDSW("options.lastboundsw", false, false),
+	LASTBOUNDSH("options.lastboundsh", false, false),
+	LASTFULLSCREEN("options.lastfullscreen", false, true),
+	LASTPOSITIONEXISTS("options.lastpositionexists", false, true);
 
     public static ControlPackEnumOptions getOption(int i) {
         ControlPackEnumOptions aenumoptions[] = values();

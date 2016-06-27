@@ -18,6 +18,7 @@ import org.spongepowered.asm.mixin.Shadow;
 
 import ctrlpack.ControlPackEnumOptions;
 import ctrlpack.ControlPackMain;
+import ctrlpack.ControlPackOptions;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiFurnace;
 import net.minecraft.inventory.Container;
@@ -46,7 +47,7 @@ public abstract class MixinGuiFurnace extends GuiContainer {
     
     @Override
 	protected void mouseClicked(int row, int col, int mouseButton) throws IOException {
-        if (ControlPackMain.instance == null || !ControlPackMain.instance.booleanOptions.get(ControlPackEnumOptions.SMARTFURNACE)) {
+        if (ControlPackMain.instance == null || !ControlPackOptions.booleanOptions.get(ControlPackEnumOptions.SMARTFURNACE)) {
     		super.mouseClicked(row, col, mouseButton);
             return;
         }

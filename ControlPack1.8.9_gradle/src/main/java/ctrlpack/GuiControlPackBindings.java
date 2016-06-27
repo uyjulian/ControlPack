@@ -96,7 +96,7 @@ public class GuiControlPackBindings extends GuiScreen
 	protected void mouseClicked(int i, int j, int k) throws IOException {
         if(buttonId >= 0 && buttonId < 100) {
             ControlPackMain.instance.keyBindings[buttonId].setKeyCode(-100 + k);
-            ControlPackMain.instance.saveOptions();
+            ControlPackOptions.saveOptions();
 
             buttonList.get(buttonId).displayString = getOptionDisplayString(buttonId);
             buttonId = -1;
@@ -111,7 +111,7 @@ public class GuiControlPackBindings extends GuiScreen
 					if (guibutton.mousePressed(mc, i, j))
 					{
 						ControlPackMain.instance.keyBindings[guibutton.id].setKeyCode(99999);
-						ControlPackMain.instance.saveOptions();
+						ControlPackOptions.saveOptions();
 
 						buttonList.get(guibutton.id).displayString = getOptionDisplayString(guibutton.id);
 						buttonId = -1;
@@ -129,7 +129,7 @@ public class GuiControlPackBindings extends GuiScreen
 	protected void keyTyped(char c, int i) throws IOException {
         if(buttonId >= 0 && buttonId < 100) {
             ControlPackMain.instance.keyBindings[buttonId].setKeyCode(i);
-            ControlPackMain.instance.saveOptions();
+            ControlPackOptions.saveOptions();
             
             buttonList.get(buttonId).displayString = getOptionDisplayString(buttonId);
             buttonId = -1;
