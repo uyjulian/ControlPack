@@ -111,7 +111,19 @@ public class ControlPackMain implements Runnable {
 		return "5.92";
 	}
 	
+	private void startUpdateChecker() {
+		new Thread(new ControlPackUpdateChecker()).start();
+	}
+	
+	
+	private boolean firstTick = false;
 	public void tickInGame() {
+		if (!firstTick) {
+			firstTick = true;
+			if (ControlPackOptions.booleanOptions.get(ControlPackEnumOptions.UPDATECHECK)) {
+				startUpdateChecker();
+			}
+		}
 
 
 		setDeathWaypoint();

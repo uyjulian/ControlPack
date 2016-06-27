@@ -30,7 +30,6 @@ public class ControlPackOptions {
 	public static Map<ControlPackEnumOptions, Integer> intOptions;
 	public static Map<ControlPackEnumOptions, Integer> intOptionsMaxValue;
 	
-
 	public static ControlPackEnumOptions allOptions[] = new ControlPackEnumOptions[] {
 		ControlPackEnumOptions.AUTOTOOL,
 		ControlPackEnumOptions.AUTOTOOLMODE,
@@ -47,7 +46,8 @@ public class ControlPackOptions {
 		ControlPackEnumOptions.STATUSLOCATION,
 		ControlPackEnumOptions.COORDINATESLOCATION,
 		//ControlPackEnumOptions.VOIDFOG,
-		ControlPackEnumOptions.CORPSELOCATION
+		ControlPackEnumOptions.CORPSELOCATION,
+		ControlPackEnumOptions.UPDATECHECK
 	};
 	
 	public static ControlPackEnumOptions itemOptions[] = new ControlPackEnumOptions[] {
@@ -182,6 +182,8 @@ public class ControlPackOptions {
 			booleanOptions.put(ControlPackEnumOptions.WELCOMENAG, true);
 			//booleanOptions.put(ControlPackEnumOptions.SOUNDMANAGER, true);
 			booleanOptions.put(ControlPackEnumOptions.CORPSELOCATION, true);
+			booleanOptions.put(ControlPackEnumOptions.UPDATECHECK, true);
+			
 			booleanOptions.put(ControlPackEnumOptions.LASTFULLSCREEN, false);
 			booleanOptions.put(ControlPackEnumOptions.LASTPOSITIONEXISTS, false);
 			

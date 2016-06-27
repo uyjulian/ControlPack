@@ -68,7 +68,7 @@ public class GuiControlPackOptions extends GuiScreen
 			j++;
 		}
 
-		buttonList.add(new GuiButton(200, width / 2 - 100, height / 9 + 190, 200, 20, ControlPackMain.translate("gui.done")));
+		buttonList.add(new GuiButton(200, width / 2 - 100, height / 9 + 215, 200, 20, ControlPackMain.translate("gui.done")));
 	}
 	
 	private void saveFields() {

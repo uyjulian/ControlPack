@@ -46,6 +46,7 @@ public enum ControlPackEnumOptions {
 	WELCOMENAG("options.welcomenag", false, true),
 	VOIDFOG("options.voidfog", false, true), // dead, but left in here just so the enum is stable...
 	USECOUNT("options.usecount", false, true),
+	UPDATECHECK("options.updatecheck", false, true),
 	STATUSLOCATION("options.statuslocation", false, false), // int
 	COORDINATESLOCATION("options.coordinateslocation", false, false), // int
 

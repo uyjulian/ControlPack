@@ -69,6 +69,7 @@ options.voidfog=Render Void Fog
 options.usecount=Uses Remaining
 options.statuslocation=Status Overlay
 options.coordinateslocation=My Coordinates
+options.updatecheck=Update Check
 
 options.waypointhud1=HUD
 options.waypointhud2=HUD
