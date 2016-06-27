@@ -37,7 +37,7 @@ apply plugin: 'net.minecraftforge.gradle.liteloader'
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'com.jfrog.bintray'
 
-version = "5.92-beta1"
+version = "5.93-beta1"
 group = "ctrlpack" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "ControlPack"
 
