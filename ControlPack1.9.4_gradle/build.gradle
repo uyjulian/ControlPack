@@ -42,8 +42,8 @@ group = "ctrlpack" // http://maven.apache.org/guides/mini/guide-naming-conventio
 archivesBaseName = "ControlPack"
 
 minecraft {
-    version = "1.9"
-    mappings = "stable_24"
+    version = "1.9.4"
+    mappings = "stable_26"
     runDir = "run"
 }
 
@@ -80,7 +80,7 @@ litemod {
         name = "ControlPack"
         displayName = "Control Pack"
         author = "uyjulian"
-        mcversion = "1.9"
+        mcversion = "1.9.4"
         mixinConfigs += "mixins.ControlPack.json"
         version = project.version
     }

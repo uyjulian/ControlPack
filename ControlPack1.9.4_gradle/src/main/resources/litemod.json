@@ -1,6 +1,6 @@
 {
     "name": "LitemodStub",
-    "mcversion": "1.9",
+    "mcversion": "1.9.4",
     "mixinConfigs": [
         "mixins.ControlPack.json"
     ]
