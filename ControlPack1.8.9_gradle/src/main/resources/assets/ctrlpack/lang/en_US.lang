@@ -1,20 +1,20 @@
 # ControlPack translation file
 
-key.walkDistance=Run Distance
-key.lookBehind=Look Behind
-key.toggleMine=Toggle Mining
-key.toggleUse=Toggle Use Item
-key.autoJump=Toggle Jump
-key.autoRun=Toggle Run
-key.toggleSneak=Toggle Sneak
-key.altleft=Swap L (Hold)
-key.altright=Swap R (Hold)
-key.toggleGamma=Toggle Brightness
-key.startSprint=Start Sprinting
-key.placeTorch=Place Torch
-key.eatFood=Eat Food
-key.saylocation=Chat Location
-key.waypoints=Waypoints
+key.ctrlpack.walkDistance=Run Distance
+key.ctrlpack.lookBehind=Look Behind
+key.ctrlpack.toggleMine=Toggle Mining
+key.ctrlpack.toggleUse=Toggle Use Item
+key.ctrlpack.autoJump=Toggle Jump
+key.ctrlpack.autoRun=Toggle Run
+key.ctrlpack.toggleSneak=Toggle Sneak
+key.ctrlpack.altleft=Swap L (Hold)
+key.ctrlpack.altright=Swap R (Hold)
+key.ctrlpack.toggleGamma=Toggle Brightness
+key.ctrlpack.startSprint=Start Sprinting
+key.ctrlpack.placeTorch=Place Torch
+key.ctrlpack.eatFood=Eat Food
+key.ctrlpack.saylocation=Chat Location
+key.ctrlpack.waypoints=Waypoints
         
 measure.go=Go
 controlPack.settings=Welcome to ControlPack

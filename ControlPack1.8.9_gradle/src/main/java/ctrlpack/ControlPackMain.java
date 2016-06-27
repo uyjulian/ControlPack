@@ -55,21 +55,21 @@ public class ControlPackMain implements Runnable {
 		instance = this;
 		mc = Minecraft.getMinecraft();
 		
-		keyBindAlternateLeft = new KeyBinding("key.altleft", Keyboard.KEY_LCONTROL, "ControlPack");
-		keyBindAlternateRight = new KeyBinding("key.altright", Keyboard.KEY_GRAVE, "ControlPack");
-		keyBindToggleSneak = new KeyBinding("key.toggleSneak", Keyboard.KEY_CAPITAL, "ControlPack");
-		keyBindToggleRun = new KeyBinding("key.autoRun", Keyboard.KEY_R, "ControlPack");
-		keyBindToggleJump = new KeyBinding("key.autoJump", Keyboard.KEY_J, "ControlPack");
-		keyBindToggleMine = new KeyBinding("key.toggleMine", Keyboard.KEY_M, "ControlPack");
-		keyBindToggleUse = new KeyBinding("key.toggleUse", Keyboard.KEY_N, "ControlPack");
-		keyBindWalkDistance = new KeyBinding("key.walkDistance", Keyboard.KEY_EQUALS, "ControlPack");
-		keyBindLookBehind = new KeyBinding("key.lookBehind", 2-100, "ControlPack");
-		keyBindToggleGamma = new KeyBinding("key.toggleGamma", Keyboard.KEY_B, "ControlPack");
-		keyBindSprint = new KeyBinding("key.startSprint", Keyboard.KEY_F, "ControlPack");
-		keyBindTorch = new KeyBinding("key.placeTorch", Keyboard.KEY_V, "ControlPack");
-		keyBindEat = new KeyBinding("key.eatFood", Keyboard.KEY_HOME, "ControlPack");
-		keyBindWaypoints = new KeyBinding("key.waypoints", Keyboard.KEY_PERIOD, "ControlPack");
-		keyBindSayLocation = new KeyBinding("key.saylocation", Keyboard.KEY_INSERT, "ControlPack");
+		keyBindAlternateLeft = new KeyBinding("key.ctrlpack.altleft", Keyboard.KEY_LCONTROL, "ControlPack");
+		keyBindAlternateRight = new KeyBinding("key.ctrlpack.altright", Keyboard.KEY_GRAVE, "ControlPack");
+		keyBindToggleSneak = new KeyBinding("key.ctrlpack.toggleSneak", Keyboard.KEY_CAPITAL, "ControlPack");
+		keyBindToggleRun = new KeyBinding("key.ctrlpack.autoRun", Keyboard.KEY_R, "ControlPack");
+		keyBindToggleJump = new KeyBinding("key.ctrlpack.autoJump", Keyboard.KEY_J, "ControlPack");
+		keyBindToggleMine = new KeyBinding("key.ctrlpack.toggleMine", Keyboard.KEY_M, "ControlPack");
+		keyBindToggleUse = new KeyBinding("key.ctrlpack.toggleUse", Keyboard.KEY_N, "ControlPack");
+		keyBindWalkDistance = new KeyBinding("key.ctrlpack.walkDistance", Keyboard.KEY_EQUALS, "ControlPack");
+		keyBindLookBehind = new KeyBinding("key.ctrlpack.lookBehind", 2-100, "ControlPack");
+		keyBindToggleGamma = new KeyBinding("key.ctrlpack.toggleGamma", Keyboard.KEY_B, "ControlPack");
+		keyBindSprint = new KeyBinding("key.ctrlpack.startSprint", Keyboard.KEY_F, "ControlPack");
+		keyBindTorch = new KeyBinding("key.ctrlpack.placeTorch", Keyboard.KEY_V, "ControlPack");
+		keyBindEat = new KeyBinding("key.ctrlpack.eatFood", Keyboard.KEY_HOME, "ControlPack");
+		keyBindWaypoints = new KeyBinding("key.ctrlpack.waypoints", Keyboard.KEY_PERIOD, "ControlPack");
+		keyBindSayLocation = new KeyBinding("key.ctrlpack.saylocation", Keyboard.KEY_INSERT, "ControlPack");
 		keyBindings = new KeyBinding[] {
 			keyBindSprint, keyBindTorch,
 			keyBindAlternateLeft, keyBindAlternateRight,
@@ -78,7 +78,6 @@ public class ControlPackMain implements Runnable {
 			keyBindWalkDistance, keyBindLookBehind, keyBindToggleGamma, keyBindSayLocation, keyBindWaypoints
 		};		
 		LiteModControlPack.regKeys(keyBindings);
-		
 		
 		ControlPackOptions.loadOptions();
 		volumeSettingsProperties = new Properties();
@@ -349,11 +348,7 @@ public class ControlPackMain implements Runnable {
 	
 	public static String translate(String key) {
 		return I18n.format(key);
-		//return I18n.func_135053_a(key);
 	}
-	
-		
-
 	
 	public void applyLastWindowSize() {
 		if (ControlPackOptions.booleanOptions.get(ControlPackEnumOptions.WINDOWRESTORE) && ControlPackOptions.booleanOptions.get(ControlPackEnumOptions.LASTPOSITIONEXISTS)) {
@@ -415,7 +410,7 @@ public class ControlPackMain implements Runnable {
 		keyBindingApplyToggle(mc.gameSettings.keyBindBack);	
 		keyBindingApplyToggle(mc.gameSettings.keyBindSneak);
 	}
-	
+
 	public void turnOffToggles() {
 		keyBindingToggle(mc.gameSettings.keyBindAttack,false);
 		keyBindingToggle(mc.gameSettings.keyBindUseItem,false);
@@ -424,8 +419,7 @@ public class ControlPackMain implements Runnable {
 		keyBindingToggle(mc.gameSettings.keyBindBack,false);
 		keyBindingToggle(mc.gameSettings.keyBindSneak,false);
 	}
-			
-		
+
 	private void cancelMeasureDistance() {
 		if (measureDistanceState) {
 			measureDistanceState = false;
@@ -437,7 +431,7 @@ public class ControlPackMain implements Runnable {
 			}
 		}
 	}
-	
+
 	public float getSoundVolume(String name) {
 		try {
 			String setting = volumeSettingsProperties.getProperty(name);
@@ -451,11 +445,11 @@ public class ControlPackMain implements Runnable {
 			return 1F;
 		}
 	}
-	
+
 	private boolean isTool(Item item) {
 		return (item != null) && (item instanceof ItemTool || item instanceof ItemShears);
 	}
-	
+
 	private float blockStrength(Block block, Item item) {
 		// adapted from block.java
 		if(block.getBlockHardness(mc.theWorld, new BlockPos(1, 1, 1)) < 0.0F) {
