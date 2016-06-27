@@ -51,10 +51,10 @@ public class ControlPackMain implements Runnable {
 	public static ControlPackMain instance;
 	public static Minecraft mc;
 	private int toggleCounter = 10;
-    
+	
 	public ControlPackMain() throws Exception {
-        instance = this;
-        mc = Minecraft.getMinecraft();
+		instance = this;
+		mc = Minecraft.getMinecraft();
 		
 		keyBindAlternateLeft = new KeyBinding("key.altleft", Keyboard.KEY_LCONTROL, "ControlPack");
 		keyBindAlternateRight = new KeyBinding("key.altright", Keyboard.KEY_GRAVE, "ControlPack");
@@ -65,31 +65,31 @@ public class ControlPackMain implements Runnable {
 		keyBindToggleUse = new KeyBinding("key.toggleUse", Keyboard.KEY_N, "ControlPack");
 		keyBindWalkDistance = new KeyBinding("key.walkDistance", Keyboard.KEY_EQUALS, "ControlPack");
 		keyBindLookBehind = new KeyBinding("key.lookBehind", 2-100, "ControlPack");
-        keyBindToggleGamma = new KeyBinding("key.toggleGamma", Keyboard.KEY_B, "ControlPack");
-        keyBindSprint = new KeyBinding("key.startSprint", Keyboard.KEY_F, "ControlPack");
-        keyBindTorch = new KeyBinding("key.placeTorch", Keyboard.KEY_V, "ControlPack");
+		keyBindToggleGamma = new KeyBinding("key.toggleGamma", Keyboard.KEY_B, "ControlPack");
+		keyBindSprint = new KeyBinding("key.startSprint", Keyboard.KEY_F, "ControlPack");
+		keyBindTorch = new KeyBinding("key.placeTorch", Keyboard.KEY_V, "ControlPack");
 		keyBindEat = new KeyBinding("key.eatFood", Keyboard.KEY_HOME, "ControlPack");
-        keyBindWaypoints = new KeyBinding("key.waypoints", Keyboard.KEY_PERIOD, "ControlPack");
-        keyBindSayLocation = new KeyBinding("key.saylocation", Keyboard.KEY_INSERT, "ControlPack");
-        keyBindings = new KeyBinding[] {
-            keyBindSprint, keyBindTorch,
-            keyBindAlternateLeft, keyBindAlternateRight,
+		keyBindWaypoints = new KeyBinding("key.waypoints", Keyboard.KEY_PERIOD, "ControlPack");
+		keyBindSayLocation = new KeyBinding("key.saylocation", Keyboard.KEY_INSERT, "ControlPack");
+		keyBindings = new KeyBinding[] {
+			keyBindSprint, keyBindTorch,
+			keyBindAlternateLeft, keyBindAlternateRight,
 			keyBindEat,
-            keyBindToggleSneak, keyBindToggleRun, keyBindToggleJump, keyBindToggleMine, keyBindToggleUse,
-            keyBindWalkDistance, keyBindLookBehind, keyBindToggleGamma, keyBindSayLocation, keyBindWaypoints
-        };		
-        LiteModControlPack.regKeys(keyBindings);
+			keyBindToggleSneak, keyBindToggleRun, keyBindToggleJump, keyBindToggleMine, keyBindToggleUse,
+			keyBindWalkDistance, keyBindLookBehind, keyBindToggleGamma, keyBindSayLocation, keyBindWaypoints
+		};		
+		LiteModControlPack.regKeys(keyBindings);
 		
 		
 		ControlPackOptions.loadOptions();
 
-        volumeSettingsMap = new HashMap<String, ControlPackEnumOptions>();
-        volumeSettingsMap.put("tile.piston.in", ControlPackEnumOptions.VOLUMEPISTON);
-        volumeSettingsMap.put("tile.piston.out", ControlPackEnumOptions.VOLUMEPISTON);
-        volumeSettingsMap.put("ambient.weather.rain", ControlPackEnumOptions.VOLUMERAIN);
-        volumeSettingsMap.put("random.splash", ControlPackEnumOptions.VOLUMESPLASH);
-        volumeSettingsMap.put("liquid.splash", ControlPackEnumOptions.VOLUMESPLASH);
-        volumeSettingsMap.put("liquid.swim", ControlPackEnumOptions.VOLUMEWATER);
+		volumeSettingsMap = new HashMap<String, ControlPackEnumOptions>();
+		volumeSettingsMap.put("tile.piston.in", ControlPackEnumOptions.VOLUMEPISTON);
+		volumeSettingsMap.put("tile.piston.out", ControlPackEnumOptions.VOLUMEPISTON);
+		volumeSettingsMap.put("ambient.weather.rain", ControlPackEnumOptions.VOLUMERAIN);
+		volumeSettingsMap.put("random.splash", ControlPackEnumOptions.VOLUMESPLASH);
+		volumeSettingsMap.put("liquid.splash", ControlPackEnumOptions.VOLUMESPLASH);
+		volumeSettingsMap.put("liquid.swim", ControlPackEnumOptions.VOLUMEWATER);
 		volumeSettingsMap.put("liquid.water", ControlPackEnumOptions.VOLUMEWATER);
 		volumeSettingsMap.put("random.door_open", ControlPackEnumOptions.VOLUMEDOOR);
 		volumeSettingsMap.put("random.door_close", ControlPackEnumOptions.VOLUMEDOOR);
@@ -157,9 +157,9 @@ public class ControlPackMain implements Runnable {
 	@Override
 	public void run() {
 		do {
-            if (mc.currentScreen != null) {
-                altKey = false;
-            }
+			if (mc.currentScreen != null) {
+				altKey = false;
+			}
 			checkGame();
 			try {
 				Thread.sleep(1000L);
@@ -171,10 +171,10 @@ public class ControlPackMain implements Runnable {
 	}
 	
 	public void postMCInit() {
-        applyLastWindowSize();        
-        
+		applyLastWindowSize();        
+		
 		Thread thread = new Thread(this, "ControlPack Listener Thread");
-        thread.start();
+		thread.start();
 	}
 	
 	public String currentVersion() {
@@ -186,72 +186,72 @@ public class ControlPackMain implements Runnable {
 
 		setDeathWaypoint();
 		
-        if (!mc.gameSettings.showDebugInfo) {
-            int coordLocation = ControlPackOptions.intOptions.get(ControlPackEnumOptions.COORDINATESLOCATION);
-            int statusLocation = ControlPackOptions.intOptions.get(ControlPackEnumOptions.STATUSLOCATION);
-            int lineNum = 0;
+		if (!mc.gameSettings.showDebugInfo) {
+			int coordLocation = ControlPackOptions.intOptions.get(ControlPackEnumOptions.COORDINATESLOCATION);
+			int statusLocation = ControlPackOptions.intOptions.get(ControlPackEnumOptions.STATUSLOCATION);
+			int lineNum = 0;
 			
-            if (coordLocation != 4) {
-                DrawString(getLocation(true), coordLocation, lineNum, 0xdddddd, null);
-                lineNum++;
+			if (coordLocation != 4) {
+				DrawString(getLocation(true), coordLocation, lineNum, 0xdddddd, null);
+				lineNum++;
 
-                //drawArrow(10, 10, 100, 100);
-                //drawArrow(200, 200, 100, 175);
-                
-                boolean isNether = mc.theWorld != null && (mc.theWorld.provider.getDimensionName() == "Nether");
+				//drawArrow(10, 10, 100, 100);
+				//drawArrow(200, 200, 100, 175);
+				
+				boolean isNether = mc.theWorld != null && (mc.theWorld.provider.getDimensionName() == "Nether");
 
-                for (int i = 0; i < (isNether ? ControlPackOptions.waypointNetherOptions.length : ControlPackOptions.waypointOptions.length); i++) {
-                    ControlPackEnumOptions locationOption = isNether ? ControlPackOptions.waypointNetherOptions[i] : ControlPackOptions.waypointOptions[i];
-                    ControlPackEnumOptions nameOption = isNether ? ControlPackOptions.waypointNetherNameOptions[i] : ControlPackOptions.waypointNameOptions[i];
-                    ControlPackEnumOptions hudOption = isNether ? ControlPackOptions.waypointNetherHUDOptions[i] : ControlPackOptions.waypointHUDOptions[i];
-                    
-                    String location = ControlPackOptions.stringOptions.get(locationOption);
-                    String name = ControlPackOptions.stringOptions.get(nameOption);
-                    Boolean hud = ControlPackOptions.booleanOptions.get(hudOption);
-                    
-                    if (!hud || location == null || location.length() == 0) {
-                        continue;
-                    }
+				for (int i = 0; i < (isNether ? ControlPackOptions.waypointNetherOptions.length : ControlPackOptions.waypointOptions.length); i++) {
+					ControlPackEnumOptions locationOption = isNether ? ControlPackOptions.waypointNetherOptions[i] : ControlPackOptions.waypointOptions[i];
+					ControlPackEnumOptions nameOption = isNether ? ControlPackOptions.waypointNetherNameOptions[i] : ControlPackOptions.waypointNameOptions[i];
+					ControlPackEnumOptions hudOption = isNether ? ControlPackOptions.waypointNetherHUDOptions[i] : ControlPackOptions.waypointHUDOptions[i];
+					
+					String location = ControlPackOptions.stringOptions.get(locationOption);
+					String name = ControlPackOptions.stringOptions.get(nameOption);
+					Boolean hud = ControlPackOptions.booleanOptions.get(hudOption);
+					
+					if (!hud || location == null || location.length() == 0) {
+						continue;
+					}
 
-                    String[] parts = location.split(",");
-                    if (parts.length == 3) {
-                        try {
-                            double wpX = Integer.parseInt(parts[0].trim()) + 0.5;
-                            double wpZ = Integer.parseInt(parts[1].trim()) + 0.5;
+					String[] parts = location.split(",");
+					if (parts.length == 3) {
+						try {
+							double wpX = Integer.parseInt(parts[0].trim()) + 0.5;
+							double wpZ = Integer.parseInt(parts[1].trim()) + 0.5;
 							double wpY = Integer.parseInt(parts[2].trim()) + 0.5;
-                            Vec3 v_waypoint = new Vec3(wpX, 0, wpZ);
-                            BlockPos v_currents = mc.thePlayer.getPosition();
-                            BlockPos v_current = new BlockPos(v_currents.getX(),0,v_currents.getZ());
+							Vec3 v_waypoint = new Vec3(wpX, 0, wpZ);
+							BlockPos v_currents = mc.thePlayer.getPosition();
+							BlockPos v_current = new BlockPos(v_currents.getX(),0,v_currents.getZ());
 
 							int currentX = (int) wpX;
 							int currentY = (int) wpY;
 							int currentZ = (int) wpZ;
 							location = ControlPackOptions.stringOptions.get(ControlPackEnumOptions.COORDINATE_FORMAT).replace("{X}", ""+currentX).replace("{Y}", ""+currentY).replace("{Z}", ""+currentZ);
 							
-                            Vec3 v_directionFromHere = v_waypoint.subtract(v_current.getX(), v_current.getY(), v_current.getZ());
-                            if (v_directionFromHere.lengthVector() <= 0.5) {
-                                DrawString((name == null || name.length() == 0) ? location : (name + ": " + location), coordLocation, lineNum, 0xbbbbbb, null, true);
-                            }
-                            else {
-                                v_directionFromHere.rotateYaw((mc.thePlayer.rotationYaw * 0.01745329F));
-                                v_directionFromHere = v_directionFromHere.normalize();
-                                DrawString((name == null || name.length() == 0) ? location : (name + ": " + location), coordLocation, lineNum, 0xbbbbbb, v_directionFromHere);
-                            }
-                            lineNum++;
-                        }
-                        catch(Exception ex) {
-                        }
-                    }
-                }
-                
-            }
-            if (statusLocation != 4) {
-                String status = getToggleStatus();
-                
-                if (statusLocation != coordLocation) {
-                    lineNum = 0;
-                }
-                
+							Vec3 v_directionFromHere = v_waypoint.subtract(v_current.getX(), v_current.getY(), v_current.getZ());
+							if (v_directionFromHere.lengthVector() <= 0.5) {
+								DrawString((name == null || name.length() == 0) ? location : (name + ": " + location), coordLocation, lineNum, 0xbbbbbb, null, true);
+							}
+							else {
+								v_directionFromHere.rotateYaw((mc.thePlayer.rotationYaw * 0.01745329F));
+								v_directionFromHere = v_directionFromHere.normalize();
+								DrawString((name == null || name.length() == 0) ? location : (name + ": " + location), coordLocation, lineNum, 0xbbbbbb, v_directionFromHere);
+							}
+							lineNum++;
+						}
+						catch(Exception ex) {
+						}
+					}
+				}
+				
+			}
+			if (statusLocation != 4) {
+				String status = getToggleStatus();
+				
+				if (statusLocation != coordLocation) {
+					lineNum = 0;
+				}
+				
 				if (status != null && status.length() > 0) {
 					DrawString(status, statusLocation, lineNum, 0xdddddd, null);
 					lineNum++;
@@ -287,22 +287,22 @@ public class ControlPackMain implements Runnable {
 						}
 					}
 				}
-            }
-        }
-        
-        if (previouslyPlacedBlock && previouslyPlacedBlockID != -1) {
-            previouslyPlacedBlock = false;
-            if (ControlPackOptions.booleanOptions.get(ControlPackEnumOptions.AUTOBLOCK)) {
-                runAutoBlockOnExpend();
-            }
-        }
-        
-        if (keyBindingGetToggled(mc.gameSettings.keyBindUseItem)) {
-            // they are auto right clicking
-            previouslyPlacedBlock = true;
-            ItemStack stack = mc.thePlayer.inventory.getCurrentItem();
-            previouslyPlacedBlockID = stack == null ? -1 : Item.getIdFromItem(stack.getItem());
-         }
+			}
+		}
+		
+		if (previouslyPlacedBlock && previouslyPlacedBlockID != -1) {
+			previouslyPlacedBlock = false;
+			if (ControlPackOptions.booleanOptions.get(ControlPackEnumOptions.AUTOBLOCK)) {
+				runAutoBlockOnExpend();
+			}
+		}
+		
+		if (keyBindingGetToggled(mc.gameSettings.keyBindUseItem)) {
+			// they are auto right clicking
+			previouslyPlacedBlock = true;
+			ItemStack stack = mc.thePlayer.inventory.getCurrentItem();
+			previouslyPlacedBlockID = stack == null ? -1 : Item.getIdFromItem(stack.getItem());
+		 }
 		 
 		if (ControlPackOptions.booleanOptions.get(ControlPackEnumOptions.HOLDTOATTACK) && mc.gameSettings.keyBindAttack.isKeyDown()) {
 			if (--toggleCounter <= 0) {
@@ -314,52 +314,52 @@ public class ControlPackMain implements Runnable {
 		else {
 			toggleCounter = 10;
 		}
-        
-        if (!nagged) {
-            nagged = true;
-            if (ControlPackOptions.booleanOptions.get(ControlPackEnumOptions.WELCOMENAG)) {
-                chatMsg("Thanks for using ControlPack. Hit ALT+C to configure it.         I will nag you until you do :)");
-            }
-        }
-        if (swapBack) {
-            swapBack = false;
-            mc.thePlayer.inventory.currentItem = swapBackTo;
-        }
+		
+		if (!nagged) {
+			nagged = true;
+			if (ControlPackOptions.booleanOptions.get(ControlPackEnumOptions.WELCOMENAG)) {
+				chatMsg("Thanks for using ControlPack. Hit ALT+C to configure it.         I will nag you until you do :)");
+			}
+		}
+		if (swapBack) {
+			swapBack = false;
+			mc.thePlayer.inventory.currentItem = swapBackTo;
+		}
 
-        // lookbehind animation progress
-        if (lookBehind && mc.thePlayer.isDead) {
-        	lookBehind = false;
-        	lookBehindProgress = 0;
-        	lookBehindProgressTicks = 0;
-            turnOffToggles();
-        }
-        
-        // turn off auto-use item if a dialog comes up, or else you have
-        // a hard time getting out of a furnace, crafting table, etc!
-        if (mc.currentScreen != null) {
-            keyBindingToggle(mc.gameSettings.keyBindUseItem,false);
-            // turn off auto mining cuz it doesn't work while a screen is up anyway,
-            // and it does not start back up after chatting
-            keyBindingToggle(mc.gameSettings.keyBindAttack,false);
-        }
-        
-        
-        if ((lookBehind && lookBehindProgress < 1) || (!lookBehind && lookBehindProgress > 0)) {
+		// lookbehind animation progress
+		if (lookBehind && mc.thePlayer.isDead) {
+			lookBehind = false;
+			lookBehindProgress = 0;
+			lookBehindProgressTicks = 0;
+			turnOffToggles();
+		}
+		
+		// turn off auto-use item if a dialog comes up, or else you have
+		// a hard time getting out of a furnace, crafting table, etc!
+		if (mc.currentScreen != null) {
+			keyBindingToggle(mc.gameSettings.keyBindUseItem,false);
+			// turn off auto mining cuz it doesn't work while a screen is up anyway,
+			// and it does not start back up after chatting
+			keyBindingToggle(mc.gameSettings.keyBindAttack,false);
+		}
+		
+		
+		if ((lookBehind && lookBehindProgress < 1) || (!lookBehind && lookBehindProgress > 0)) {
 			float startProgress = lookBehindProgress;
 			
-        	float direction = (lookBehind ? 1F : -1F);
-        	long ticks = System.currentTimeMillis();
-        	lookBehindProgressTicks += direction * (ticks - lookBehindProgressTicksLast);
-        	lookBehindProgressTicksLast = ticks;
-        	lookBehindProgress = lookBehindProgressTicks / lookBehindAnimationLength;
-    		if (direction > 0) {
-    			lookBehindProgress = Math.min(1, lookBehindProgress);
-                lookBehindProgressTicks = lookBehindAnimationLength * lookBehindProgress;
-    		}
-    		else {
-    			lookBehindProgress = Math.max(0, lookBehindProgress);
-                lookBehindProgressTicks = lookBehindAnimationLength * lookBehindProgress;
-    		}
+			float direction = (lookBehind ? 1F : -1F);
+			long ticks = System.currentTimeMillis();
+			lookBehindProgressTicks += direction * (ticks - lookBehindProgressTicksLast);
+			lookBehindProgressTicksLast = ticks;
+			lookBehindProgress = lookBehindProgressTicks / lookBehindAnimationLength;
+			if (direction > 0) {
+				lookBehindProgress = Math.min(1, lookBehindProgress);
+				lookBehindProgressTicks = lookBehindAnimationLength * lookBehindProgress;
+			}
+			else {
+				lookBehindProgress = Math.max(0, lookBehindProgress);
+				lookBehindProgressTicks = lookBehindAnimationLength * lookBehindProgress;
+			}
 			
 			if (lookBehindProgress > 0 && startProgress == 0) {
 				ControlPackMain.mc.gameSettings.hideGUI = true;
@@ -367,50 +367,50 @@ public class ControlPackMain implements Runnable {
 			else if (lookBehindProgress == 0 && startProgress > 0) {
 				ControlPackMain.mc.gameSettings.hideGUI = false; // todo: restore from settings
 			}
-        }
+		}
 
-        // handle measure distance mode
-        if (measureDistanceState) {
+		// handle measure distance mode
+		if (measureDistanceState) {
 			BlockPos currentPos = mc.thePlayer.getPosition();
 			int currentX = (int) (currentPos.getX() < 0 ? Math.ceil(currentPos.getX()) : Math.floor(currentPos.getX()));
 			//int currentY = (int) (currentPos.getY() < 0 ? Math.ceil(currentPos.getY()) : Math.floor(currentPos.getY()));
 			int currentZ = (int) (currentPos.getZ() < 0 ? Math.ceil(currentPos.getZ()) : Math.floor(currentPos.getZ()));
 
-        	double traveled = Math.max(Math.abs(measureDistanceStartX - currentX), Math.abs(measureDistanceStartZ - currentZ));
-            measureDistanceRemaining = lastMeasureDistance - traveled;
-        	if (traveled >= lastMeasureDistance) {
-        		cancelMeasureDistance();
-        	}
-        	else if (!measureDistanceStateMoving) {
-        		measureDistanceStateMoving = true;
-                resetPlayerKeyState();
-        	}
-        }
+			double traveled = Math.max(Math.abs(measureDistanceStartX - currentX), Math.abs(measureDistanceStartZ - currentZ));
+			measureDistanceRemaining = lastMeasureDistance - traveled;
+			if (traveled >= lastMeasureDistance) {
+				cancelMeasureDistance();
+			}
+			else if (!measureDistanceStateMoving) {
+				measureDistanceStateMoving = true;
+				resetPlayerKeyState();
+			}
+		}
 
 		// 3rd person mode rotation
 		if (mc.gameSettings.debugCamEnable) {
-            if ((Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL))) {
-                if (Keyboard.isKeyDown(mc.gameSettings.keyBindForward.getKeyCode())) {
-                    frontView_rotationPitch += pitchSpeed;
+			if ((Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL))) {
+				if (Keyboard.isKeyDown(mc.gameSettings.keyBindForward.getKeyCode())) {
+					frontView_rotationPitch += pitchSpeed;
 					syncThirdPersonRotation();
-                    //pitchSpeed += 0.1;
-                }
-                else if (Keyboard.isKeyDown(mc.gameSettings.keyBindBack.getKeyCode())) {
-                    frontView_rotationPitch -= pitchSpeed;
+					//pitchSpeed += 0.1;
+				}
+				else if (Keyboard.isKeyDown(mc.gameSettings.keyBindBack.getKeyCode())) {
+					frontView_rotationPitch -= pitchSpeed;
 					syncThirdPersonRotation();
-                    //pitchSpeed += 0.1;
-                }
-                if (Keyboard.isKeyDown(mc.gameSettings.keyBindLeft.getKeyCode())) {
-                    frontView_rotationYaw += yawSpeed;
+					//pitchSpeed += 0.1;
+				}
+				if (Keyboard.isKeyDown(mc.gameSettings.keyBindLeft.getKeyCode())) {
+					frontView_rotationYaw += yawSpeed;
 					syncThirdPersonRotation();
-                    //yawSpeed += 0.1;
-                }
-                else if (Keyboard.isKeyDown(mc.gameSettings.keyBindRight.getKeyCode())) {
-                    frontView_rotationYaw -= yawSpeed;
+					//yawSpeed += 0.1;
+				}
+				else if (Keyboard.isKeyDown(mc.gameSettings.keyBindRight.getKeyCode())) {
+					frontView_rotationYaw -= yawSpeed;
 					syncThirdPersonRotation();
-                    //yawSpeed += 0.1;
-                }
-            }
+					//yawSpeed += 0.1;
+				}
+			}
 		}
 		//avoid sprint glitch
 		mc.thePlayer.setSprinting(isSprinting);
@@ -464,50 +464,50 @@ public class ControlPackMain implements Runnable {
 			}
 		}
 		catch(Exception ex) {
-            System.out.println("Unable to check window state. " + ex.getMessage());
-            ex.printStackTrace();
+			System.out.println("Unable to check window state. " + ex.getMessage());
+			ex.printStackTrace();
 		}
 	}
 	
 
 		
 	public void resetPlayerKeyState() {
-        keyBindingApplyToggle(mc.gameSettings.keyBindAttack);
-        keyBindingApplyToggle(mc.gameSettings.keyBindUseItem);
-        // simulate an actual clicking for use item command
-        if(keyBindingGetToggled(mc.gameSettings.keyBindUseItem) && keyBindingGetPressTime(mc.gameSettings.keyBindUseItem) == 0) {
-        	keyBindingSetPressTime(mc.gameSettings.keyBindUseItem,1);
+		keyBindingApplyToggle(mc.gameSettings.keyBindAttack);
+		keyBindingApplyToggle(mc.gameSettings.keyBindUseItem);
+		// simulate an actual clicking for use item command
+		if(keyBindingGetToggled(mc.gameSettings.keyBindUseItem) && keyBindingGetPressTime(mc.gameSettings.keyBindUseItem) == 0) {
+			keyBindingSetPressTime(mc.gameSettings.keyBindUseItem,1);
 		}
 		
-        keyBindingApplyToggle(mc.gameSettings.keyBindJump);
-        keyBindingApplyToggle(mc.gameSettings.keyBindForward);
-        keyBindingApplyToggle(mc.gameSettings.keyBindBack);	
-        keyBindingApplyToggle(mc.gameSettings.keyBindSneak);
+		keyBindingApplyToggle(mc.gameSettings.keyBindJump);
+		keyBindingApplyToggle(mc.gameSettings.keyBindForward);
+		keyBindingApplyToggle(mc.gameSettings.keyBindBack);	
+		keyBindingApplyToggle(mc.gameSettings.keyBindSneak);
 	}
-    
-    public void turnOffToggles() {
-    	keyBindingToggle(mc.gameSettings.keyBindAttack,false);
-    	keyBindingToggle(mc.gameSettings.keyBindUseItem,false);
-    	keyBindingToggle(mc.gameSettings.keyBindJump,false);
-    	keyBindingToggle(mc.gameSettings.keyBindForward,false);
-    	keyBindingToggle(mc.gameSettings.keyBindBack,false);
-    	keyBindingToggle(mc.gameSettings.keyBindSneak,false);
-    }
-            
-        
+	
+	public void turnOffToggles() {
+		keyBindingToggle(mc.gameSettings.keyBindAttack,false);
+		keyBindingToggle(mc.gameSettings.keyBindUseItem,false);
+		keyBindingToggle(mc.gameSettings.keyBindJump,false);
+		keyBindingToggle(mc.gameSettings.keyBindForward,false);
+		keyBindingToggle(mc.gameSettings.keyBindBack,false);
+		keyBindingToggle(mc.gameSettings.keyBindSneak,false);
+	}
+			
+		
 	private void cancelMeasureDistance() {
 		if (measureDistanceState) {
-	    	measureDistanceState = false;
-	    	if (measureDistanceStateMoving) {
-	    		measureDistanceStateMoving = false;
-	    		keyBindingToggle(mc.gameSettings.keyBindForward,false);
-                keyBindingToggle(mc.gameSettings.keyBindBack,false);
-                resetPlayerKeyState();
-	    	}
+			measureDistanceState = false;
+			if (measureDistanceStateMoving) {
+				measureDistanceStateMoving = false;
+				keyBindingToggle(mc.gameSettings.keyBindForward,false);
+				keyBindingToggle(mc.gameSettings.keyBindBack,false);
+				resetPlayerKeyState();
+			}
 		}
 	}
-    
-    public float getSoundVolume(String name) {
+	
+	public float getSoundVolume(String name) {
 		try {
 			ControlPackEnumOptions setting = volumeSettingsMap.get(name);
 			if (setting == null) { return 1F; }
@@ -517,24 +517,24 @@ public class ControlPackMain implements Runnable {
 		catch(Exception ex) {
 			return 1F;
 		}
-    }
+	}
 	
 	private boolean isTool(Item item) {
 		return (item != null) && (item instanceof ItemTool || item instanceof ItemShears);
 	}
 	
-    private float blockStrength(Block block, Item item) {
+	private float blockStrength(Block block, Item item) {
 		// adapted from block.java
-        if(block.getBlockHardness(mc.theWorld, new BlockPos(1, 1, 1)) < 0.0F) {
-            return 0.0F;
-        }
+		if(block.getBlockHardness(mc.theWorld, new BlockPos(1, 1, 1)) < 0.0F) {
+			return 0.0F;
+		}
 		if(item == null || !canHarvestBlock(item, block) || (getIsHarvestable(block) && item.getStrVsBlock(new ItemStack(block), block) == 1.0F)) {
-            return 1.0F / block.getBlockHardness(mc.theWorld, new BlockPos(1, 1, 1)) / 100F;
-        }
+			return 1.0F / block.getBlockHardness(mc.theWorld, new BlockPos(1, 1, 1)) / 100F;
+		}
 		else {
-            return item.getStrVsBlock(new ItemStack(block), block) / block.getBlockHardness(mc.theWorld, new BlockPos(1, 1, 1)) / 30F;
-        }
-    }	
+			return item.getStrVsBlock(new ItemStack(block), block) / block.getBlockHardness(mc.theWorld, new BlockPos(1, 1, 1)) / 30F;
+		}
+	}	
 	
 	private boolean canHarvestBlock(Item item, Block block) {
 		return canHarvestBlock(item, block, false);
@@ -604,7 +604,7 @@ public class ControlPackMain implements Runnable {
 				Item item = stack.getItem();
 				if (item != null && (!isSword(item) && !isTool(item))) {
 					mc.thePlayer.inventory.currentItem = i;
-                    return true;
+					return true;
 				}
 			}
 		}
@@ -625,31 +625,31 @@ public class ControlPackMain implements Runnable {
 			// both items can harvest it, so it's better if it has greater strength against the block (block has lower strength rating with it)
 			float testStrength = blockStrength(block, testTool);
 			float existingStrength = blockStrength(block, tool);
-            Integer mode = ControlPackOptions.intOptions.get(ControlPackEnumOptions.AUTOTOOLMODE);
-            if (mode == 0) { // weakest
-                if (testStrength < existingStrength) {
-                    return true;
-                }
-                else if (testStrength == existingStrength) {
-                    // if they have equal strength. It's better if it has a lower 'level' (e.g. wood pick on a furance vs. stone pick -- equal str but pick wood)
-                    // cheap way to determine that is to look at the max uses.. less is lower level :)
-                    if (testTool.getMaxDamage() < tool.getMaxDamage()) {
-                        return true;
-                    }
-                }
-            }
-            else { // strongest (the first/last wont even call this method)
-                if (testStrength > existingStrength) {
-                    return true;
-                }
-                else if (testStrength == existingStrength) {
-                    // if they have equal strength. It's better if it has a higher 'level' (e.g. wood pick on a furance vs. stone pick -- equal str but pick stone)
-                    // cheap way to determine that is to look at the max uses.. less is lower level :)
-                    if (testTool.getMaxDamage() > tool.getMaxDamage()) {
-                        return true;
-                    }
-                }
-            }
+			Integer mode = ControlPackOptions.intOptions.get(ControlPackEnumOptions.AUTOTOOLMODE);
+			if (mode == 0) { // weakest
+				if (testStrength < existingStrength) {
+					return true;
+				}
+				else if (testStrength == existingStrength) {
+					// if they have equal strength. It's better if it has a lower 'level' (e.g. wood pick on a furance vs. stone pick -- equal str but pick wood)
+					// cheap way to determine that is to look at the max uses.. less is lower level :)
+					if (testTool.getMaxDamage() < tool.getMaxDamage()) {
+						return true;
+					}
+				}
+			}
+			else { // strongest (the first/last wont even call this method)
+				if (testStrength > existingStrength) {
+					return true;
+				}
+				else if (testStrength == existingStrength) {
+					// if they have equal strength. It's better if it has a higher 'level' (e.g. wood pick on a furance vs. stone pick -- equal str but pick stone)
+					// cheap way to determine that is to look at the max uses.. less is lower level :)
+					if (testTool.getMaxDamage() > tool.getMaxDamage()) {
+						return true;
+					}
+				}
+			}
 		}
 		else {
 			float testStrength = blockStrength(block, testTool);
@@ -657,39 +657,39 @@ public class ControlPackMain implements Runnable {
 			float handStrength = blockStrength(block, null);
 			//mc.thePlayer.addChatMessage(testTool.getItemName() + "=" + testStrength + ". hand=" + handStrength + ". exist=" + existingStrength);
 
-            // dont even consider tools that have the same strength as hand-based strength
-            if (testStrength <= handStrength) {
-                return false;
-            }
-            
-            // tool vs no-null (and the tool offers better strength than no tool)
-            if (tool == null || existingStrength == handStrength) {
-                // any tool is better than no tool, or than a tool that has no advantage
-                return true;
-            }
-            
-            // tool vs tool (both good ones)
-            Integer mode = ControlPackOptions.intOptions.get(ControlPackEnumOptions.AUTOTOOLMODE);
-            if (mode == 0) { // weakest
-                if (testStrength < existingStrength) {
-                    return true;
-                }
-                else if (testStrength == existingStrength) {
-                    if (testTool.getMaxDamage() < tool.getMaxDamage()) {
-                        return true;
-                    }
-                }
-            }
-            else { // strongest
-                if (testStrength > existingStrength) {
-                    return true;
-                }
-                else if (testStrength == existingStrength) {
-                    if (testTool.getMaxDamage() < tool.getMaxDamage()) {
-                        return true;
-                    }
-                }
-            }
+			// dont even consider tools that have the same strength as hand-based strength
+			if (testStrength <= handStrength) {
+				return false;
+			}
+			
+			// tool vs no-null (and the tool offers better strength than no tool)
+			if (tool == null || existingStrength == handStrength) {
+				// any tool is better than no tool, or than a tool that has no advantage
+				return true;
+			}
+			
+			// tool vs tool (both good ones)
+			Integer mode = ControlPackOptions.intOptions.get(ControlPackEnumOptions.AUTOTOOLMODE);
+			if (mode == 0) { // weakest
+				if (testStrength < existingStrength) {
+					return true;
+				}
+				else if (testStrength == existingStrength) {
+					if (testTool.getMaxDamage() < tool.getMaxDamage()) {
+						return true;
+					}
+				}
+			}
+			else { // strongest
+				if (testStrength > existingStrength) {
+					return true;
+				}
+				else if (testStrength == existingStrength) {
+					if (testTool.getMaxDamage() < tool.getMaxDamage()) {
+						return true;
+					}
+				}
+			}
 		}
 		return false;
 	}
@@ -715,7 +715,7 @@ public class ControlPackMain implements Runnable {
 		return false;
 	}	
 	
-    private boolean swapToFirstTool(Block block, Item currentItem) {
+	private boolean swapToFirstTool(Block block, Item currentItem) {
 		for(int i = 0; i < 9; i++) {
 			ItemStack stack = mc.thePlayer.inventory.mainInventory[i];
 			if (stack != null) {
@@ -723,17 +723,17 @@ public class ControlPackMain implements Runnable {
 				if (item == null || !isTool(item)) {
 					continue;
 				}
-                // found a good tool to use as long as it offers better strength than no-tool strength
-                if (blockStrength(block, item) > blockStrength(block, null)) {
-                    mc.thePlayer.inventory.currentItem = i;
-                    return true;
-                }
+				// found a good tool to use as long as it offers better strength than no-tool strength
+				if (blockStrength(block, item) > blockStrength(block, null)) {
+					mc.thePlayer.inventory.currentItem = i;
+					return true;
+				}
 			}
 		}
-        return false;
-    }
+		return false;
+	}
 	
-    private boolean swapToFirstSword() {
+	private boolean swapToFirstSword() {
 		for(int i = 0; i < 9; i++) {
 			ItemStack stack = mc.thePlayer.inventory.mainInventory[i];
 			if (stack != null) {
@@ -745,10 +745,10 @@ public class ControlPackMain implements Runnable {
 				return true;
 			}
 		}
-        return false;
-    }	
-    
-    private boolean swapToLastTool(Block block, Item currentItem) {
+		return false;
+	}	
+	
+	private boolean swapToLastTool(Block block, Item currentItem) {
 		for(int i = 8; i >= 0; i--) {
 			ItemStack stack = mc.thePlayer.inventory.mainInventory[i];
 			if (stack != null) {
@@ -756,17 +756,17 @@ public class ControlPackMain implements Runnable {
 				if (item == null || !isTool(item)) {
 					continue;
 				}
-                // found a good tool to use as long as it offers better strength than no-tool strength
-                if (blockStrength(block, item) > blockStrength(block, null)) {
-                    mc.thePlayer.inventory.currentItem = i;
-                    return true;
-                }
+				// found a good tool to use as long as it offers better strength than no-tool strength
+				if (blockStrength(block, item) > blockStrength(block, null)) {
+					mc.thePlayer.inventory.currentItem = i;
+					return true;
+				}
 			}
 		}
-        return false;
-    }
+		return false;
+	}
 	
-    private boolean swapToLastSword() {
+	private boolean swapToLastSword() {
 		for(int i = 8; i >= 0; i--) {
 			ItemStack stack = mc.thePlayer.inventory.mainInventory[i];
 			if (stack != null) {
@@ -778,24 +778,24 @@ public class ControlPackMain implements Runnable {
 				return true;
 			}
 		}
-        return false;
-    }	
+		return false;
+	}	
 	
 	private boolean shouldUseSword(Block block) {
 		return block instanceof BlockWeb;
 	}
 	
 	private boolean swapToBestSword() {
-        Integer mode = ControlPackOptions.intOptions.get(ControlPackEnumOptions.AUTOTOOLMODE);
+		Integer mode = ControlPackOptions.intOptions.get(ControlPackEnumOptions.AUTOTOOLMODE);
 
-        if (mode == 2) {
-            // first
-            return swapToFirstSword();
-        }
-        else if (mode == 3) {
-            // last
-            return swapToLastSword();
-        }
+		if (mode == 2) {
+			// first
+			return swapToFirstSword();
+		}
+		else if (mode == 3) {
+			// last
+			return swapToLastSword();
+		}
 
 		int currentItemIndex = -1;
 		Item currentItem = null;
@@ -819,18 +819,18 @@ public class ControlPackMain implements Runnable {
 		}
 		return false;
 	}
-    
+	
 	private boolean swapToBestTool(Block block, Item currentItem, int currentItemIndex) {
-        Integer mode = ControlPackOptions.intOptions.get(ControlPackEnumOptions.AUTOTOOLMODE);
+		Integer mode = ControlPackOptions.intOptions.get(ControlPackEnumOptions.AUTOTOOLMODE);
 
-        if (mode == 2) {
-            // first
-            return swapToFirstTool(block, currentItem);
-        }
-        else if (mode == 3) {
-            // last
-            return swapToLastTool(block, currentItem);
-        }
+		if (mode == 2) {
+			// first
+			return swapToFirstTool(block, currentItem);
+		}
+		else if (mode == 3) {
+			// last
+			return swapToLastTool(block, currentItem);
+		}
 
 		int originalIndex = currentItemIndex;
 		
@@ -933,19 +933,19 @@ public class ControlPackMain implements Runnable {
 				// cant find a better one... maybe we already have the best one
 				if (!canHarvestBlock(currentItem, block, true)) {
 					// ok, the tool doesnt say it can harvest the block.
-                    // but the block might be naturally harvestable, so this could be either a shove or a pick against dirt, for example.
-                    if (getIsHarvestable(block)) {
-                        // ok.. so lets determine if its a good tool based on its strength. It's NO good if its strength
-                        // is the same as the no-tool strength.
-                        if (blockStrength(block, currentItem) == blockStrength(block, null)) {
+					// but the block might be naturally harvestable, so this could be either a shove or a pick against dirt, for example.
+					if (getIsHarvestable(block)) {
+						// ok.. so lets determine if its a good tool based on its strength. It's NO good if its strength
+						// is the same as the no-tool strength.
+						if (blockStrength(block, currentItem) == blockStrength(block, null)) {
 //System.out.println(currentItem.itemID + " not a good tool because str = same as no tool str, so swap to hand");
-                            swapToHand();
-                        }
-                    }
-                    else {
+							swapToHand();
+						}
+					}
+					else {
 //System.out.println(currentItem.itemID + " not a good tool so swap to hand");
-                        swapToHand();
-                    }
+						swapToHand();
+					}
 				}
 			}
 		}
@@ -989,263 +989,263 @@ public class ControlPackMain implements Runnable {
 	}
 	
 	public boolean swapToFood() {
-        for (int i = 0; i < 9; i++) {
-            ItemStack possibleBlock = mc.thePlayer.inventory.mainInventory[i];
-            if (possibleBlock != null && possibleBlock.getItem() instanceof ItemFood) {
+		for (int i = 0; i < 9; i++) {
+			ItemStack possibleBlock = mc.thePlayer.inventory.mainInventory[i];
+			if (possibleBlock != null && possibleBlock.getItem() instanceof ItemFood) {
 				//ItemFood food = (ItemFood) possibleBlock.getItem();
 				//int healAmount = food.getHealAmount();
-                swapBackTo = mc.thePlayer.inventory.currentItem;
-                mc.thePlayer.inventory.currentItem = i;
+				swapBackTo = mc.thePlayer.inventory.currentItem;
+				mc.thePlayer.inventory.currentItem = i;
 				return true;
-            }
-        }
+			}
+		}
 		return false;
 	}
-    
-    public void placeTorch() {
-        for (int i = 0; i < 9; i++) {
-            ItemStack possibleBlock = mc.thePlayer.inventory.mainInventory[i];
-            if (possibleBlock != null && (Block.getBlockFromItem(possibleBlock.getItem()) instanceof BlockTorch)) { // torch block id = 50: http://www.minecraftwiki.net/wiki/Data_values#Block_IDs_.28Minecraft_Beta.29
-                swapBack = true;
-                swapBackTo = mc.thePlayer.inventory.currentItem;
-                mc.thePlayer.inventory.currentItem = i;
-                // make MC think they did a right click..
-                KeyBinding.onTick(mc.gameSettings.keyBindUseItem.getKeyCode());
-				return;
-            }
-        }
-		// no torch... try a redstone torch instead
-        for (int i = 0; i < 9; i++) {
-            ItemStack possibleBlock = mc.thePlayer.inventory.mainInventory[i];
-            if (possibleBlock != null && ((Block.getBlockFromItem(possibleBlock.getItem()) instanceof BlockRedstoneTorch))) { // redstone torch block id = 75 or 76 (on or off)
-                swapBack = true;
-                swapBackTo = mc.thePlayer.inventory.currentItem;
-                mc.thePlayer.inventory.currentItem = i;
-                // make MC think they did a right click..
-                KeyBinding.onTick(mc.gameSettings.keyBindUseItem.getKeyCode());
-				return;
-            }
-        }
-    }
-
-    public void runAutoBlockOnExpend() {
-        ItemStack currentItem = mc.thePlayer.inventory.getCurrentItem();
-        if (currentItem == null || currentItem.stackSize <= 0) {
-            // they just placed the last item in a stack, switch to another stack of the same item
-            for (int i = 0; i < 9; i++) {
-                ItemStack possibleBlock = mc.thePlayer.inventory.mainInventory[i];
-                if (possibleBlock != null && Item.getIdFromItem(possibleBlock.getItem()) == previouslyPlacedBlockID) {
-                    mc.thePlayer.inventory.currentItem = i;
-                    break;
-                }
-            }
-        }
-    }    
-    
-    public void runAutoBlock() {
-        // See if they have a tool currently selected, which won't do anything.
-        ItemStack currentItem = mc.thePlayer.inventory.getCurrentItem();
-        if (currentItem == null || isTool(currentItem.getItem())) {
-            Integer mode = ControlPackOptions.intOptions.get(ControlPackEnumOptions.AUTOBLOCKMODE);
-            //int foundBlockId = -1;
-            if (mode == 0) { // leftmost
-                for (int i = 0; i < 9; i++) {
-                    ItemStack possibleBlock = mc.thePlayer.inventory.mainInventory[i];
-                    if (possibleBlock != null && possibleBlock.getItem() instanceof ItemBlock) {
-                        mc.thePlayer.inventory.currentItem = i;
-                        break;
-                    }
-                }
-            }
-            else if (mode == 1) { // rightmost
-                for (int i = 8; i >= 0; i--) {
-                    ItemStack possibleBlock = mc.thePlayer.inventory.mainInventory[i];
-                    if (possibleBlock != null && possibleBlock.getItem() instanceof ItemBlock) {
-                        mc.thePlayer.inventory.currentItem = i;
-                        break;
-                    }
-                }
-            }
-            else if (mode < 11) { // slot #
-                ItemStack possibleBlock = mc.thePlayer.inventory.mainInventory[mode - 2];
-                if (possibleBlock != null && possibleBlock.getItem() instanceof ItemBlock) {
-                    mc.thePlayer.inventory.currentItem = mode - 2;
-                }
-            }
-        }
-    }
 	
-    private String getToggleStatus() {
-        String s = "";
-        if (keyBindingGetToggled(mc.gameSettings.keyBindForward)) {
-            if (measureDistanceState) {
-                s += "[Run=" + ((int) Math.floor(measureDistanceRemaining)) + "]";
-            }
-            else {
-                s += "[Run]";
-            }
-        }
-        if (keyBindingGetToggled(mc.gameSettings.keyBindBack)) {
+	public void placeTorch() {
+		for (int i = 0; i < 9; i++) {
+			ItemStack possibleBlock = mc.thePlayer.inventory.mainInventory[i];
+			if (possibleBlock != null && (Block.getBlockFromItem(possibleBlock.getItem()) instanceof BlockTorch)) { // torch block id = 50: http://www.minecraftwiki.net/wiki/Data_values#Block_IDs_.28Minecraft_Beta.29
+				swapBack = true;
+				swapBackTo = mc.thePlayer.inventory.currentItem;
+				mc.thePlayer.inventory.currentItem = i;
+				// make MC think they did a right click..
+				KeyBinding.onTick(mc.gameSettings.keyBindUseItem.getKeyCode());
+				return;
+			}
+		}
+		// no torch... try a redstone torch instead
+		for (int i = 0; i < 9; i++) {
+			ItemStack possibleBlock = mc.thePlayer.inventory.mainInventory[i];
+			if (possibleBlock != null && ((Block.getBlockFromItem(possibleBlock.getItem()) instanceof BlockRedstoneTorch))) { // redstone torch block id = 75 or 76 (on or off)
+				swapBack = true;
+				swapBackTo = mc.thePlayer.inventory.currentItem;
+				mc.thePlayer.inventory.currentItem = i;
+				// make MC think they did a right click..
+				KeyBinding.onTick(mc.gameSettings.keyBindUseItem.getKeyCode());
+				return;
+			}
+		}
+	}
+
+	public void runAutoBlockOnExpend() {
+		ItemStack currentItem = mc.thePlayer.inventory.getCurrentItem();
+		if (currentItem == null || currentItem.stackSize <= 0) {
+			// they just placed the last item in a stack, switch to another stack of the same item
+			for (int i = 0; i < 9; i++) {
+				ItemStack possibleBlock = mc.thePlayer.inventory.mainInventory[i];
+				if (possibleBlock != null && Item.getIdFromItem(possibleBlock.getItem()) == previouslyPlacedBlockID) {
+					mc.thePlayer.inventory.currentItem = i;
+					break;
+				}
+			}
+		}
+	}    
+	
+	public void runAutoBlock() {
+		// See if they have a tool currently selected, which won't do anything.
+		ItemStack currentItem = mc.thePlayer.inventory.getCurrentItem();
+		if (currentItem == null || isTool(currentItem.getItem())) {
+			Integer mode = ControlPackOptions.intOptions.get(ControlPackEnumOptions.AUTOBLOCKMODE);
+			//int foundBlockId = -1;
+			if (mode == 0) { // leftmost
+				for (int i = 0; i < 9; i++) {
+					ItemStack possibleBlock = mc.thePlayer.inventory.mainInventory[i];
+					if (possibleBlock != null && possibleBlock.getItem() instanceof ItemBlock) {
+						mc.thePlayer.inventory.currentItem = i;
+						break;
+					}
+				}
+			}
+			else if (mode == 1) { // rightmost
+				for (int i = 8; i >= 0; i--) {
+					ItemStack possibleBlock = mc.thePlayer.inventory.mainInventory[i];
+					if (possibleBlock != null && possibleBlock.getItem() instanceof ItemBlock) {
+						mc.thePlayer.inventory.currentItem = i;
+						break;
+					}
+				}
+			}
+			else if (mode < 11) { // slot #
+				ItemStack possibleBlock = mc.thePlayer.inventory.mainInventory[mode - 2];
+				if (possibleBlock != null && possibleBlock.getItem() instanceof ItemBlock) {
+					mc.thePlayer.inventory.currentItem = mode - 2;
+				}
+			}
+		}
+	}
+	
+	private String getToggleStatus() {
+		String s = "";
+		if (keyBindingGetToggled(mc.gameSettings.keyBindForward)) {
+			if (measureDistanceState) {
+				s += "[Run=" + ((int) Math.floor(measureDistanceRemaining)) + "]";
+			}
+			else {
+				s += "[Run]";
+			}
+		}
+		if (keyBindingGetToggled(mc.gameSettings.keyBindBack)) {
 			s += "[Run Back]";
-        }
+		}
 		
-        if (keyBindingGetToggled(mc.gameSettings.keyBindSneak)) {
-            s += "[Sneak]";
-        }
-        if (keyBindingGetToggled(mc.gameSettings.keyBindAttack)) {
-            s += "[Mine]";
-        }
-        if (keyBindingGetToggled(mc.gameSettings.keyBindJump)) {
-            s += "[Jump]";
-        }
-        if (keyBindingGetToggled(mc.gameSettings.keyBindUseItem)) {
-            s += "[Use]";
-        }
-        if (swappedInventoryState != 0) {
-            if (swappedInventoryState == -1) {
-                s += "[Swap L]";
-            }
-            else {
-                s += "[Swap R]";
-            }
-        }
-        return s;
-    }
-    
-    public String getLocation(boolean shouldFormat) {
-        if (mc == null || mc.thePlayer == null) return "";
-        BlockPos currentPos = mc.thePlayer.getPosition();
-        int currentX = (int) Math.ceil(currentPos.getX()) - 1;
-        int currentY = (int) Math.ceil(currentPos.getY()) - 1;
-        int currentZ = (int) Math.ceil(currentPos.getZ()) - 1;
+		if (keyBindingGetToggled(mc.gameSettings.keyBindSneak)) {
+			s += "[Sneak]";
+		}
+		if (keyBindingGetToggled(mc.gameSettings.keyBindAttack)) {
+			s += "[Mine]";
+		}
+		if (keyBindingGetToggled(mc.gameSettings.keyBindJump)) {
+			s += "[Jump]";
+		}
+		if (keyBindingGetToggled(mc.gameSettings.keyBindUseItem)) {
+			s += "[Use]";
+		}
+		if (swappedInventoryState != 0) {
+			if (swappedInventoryState == -1) {
+				s += "[Swap L]";
+			}
+			else {
+				s += "[Swap R]";
+			}
+		}
+		return s;
+	}
+	
+	public String getLocation(boolean shouldFormat) {
+		if (mc == null || mc.thePlayer == null) return "";
+		BlockPos currentPos = mc.thePlayer.getPosition();
+		int currentX = (int) Math.ceil(currentPos.getX()) - 1;
+		int currentY = (int) Math.ceil(currentPos.getY()) - 1;
+		int currentZ = (int) Math.ceil(currentPos.getZ()) - 1;
 		if (shouldFormat) {
 			return ControlPackOptions.stringOptions.get(ControlPackEnumOptions.COORDINATE_FORMAT).replace("{X}", ""+currentX).replace("{Y}", ""+currentY).replace("{Z}", ""+currentZ);
 		}
 		else {
 			return currentX + ", " + currentZ + ", " + currentY;
 		}
-    }
-    
+	}
+	
 	public boolean chat_insertedPosition = false;
 
-    
-    private void drawSquare(double x, double y, int color) {
-        int size = 7;
-        float f = (color >> 16 & 0xff) / 255F;
-        float f1 = (color >> 8 & 0xff) / 255F;
-        float f2 = (color & 0xff) / 255F;
-        float f3 = (color >> 24 & 0xff) / 255F;
-        if(f3 == 0.0F) {
-            f3 = 1.0F;
-        }
-        GL11.glColor4f(f, f1, f2, f3);
-        
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glLineWidth(2); 
-        GL11.glPushMatrix();
-        GL11.glTranslatef((float)x, (float)y, 0f);
-        line(2, 2, size-2, 2);
-        line(size-2, 2, size-2, size-2);
-        line(size-2, size-2, 2, size-2);
-        line(2, size-2, 2, 2);
-        GL11.glPopMatrix();
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-    }
-    
-    private void drawDirectionalArrow(ScaledResolution sr, double x, double y, Vec3 v, int color) {
-        double size = 7;
-        double startx = x + (size / 2) - (size / 2) * v.xCoord;
-        double starty = y + (size / 2) - (size / 2) * v.zCoord;
-        double endx = x + (size / 2) + (size / 2) * v.xCoord;
-        double endy = y + (size / 2) + (size / 2) * v.zCoord;
-            
-        int l = color & 0xff000000;
-        int shadowColor = (color & 0xfcfcfc) >> 2;
-        shadowColor += l;
+	
+	private void drawSquare(double x, double y, int color) {
+		int size = 7;
+		float f = (color >> 16 & 0xff) / 255F;
+		float f1 = (color >> 8 & 0xff) / 255F;
+		float f2 = (color & 0xff) / 255F;
+		float f3 = (color >> 24 & 0xff) / 255F;
+		if(f3 == 0.0F) {
+			f3 = 1.0F;
+		}
+		GL11.glColor4f(f, f1, f2, f3);
+		
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		GL11.glLineWidth(2); 
+		GL11.glPushMatrix();
+		GL11.glTranslatef((float)x, (float)y, 0f);
+		line(2, 2, size-2, 2);
+		line(size-2, 2, size-2, size-2);
+		line(size-2, size-2, 2, size-2);
+		line(2, size-2, 2, 2);
+		GL11.glPopMatrix();
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+	}
+	
+	private void drawDirectionalArrow(ScaledResolution sr, double x, double y, Vec3 v, int color) {
+		double size = 7;
+		double startx = x + (size / 2) - (size / 2) * v.xCoord;
+		double starty = y + (size / 2) - (size / 2) * v.zCoord;
+		double endx = x + (size / 2) + (size / 2) * v.xCoord;
+		double endy = y + (size / 2) + (size / 2) * v.zCoord;
+			
+		int l = color & 0xff000000;
+		int shadowColor = (color & 0xfcfcfc) >> 2;
+		shadowColor += l;
 
-        drawArrow(startx+1, starty+1, endx+1, endy+1, shadowColor);
-        drawArrow(startx, starty, endx, endy, color);
-    }
-    
-    private void drawArrow(double x1, double y1, double x2, double y2, int color) {
-        float f = (color >> 16 & 0xff) / 255F;
-        float f1 = (color >> 8 & 0xff) / 255F;
-        float f2 = (color & 0xff) / 255F;
-        float f3 = (color >> 24 & 0xff) / 255F;
-        if(f3 == 0.0F) {
-            f3 = 1.0F;
-        }
-        GL11.glColor4f(f, f1, f2, f3);
+		drawArrow(startx+1, starty+1, endx+1, endy+1, shadowColor);
+		drawArrow(startx, starty, endx, endy, color);
+	}
+	
+	private void drawArrow(double x1, double y1, double x2, double y2, int color) {
+		float f = (color >> 16 & 0xff) / 255F;
+		float f1 = (color >> 8 & 0xff) / 255F;
+		float f2 = (color & 0xff) / 255F;
+		float f3 = (color >> 24 & 0xff) / 255F;
+		if(f3 == 0.0F) {
+			f3 = 1.0F;
+		}
+		GL11.glColor4f(f, f1, f2, f3);
 
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glLineWidth(2); 
-        GL11.glPushMatrix();
-        GL11.glTranslatef(0F, 0F, 0F);
-        line(x1, y1, x2, y2);
-        GL11.glPushMatrix();
-        GL11.glTranslatef((float)x2, (float)y2, 0F);
-        float a = (float)Math.atan2(x1-x2, y2-y1);
-        GL11.glRotatef((float)Math.toDegrees(a), 0F, 0F, 1F);
-        line(0, 0, -3, -3);
-        line(0, 0, 3, -3);
-        GL11.glPopMatrix();
-        GL11.glPopMatrix();
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-    }
-    
-    private void line(double x1, double y1, double x2, double y2) {
-        GL11.glBegin(GL11.GL_LINES); 
-        GL11.glVertex2f((float)x1, (float)y1); 
-        GL11.glVertex2f((float)x2, (float)y2); 
-        GL11.glEnd();
-    }
-    
-    private void DrawString(String str, int position, int lineNum, int color, Vec3 arrow) {
-        DrawString(str, position, lineNum, color, arrow, false);
-    }
-    
-    private void DrawString(String str, int position, int lineNum, int color, Vec3 arrow, Boolean square) {
-        FontRenderer fr = mc.fontRendererObj;
-        ScaledResolution sr = new ScaledResolution(mc);
-        int xPos;
-        int yPos;
-        
-        if (position == 0) {
-            xPos = 1;
-            yPos = 1;
-        }
-        else if (position == 1) {
-            xPos = (int)sr.getScaledWidth_double() - fr.getStringWidth(str) - 1;
-            yPos = 1;
-        }
-        else if (position == 2) {
-            xPos = 1;
-            yPos = (int)sr.getScaledHeight_double() - 10 - 40;
-        }
-        else {
-            xPos = (int)sr.getScaledWidth_double() - fr.getStringWidth(str) - 1;
-            yPos = (int)sr.getScaledHeight_double() - 10 - 40;
-        }
-        
-        yPos += lineNum * 9;
-        
-        fr.drawStringWithShadow(str, xPos, yPos, color);
-        
-        if (arrow != null || square) {
-            if (position == 0 || position == 2) {
-                xPos += fr.getStringWidth(str);
-            }
-            else {
-                xPos -= 10;
-            }
-            if (arrow != null) {
-                drawDirectionalArrow(sr, xPos, yPos, arrow, color);
-            }
-            else if (square) {
-                drawSquare(xPos, yPos, color);
-            }
-        }
-    }
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		GL11.glLineWidth(2); 
+		GL11.glPushMatrix();
+		GL11.glTranslatef(0F, 0F, 0F);
+		line(x1, y1, x2, y2);
+		GL11.glPushMatrix();
+		GL11.glTranslatef((float)x2, (float)y2, 0F);
+		float a = (float)Math.atan2(x1-x2, y2-y1);
+		GL11.glRotatef((float)Math.toDegrees(a), 0F, 0F, 1F);
+		line(0, 0, -3, -3);
+		line(0, 0, 3, -3);
+		GL11.glPopMatrix();
+		GL11.glPopMatrix();
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+	}
+	
+	private void line(double x1, double y1, double x2, double y2) {
+		GL11.glBegin(GL11.GL_LINES); 
+		GL11.glVertex2f((float)x1, (float)y1); 
+		GL11.glVertex2f((float)x2, (float)y2); 
+		GL11.glEnd();
+	}
+	
+	private void DrawString(String str, int position, int lineNum, int color, Vec3 arrow) {
+		DrawString(str, position, lineNum, color, arrow, false);
+	}
+	
+	private void DrawString(String str, int position, int lineNum, int color, Vec3 arrow, Boolean square) {
+		FontRenderer fr = mc.fontRendererObj;
+		ScaledResolution sr = new ScaledResolution(mc);
+		int xPos;
+		int yPos;
+		
+		if (position == 0) {
+			xPos = 1;
+			yPos = 1;
+		}
+		else if (position == 1) {
+			xPos = (int)sr.getScaledWidth_double() - fr.getStringWidth(str) - 1;
+			yPos = 1;
+		}
+		else if (position == 2) {
+			xPos = 1;
+			yPos = (int)sr.getScaledHeight_double() - 10 - 40;
+		}
+		else {
+			xPos = (int)sr.getScaledWidth_double() - fr.getStringWidth(str) - 1;
+			yPos = (int)sr.getScaledHeight_double() - 10 - 40;
+		}
+		
+		yPos += lineNum * 9;
+		
+		fr.drawStringWithShadow(str, xPos, yPos, color);
+		
+		if (arrow != null || square) {
+			if (position == 0 || position == 2) {
+				xPos += fr.getStringWidth(str);
+			}
+			else {
+				xPos -= 10;
+			}
+			if (arrow != null) {
+				drawDirectionalArrow(sr, xPos, yPos, arrow, color);
+			}
+			else if (square) {
+				drawSquare(xPos, yPos, color);
+			}
+		}
+	}
 	
 	private void addDeathWaypoint() {
 		boolean isNether = ControlPackMain.mc.theWorld != null && (mc.theWorld.provider.getDimensionName() == "Nether");
@@ -1303,15 +1303,15 @@ public class ControlPackMain implements Runnable {
 	
 	public void updateCameraAngle() {
 		// called before game renders from my entity renderer proxy. The modloader OnTickInGame will be post rendering.
-        if (ControlPackMain.mc.gameSettings.debugCamEnable) {
-            if (Mouse.isButtonDown(2)) {
-                int dx = Mouse.getDX();
-                int dy = Mouse.getDY();
-                ControlPackMain.instance.frontView_rotationYaw += dx / 2;
-                ControlPackMain.instance.frontView_rotationPitch += dy / 2;
+		if (ControlPackMain.mc.gameSettings.debugCamEnable) {
+			if (Mouse.isButtonDown(2)) {
+				int dx = Mouse.getDX();
+				int dy = Mouse.getDY();
+				ControlPackMain.instance.frontView_rotationYaw += dx / 2;
+				ControlPackMain.instance.frontView_rotationPitch += dy / 2;
 				ControlPackMain.instance.syncThirdPersonRotation();
-            }
-        }
+			}
+		}
 	}
 	
 	public void setupRenderHook() {
@@ -1319,76 +1319,76 @@ public class ControlPackMain implements Runnable {
 			this.renderingWorld = true;
 		}
 	}
-    
+	
 	public void syncThirdPersonRotation() {
 		IEntityRenderer iEntityRenderer = (IEntityRenderer)ControlPackMain.mc.entityRenderer;
 		iEntityRenderer.setCameraPitch(frontView_rotationPitch);
 		iEntityRenderer.setCameraYaw(frontView_rotationYaw);
 	}
 	
-    private void openGUIRunDistance() {
-    	GuiMeasure guiMeasure = new GuiMeasure(String.valueOf(lastMeasureDistance));
-    	mc.displayGuiScreen(guiMeasure);
-    }
+	private void openGUIRunDistance() {
+		GuiMeasure guiMeasure = new GuiMeasure(String.valueOf(lastMeasureDistance));
+		mc.displayGuiScreen(guiMeasure);
+	}
 	
-    public void moveByDistance(int numTiles) {
-    	lastMeasureDistance = numTiles;
-    	BlockPos pos = mc.thePlayer.getPosition();
-    	measureDistanceStartX = (int) (pos.getX() < 0 ? Math.ceil(pos.getX()) : Math.floor(pos.getX()));
-    	measureDistanceStartZ = (int) (pos.getZ() < 0 ? Math.ceil(pos.getZ()) : Math.floor(pos.getZ()));
-    	measureDistanceState = true;
-    	keyBindingToggle(mc.gameSettings.keyBindForward,true);
-    }
-    
-    public void orientCamera(float f) {
+	public void moveByDistance(int numTiles) {
+		lastMeasureDistance = numTiles;
+		BlockPos pos = mc.thePlayer.getPosition();
+		measureDistanceStartX = (int) (pos.getX() < 0 ? Math.ceil(pos.getX()) : Math.floor(pos.getX()));
+		measureDistanceStartZ = (int) (pos.getZ() < 0 ? Math.ceil(pos.getZ()) : Math.floor(pos.getZ()));
+		measureDistanceState = true;
+		keyBindingToggle(mc.gameSettings.keyBindForward,true);
+	}
+	
+	public void orientCamera(float f) {
 		if (mc == null) return;
 		if (lookBehindProgress != 0) {
 			GL11.glRotatef(180 * lookBehindProgress, 0.1F, 1F, 0F); // rotate 180
 		}
-    }
+	}
 	
 	public void toggleThirdPersonView() {
 		if (mc.gameSettings.thirdPersonView < 2) {
-            // let MC do it
-        }
-        else {
-            if (mc.gameSettings.debugCamEnable) {
-                // in front-3rd view, need to go into normal view.
-                mc.gameSettings.debugCamEnable = false;
-                // let MC increment 3rd view field
-            }
-            else {
-                mc.gameSettings.debugCamEnable = true;
-                // trick MC into staying in the same mode
-                mc.gameSettings.thirdPersonView = 1;
-            }
-        }
+			// let MC do it
+		}
+		else {
+			if (mc.gameSettings.debugCamEnable) {
+				// in front-3rd view, need to go into normal view.
+				mc.gameSettings.debugCamEnable = false;
+				// let MC increment 3rd view field
+			}
+			else {
+				mc.gameSettings.debugCamEnable = true;
+				// trick MC into staying in the same mode
+				mc.gameSettings.thirdPersonView = 1;
+			}
+		}
 	}
-    
-    public boolean handleInputEvent(int code, boolean down) {
-        // mouse or keyboard event
-        if (mc.currentScreen != null) return false;
-        
-        if (code == Keyboard.KEY_LMENU || code == Keyboard.KEY_RMENU) {
-            altKey = down;
-        }
-        
+	
+	public boolean handleInputEvent(int code, boolean down) {
+		// mouse or keyboard event
+		if (mc.currentScreen != null) return false;
+		
+		if (code == Keyboard.KEY_LMENU || code == Keyboard.KEY_RMENU) {
+			altKey = down;
+		}
+		
 		if (down && code == mc.gameSettings.keyBindAttack.getKeyCode()) {
 			// if they just hit the 'left click' button then proactively run autotool
 			// so that it swaps items BEFORE processing the event.
 			runAutoTool(true);
 		}
-        
-        if (down && code == keyBindWaypoints.getKeyCode()) {
-            GuiWaypoints gui = new GuiWaypoints(null);
-            mc.displayGuiScreen(gui);
-            return true;
-        }
-       
-        if (code == Keyboard.KEY_F5 && down && ControlPackOptions.booleanOptions.get(ControlPackEnumOptions.FRONTVIEW)) {
-            toggleThirdPersonView();
-            return true;
-        }
+		
+		if (down && code == keyBindWaypoints.getKeyCode()) {
+			GuiWaypoints gui = new GuiWaypoints(null);
+			mc.displayGuiScreen(gui);
+			return true;
+		}
+	   
+		if (code == Keyboard.KEY_F5 && down && ControlPackOptions.booleanOptions.get(ControlPackEnumOptions.FRONTVIEW)) {
+			toggleThirdPersonView();
+			return true;
+		}
 		
 		if (code == keyBindEat.getKeyCode()) {
 			if (down) {
@@ -1410,167 +1410,167 @@ public class ControlPackMain implements Runnable {
 		}
 		
 		
-        if (down && code == keyBindTorch.getKeyCode()) {
-            placeTorch();
-        }
+		if (down && code == keyBindTorch.getKeyCode()) {
+			placeTorch();
+		}
 
 		if (down && code == keyBindSprint.getKeyCode() && mc.gameSettings.keyBindForward.isKeyDown()) {
 			isSprinting = !isSprinting;
 			mc.thePlayer.setSprinting(isSprinting);
 		}
-        
-        // open controlpack options
-        if (down && altKey && code == Keyboard.KEY_C) {
-            // open controlpack options gui
-        	ControlPackOptions.booleanOptions.put(ControlPackEnumOptions.WELCOMENAG, false);
-            ControlPackOptions.saveOptions();
-            mc.displayGuiScreen(new GuiControlPack());
+		
+		// open controlpack options
+		if (down && altKey && code == Keyboard.KEY_C) {
+			// open controlpack options gui
+			ControlPackOptions.booleanOptions.put(ControlPackEnumOptions.WELCOMENAG, false);
+			ControlPackOptions.saveOptions();
+			mc.displayGuiScreen(new GuiControlPack());
 			altKey = false;
-            return true;
-        }
+			return true;
+		}
 
-        if (down && altKey && code == Keyboard.KEY_T) {
-            // toggle auto tool
-            boolean enabled = !ControlPackOptions.booleanOptions.get(ControlPackEnumOptions.AUTOTOOL);
-            ControlPackOptions.booleanOptions.put(ControlPackEnumOptions.AUTOTOOL, enabled);
-            chatMsg("Auto Tool " + (enabled ? "ENABLED" : "DISABLED"));
-            ControlPackOptions.saveOptions();
-            return true;
-        }
-        if (down && altKey && code == Keyboard.KEY_S) {
-            // toggle auto sword
-            boolean enabled = !ControlPackOptions.booleanOptions.get(ControlPackEnumOptions.AUTOSWORD);
-            ControlPackOptions.booleanOptions.put(ControlPackEnumOptions.AUTOSWORD, enabled);
-            chatMsg("Auto Sword " + (enabled ? "ENABLED" : "DISABLED"));
-            ControlPackOptions.saveOptions();
-            return true;
-        }
-        if (down && altKey && code == Keyboard.KEY_B) {
-            // toggle auto block
-            boolean enabled = !ControlPackOptions.booleanOptions.get(ControlPackEnumOptions.AUTOBLOCK);
-            ControlPackOptions. booleanOptions.put(ControlPackEnumOptions.AUTOBLOCK, enabled);
-            chatMsg("Auto Block " + (enabled ? "ENABLED" : "DISABLED"));
-            ControlPackOptions. saveOptions();
-            return true;
-        }		
+		if (down && altKey && code == Keyboard.KEY_T) {
+			// toggle auto tool
+			boolean enabled = !ControlPackOptions.booleanOptions.get(ControlPackEnumOptions.AUTOTOOL);
+			ControlPackOptions.booleanOptions.put(ControlPackEnumOptions.AUTOTOOL, enabled);
+			chatMsg("Auto Tool " + (enabled ? "ENABLED" : "DISABLED"));
+			ControlPackOptions.saveOptions();
+			return true;
+		}
+		if (down && altKey && code == Keyboard.KEY_S) {
+			// toggle auto sword
+			boolean enabled = !ControlPackOptions.booleanOptions.get(ControlPackEnumOptions.AUTOSWORD);
+			ControlPackOptions.booleanOptions.put(ControlPackEnumOptions.AUTOSWORD, enabled);
+			chatMsg("Auto Sword " + (enabled ? "ENABLED" : "DISABLED"));
+			ControlPackOptions.saveOptions();
+			return true;
+		}
+		if (down && altKey && code == Keyboard.KEY_B) {
+			// toggle auto block
+			boolean enabled = !ControlPackOptions.booleanOptions.get(ControlPackEnumOptions.AUTOBLOCK);
+			ControlPackOptions. booleanOptions.put(ControlPackEnumOptions.AUTOBLOCK, enabled);
+			chatMsg("Auto Block " + (enabled ? "ENABLED" : "DISABLED"));
+			ControlPackOptions. saveOptions();
+			return true;
+		}		
 		if (down && altKey && code == Keyboard.KEY_R) {
 			// cycle auto tool mode
-            int mode = ControlPackOptions.intOptions.get(ControlPackEnumOptions.AUTOTOOLMODE);
+			int mode = ControlPackOptions.intOptions.get(ControlPackEnumOptions.AUTOTOOLMODE);
 			mode++;
 			int max = ControlPackOptions.intOptionsMaxValue.get(ControlPackEnumOptions.AUTOTOOLMODE);
 			if (mode > max) {
 				mode = 0;
 			}
 			ControlPackOptions.intOptions.put(ControlPackEnumOptions.AUTOTOOLMODE, mode);
-            chatMsg("Auto Tool Mode = " + getIntOptionDesc(ControlPackEnumOptions.AUTOTOOLMODE, mode));
-            
-            ControlPackOptions.saveOptions();
-            return true;
+			chatMsg("Auto Tool Mode = " + getIntOptionDesc(ControlPackEnumOptions.AUTOTOOLMODE, mode));
+			
+			ControlPackOptions.saveOptions();
+			return true;
 		}
 
-        
-        if (code == keyBindLookBehind.getKeyCode() && !ControlPackMain.mc.gameSettings.debugCamEnable && ControlPackMain.mc.gameSettings.thirdPersonView == 0) {
-            lookBehind = down;
-            lookBehindProgressTicksLast = System.currentTimeMillis();
-            return true;
-        }
-        
-        if (code == keyBindAlternateLeft.getKeyCode()) {
-            if (down) {
-                swappedInventoryState = -1;
-                mc.thePlayer.inventory.changeCurrentItem(1);
-            }
-            else if (swappedInventoryState != 0) {
-                mc.thePlayer.inventory.changeCurrentItem(swappedInventoryState);
-                swappedInventoryState = 0;
-            }
-            return true;
-        }
-        if (code == keyBindAlternateRight.getKeyCode()) {
-            if (down) {
-                swappedInventoryState = 1;
-                mc.thePlayer.inventory.changeCurrentItem(-1);
-            }
-            else if (swappedInventoryState != 0) {
-                mc.thePlayer.inventory.changeCurrentItem(swappedInventoryState);
-                swappedInventoryState = 0;
-            }
-            return true;
-        }
-        
-        // if pressing forward and back at the same time, lookbehind
-        if (mc.gameSettings.thirdPersonView == 0 && ControlPackOptions.booleanOptions.get(ControlPackEnumOptions.LOOKBEHINDBACK) && (code == mc.gameSettings.keyBindForward.getKeyCode() || code == mc.gameSettings.keyBindBack.getKeyCode())) {
-            boolean wasLookBehind = lookBehind;
-            lookBehind = keyBindingIsDown(mc.gameSettings.keyBindForward) && keyBindingIsDown(mc.gameSettings.keyBindBack);
-            lookBehindProgressTicksLast = System.currentTimeMillis();
-            if (down && (wasLookBehind != lookBehind)) {
-                return true;
-            }
-        }
+		
+		if (code == keyBindLookBehind.getKeyCode() && !ControlPackMain.mc.gameSettings.debugCamEnable && ControlPackMain.mc.gameSettings.thirdPersonView == 0) {
+			lookBehind = down;
+			lookBehindProgressTicksLast = System.currentTimeMillis();
+			return true;
+		}
+		
+		if (code == keyBindAlternateLeft.getKeyCode()) {
+			if (down) {
+				swappedInventoryState = -1;
+				mc.thePlayer.inventory.changeCurrentItem(1);
+			}
+			else if (swappedInventoryState != 0) {
+				mc.thePlayer.inventory.changeCurrentItem(swappedInventoryState);
+				swappedInventoryState = 0;
+			}
+			return true;
+		}
+		if (code == keyBindAlternateRight.getKeyCode()) {
+			if (down) {
+				swappedInventoryState = 1;
+				mc.thePlayer.inventory.changeCurrentItem(-1);
+			}
+			else if (swappedInventoryState != 0) {
+				mc.thePlayer.inventory.changeCurrentItem(swappedInventoryState);
+				swappedInventoryState = 0;
+			}
+			return true;
+		}
+		
+		// if pressing forward and back at the same time, lookbehind
+		if (mc.gameSettings.thirdPersonView == 0 && ControlPackOptions.booleanOptions.get(ControlPackEnumOptions.LOOKBEHINDBACK) && (code == mc.gameSettings.keyBindForward.getKeyCode() || code == mc.gameSettings.keyBindBack.getKeyCode())) {
+			boolean wasLookBehind = lookBehind;
+			lookBehind = keyBindingIsDown(mc.gameSettings.keyBindForward) && keyBindingIsDown(mc.gameSettings.keyBindBack);
+			lookBehindProgressTicksLast = System.currentTimeMillis();
+			if (down && (wasLookBehind != lookBehind)) {
+				return true;
+			}
+		}
 
-        if (measureDistanceState && (code == mc.gameSettings.keyBindForward.getKeyCode()) || (code == mc.gameSettings.keyBindBack.getKeyCode())) {
-            cancelMeasureDistance();
-        }
+		if (measureDistanceState && (code == mc.gameSettings.keyBindForward.getKeyCode()) || (code == mc.gameSettings.keyBindBack.getKeyCode())) {
+			cancelMeasureDistance();
+		}
 
-        if (down) {
-            if (mc.gameSettings.debugCamEnable) {
-                if ((Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL))) {
-                    if (code == mc.gameSettings.keyBindForward.getKeyCode() || code == mc.gameSettings.keyBindBack.getKeyCode() || code == mc.gameSettings.keyBindLeft.getKeyCode() || code == mc.gameSettings.keyBindRight.getKeyCode()) {
-                        return true;
-                    }
-                }
-            }
-            
-            if (ControlPackOptions.booleanOptions.get(ControlPackEnumOptions.AUTOBLOCK) && code == mc.gameSettings.keyBindUseItem.getKeyCode()) {
-                // they right clicked.
-                runAutoBlock();
-                
-                // they just 'used' the current item. remember what kind of item it was for autoblock expending feature.
-                previouslyPlacedBlock = true;
-                ItemStack stack = mc.thePlayer.inventory.getCurrentItem();
-                previouslyPlacedBlockID = stack == null ? -1 : Item.getIdFromItem(stack.getItem());
-            }
-            
-            if (code == keyBindToggleGamma.getKeyCode()) {
-                if (toggleGammaState) {
-                    mc.gameSettings.gammaSetting = originalGamma;
-                }
-                else {
-                    originalGamma = mc.gameSettings.gammaSetting;
-                    if (originalGamma == 1F) {
-                        mc.gameSettings.gammaSetting = 0F;
-                    }
-                    else {
-                        mc.gameSettings.gammaSetting = 1F;
-                    }
-                }
-                toggleGammaState = !toggleGammaState;
-                return true;
-            }
+		if (down) {
+			if (mc.gameSettings.debugCamEnable) {
+				if ((Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL))) {
+					if (code == mc.gameSettings.keyBindForward.getKeyCode() || code == mc.gameSettings.keyBindBack.getKeyCode() || code == mc.gameSettings.keyBindLeft.getKeyCode() || code == mc.gameSettings.keyBindRight.getKeyCode()) {
+						return true;
+					}
+				}
+			}
+			
+			if (ControlPackOptions.booleanOptions.get(ControlPackEnumOptions.AUTOBLOCK) && code == mc.gameSettings.keyBindUseItem.getKeyCode()) {
+				// they right clicked.
+				runAutoBlock();
+				
+				// they just 'used' the current item. remember what kind of item it was for autoblock expending feature.
+				previouslyPlacedBlock = true;
+				ItemStack stack = mc.thePlayer.inventory.getCurrentItem();
+				previouslyPlacedBlockID = stack == null ? -1 : Item.getIdFromItem(stack.getItem());
+			}
+			
+			if (code == keyBindToggleGamma.getKeyCode()) {
+				if (toggleGammaState) {
+					mc.gameSettings.gammaSetting = originalGamma;
+				}
+				else {
+					originalGamma = mc.gameSettings.gammaSetting;
+					if (originalGamma == 1F) {
+						mc.gameSettings.gammaSetting = 0F;
+					}
+					else {
+						mc.gameSettings.gammaSetting = 1F;
+					}
+				}
+				toggleGammaState = !toggleGammaState;
+				return true;
+			}
 
-            if (code == keyBindWalkDistance.getKeyCode()) {
-                openGUIRunDistance();
-                return true;
-            }
+			if (code == keyBindWalkDistance.getKeyCode()) {
+				openGUIRunDistance();
+				return true;
+			}
 
-            if (code == keyBindToggleMine.getKeyCode()) {
-            	keyBindingToggle(mc.gameSettings.keyBindAttack);
-                return true;
-            }
+			if (code == keyBindToggleMine.getKeyCode()) {
+				keyBindingToggle(mc.gameSettings.keyBindAttack);
+				return true;
+			}
 
-            if (code == keyBindToggleUse.getKeyCode()) {
-            	keyBindingToggle(mc.gameSettings.keyBindUseItem);
-                return true;
-            }
+			if (code == keyBindToggleUse.getKeyCode()) {
+				keyBindingToggle(mc.gameSettings.keyBindUseItem);
+				return true;
+			}
 
-            // toggle sneak, run, jump
-            if (code == keyBindToggleSneak.getKeyCode()) {
-            	keyBindingToggle(mc.gameSettings.keyBindSneak);
-                //autoSneakState = !autoSneakState;
-                return true;
-            }
-            if (code == keyBindToggleRun.getKeyCode()) {
-                cancelMeasureDistance();
+			// toggle sneak, run, jump
+			if (code == keyBindToggleSneak.getKeyCode()) {
+				keyBindingToggle(mc.gameSettings.keyBindSneak);
+				//autoSneakState = !autoSneakState;
+				return true;
+			}
+			if (code == keyBindToggleRun.getKeyCode()) {
+				cancelMeasureDistance();
 				// if they are already running backward then auto run will run backward...
 				if (mc.gameSettings.keyBindBack.isKeyDown()) {
 					keyBindingToggle(mc.gameSettings.keyBindBack);
@@ -1578,63 +1578,63 @@ public class ControlPackMain implements Runnable {
 				else {
 					keyBindingToggle(mc.gameSettings.keyBindForward);
 				}
-                //autoRunState = !autoRunState;
-                return true;
-            }
-            if (code == keyBindToggleJump.getKeyCode()) {
-            	keyBindingToggle(mc.gameSettings.keyBindJump);
-                //autoJumpState = !autoJumpState;
-                return true;
-            }
-            
-            // cancel mine, toggle sneak, run, jump
-            if (code == mc.gameSettings.keyBindAttack.getKeyCode()) { // attack
-            	keyBindingToggle(mc.gameSettings.keyBindAttack,false);
-                return false;
-            }
-            if (code == mc.gameSettings.keyBindUseItem.getKeyCode()) {
-            	keyBindingToggle(mc.gameSettings.keyBindUseItem,false);
-                return false;
-            }
-            if (code == mc.gameSettings.keyBindSneak.getKeyCode()) {
-            	keyBindingToggle(mc.gameSettings.keyBindSneak,false);
-                return false;
-                //autoSneakState = false;
-            }
-            if (code == mc.gameSettings.keyBindJump.getKeyCode()) {
-            	keyBindingToggle(mc.gameSettings.keyBindJump,false);
-                return false;
-                //autoJumpState = false;
-            }
-            if (code == mc.gameSettings.keyBindForward.getKeyCode() || code == mc.gameSettings.keyBindBack.getKeyCode()) {
-            	keyBindingToggle(mc.gameSettings.keyBindForward,false);
-            	keyBindingToggle(mc.gameSettings.keyBindBack,false);	
-                //autoRunState = false;
-                cancelMeasureDistance();
-                return false;
-            }
-        }
-        return false;
-    }	
-    
-    public String getOptionDesc(ControlPackEnumOptions option) {
-        String s = (new StringBuilder()).append(translate(option.getLocKey())).append(": ").toString();
-        if (option.getIsBool()) {
-            boolean value = ControlPackOptions.booleanOptions.get(option);
-            s += (value ? "ON" : "OFF");
-        }
-        else if (option.getIsFloat()) {
-            float value = ControlPackOptions.floatOptions.get(option);
-            s += ((int)(value * 100)) + "%";
-        }
-        else {
-            Integer value = ControlPackOptions.intOptions.get(option);
-            s += " " + getIntOptionDesc(option, value);
-        }
-        return s;
-    }
-    
-    private String getIntOptionDesc(ControlPackEnumOptions option, Integer value) {
+				//autoRunState = !autoRunState;
+				return true;
+			}
+			if (code == keyBindToggleJump.getKeyCode()) {
+				keyBindingToggle(mc.gameSettings.keyBindJump);
+				//autoJumpState = !autoJumpState;
+				return true;
+			}
+			
+			// cancel mine, toggle sneak, run, jump
+			if (code == mc.gameSettings.keyBindAttack.getKeyCode()) { // attack
+				keyBindingToggle(mc.gameSettings.keyBindAttack,false);
+				return false;
+			}
+			if (code == mc.gameSettings.keyBindUseItem.getKeyCode()) {
+				keyBindingToggle(mc.gameSettings.keyBindUseItem,false);
+				return false;
+			}
+			if (code == mc.gameSettings.keyBindSneak.getKeyCode()) {
+				keyBindingToggle(mc.gameSettings.keyBindSneak,false);
+				return false;
+				//autoSneakState = false;
+			}
+			if (code == mc.gameSettings.keyBindJump.getKeyCode()) {
+				keyBindingToggle(mc.gameSettings.keyBindJump,false);
+				return false;
+				//autoJumpState = false;
+			}
+			if (code == mc.gameSettings.keyBindForward.getKeyCode() || code == mc.gameSettings.keyBindBack.getKeyCode()) {
+				keyBindingToggle(mc.gameSettings.keyBindForward,false);
+				keyBindingToggle(mc.gameSettings.keyBindBack,false);	
+				//autoRunState = false;
+				cancelMeasureDistance();
+				return false;
+			}
+		}
+		return false;
+	}	
+	
+	public String getOptionDesc(ControlPackEnumOptions option) {
+		String s = (new StringBuilder()).append(translate(option.getLocKey())).append(": ").toString();
+		if (option.getIsBool()) {
+			boolean value = ControlPackOptions.booleanOptions.get(option);
+			s += (value ? "ON" : "OFF");
+		}
+		else if (option.getIsFloat()) {
+			float value = ControlPackOptions.floatOptions.get(option);
+			s += ((int)(value * 100)) + "%";
+		}
+		else {
+			Integer value = ControlPackOptions.intOptions.get(option);
+			s += " " + getIntOptionDesc(option, value);
+		}
+		return s;
+	}
+	
+	private String getIntOptionDesc(ControlPackEnumOptions option, Integer value) {
 		if (option == ControlPackEnumOptions.AUTOTOOLMODE) {
 			return value == 0 ? "Weakest" : (value == 1 ? "Strongest" : (value == 2 ? "Leftmost" : "Rightmost"));
 		}
@@ -1647,139 +1647,139 @@ public class ControlPackMain implements Runnable {
 			}
 			return "Slot #" + (value - 1);
 		}
-        else if (option == ControlPackEnumOptions.STATUSLOCATION || option == ControlPackEnumOptions.COORDINATESLOCATION) {
-            if (value == 0) {
-                return "Top Left";
-            }
-            if (value == 1) {
-                return "Top Right";
-            }
-            if (value == 2) {
-                return "Bottom Left";
-            }
-            if (value == 3) {
-                return "Bottom Right";
-            }
-            if (value == 4) {
-                return "OFF";
-            }
-        }
+		else if (option == ControlPackEnumOptions.STATUSLOCATION || option == ControlPackEnumOptions.COORDINATESLOCATION) {
+			if (value == 0) {
+				return "Top Left";
+			}
+			if (value == 1) {
+				return "Top Right";
+			}
+			if (value == 2) {
+				return "Bottom Left";
+			}
+			if (value == 3) {
+				return "Bottom Right";
+			}
+			if (value == 4) {
+				return "OFF";
+			}
+		}
 		return "";
-    }
-    
-    public void chatMsg(String msg)
-    {
-        mc.ingameGUI.getChatGUI().printChatMessage(new ChatComponentText("\u00A7c[ControlPack]\u00A7r " + msg));
-    }
-    
-    public boolean compareItemType(Item i1, Item i2) {
-    	return (Item.getIdFromItem(i1) == Item.getIdFromItem(i2));
-    }
-    
-    public boolean keyBindingIsDown(KeyBinding kb) {
-    	if (!(kb instanceof IKeyBinding)) {return false;}
-    	IKeyBinding kbs = (IKeyBinding) kb;
-    	return kbs.isDown();
-    }
-    
-    public void keyBindingReset(KeyBinding kb) {
-    	if (!(kb instanceof IKeyBinding)) {return;}
-    	IKeyBinding kbs = (IKeyBinding) kb;
-    	kbs.reset();
-    }
-    
-    public void keyBindingApplyToggle(KeyBinding kb) {
-    	if (!(kb instanceof IKeyBinding)) {return;}
-    	IKeyBinding kbs = (IKeyBinding) kb;
-    	kbs.applyToggle();
-    }
-    
-    public void keyBindingToggle(KeyBinding kb, boolean bo) {
-    	if (!(kb instanceof IKeyBinding)) {return;}
-    	IKeyBinding kbs = (IKeyBinding) kb;
-    	kbs.toggle(bo);
-    }
-    
-    public void keyBindingToggle(KeyBinding kb) {
-    	if (!(kb instanceof IKeyBinding)) {return;}
-    	IKeyBinding kbs = (IKeyBinding) kb;
-    	kbs.toggle();
-    }
-    
-    public int keyBindingGetPressTime(KeyBinding kb) {
-    	if (!(kb instanceof IKeyBinding)) {return 0;}
-    	IKeyBinding kbs = (IKeyBinding) kb;
-    	return kbs.getPressTime();
-    }
-    
-    public void keyBindingSetPressTime(KeyBinding kb, int vp) {
-    	if (!(kb instanceof IKeyBinding)) {return;}
-    	IKeyBinding kbs = (IKeyBinding) kb;
-    	kbs.setPressTime(vp);
-    }
-    
-    public boolean keyBindingGetToggled(KeyBinding kb) {
-    	if (!(kb instanceof IKeyBinding)) {return false;}
-    	IKeyBinding kbs = (IKeyBinding) kb;
-    	return kbs.getToggled();
-    }
-    
-    public KeyBinding keyBindings[];
-    public KeyBinding keyBindAlternateLeft;
-    public KeyBinding keyBindAlternateRight;
-    public KeyBinding keyBindToggleSneak;
-    public KeyBinding keyBindToggleRun;
-    public KeyBinding keyBindToggleJump;
-    public KeyBinding keyBindToggleMine;
-    public KeyBinding keyBindToggleUse;
-    public KeyBinding keyBindWalkDistance;
-    public KeyBinding keyBindLookBehind;
-    public KeyBinding keyBindToggleGamma;
-    public KeyBinding keyBindSprint;
-    public KeyBinding keyBindTorch;
+	}
+	
+	public void chatMsg(String msg)
+	{
+		mc.ingameGUI.getChatGUI().printChatMessage(new ChatComponentText("\u00A7c[ControlPack]\u00A7r " + msg));
+	}
+	
+	public boolean compareItemType(Item i1, Item i2) {
+		return (Item.getIdFromItem(i1) == Item.getIdFromItem(i2));
+	}
+	
+	public boolean keyBindingIsDown(KeyBinding kb) {
+		if (!(kb instanceof IKeyBinding)) {return false;}
+		IKeyBinding kbs = (IKeyBinding) kb;
+		return kbs.isDown();
+	}
+	
+	public void keyBindingReset(KeyBinding kb) {
+		if (!(kb instanceof IKeyBinding)) {return;}
+		IKeyBinding kbs = (IKeyBinding) kb;
+		kbs.reset();
+	}
+	
+	public void keyBindingApplyToggle(KeyBinding kb) {
+		if (!(kb instanceof IKeyBinding)) {return;}
+		IKeyBinding kbs = (IKeyBinding) kb;
+		kbs.applyToggle();
+	}
+	
+	public void keyBindingToggle(KeyBinding kb, boolean bo) {
+		if (!(kb instanceof IKeyBinding)) {return;}
+		IKeyBinding kbs = (IKeyBinding) kb;
+		kbs.toggle(bo);
+	}
+	
+	public void keyBindingToggle(KeyBinding kb) {
+		if (!(kb instanceof IKeyBinding)) {return;}
+		IKeyBinding kbs = (IKeyBinding) kb;
+		kbs.toggle();
+	}
+	
+	public int keyBindingGetPressTime(KeyBinding kb) {
+		if (!(kb instanceof IKeyBinding)) {return 0;}
+		IKeyBinding kbs = (IKeyBinding) kb;
+		return kbs.getPressTime();
+	}
+	
+	public void keyBindingSetPressTime(KeyBinding kb, int vp) {
+		if (!(kb instanceof IKeyBinding)) {return;}
+		IKeyBinding kbs = (IKeyBinding) kb;
+		kbs.setPressTime(vp);
+	}
+	
+	public boolean keyBindingGetToggled(KeyBinding kb) {
+		if (!(kb instanceof IKeyBinding)) {return false;}
+		IKeyBinding kbs = (IKeyBinding) kb;
+		return kbs.getToggled();
+	}
+	
+	public KeyBinding keyBindings[];
+	public KeyBinding keyBindAlternateLeft;
+	public KeyBinding keyBindAlternateRight;
+	public KeyBinding keyBindToggleSneak;
+	public KeyBinding keyBindToggleRun;
+	public KeyBinding keyBindToggleJump;
+	public KeyBinding keyBindToggleMine;
+	public KeyBinding keyBindToggleUse;
+	public KeyBinding keyBindWalkDistance;
+	public KeyBinding keyBindLookBehind;
+	public KeyBinding keyBindToggleGamma;
+	public KeyBinding keyBindSprint;
+	public KeyBinding keyBindTorch;
 	public KeyBinding keyBindEat;
-    public KeyBinding keyBindSayLocation;
-    public KeyBinding keyBindWaypoints;
-    
-    public int lastMeasureDistance;
-    public boolean measureDistanceState;
-    public boolean measureDistanceStateMoving;
-    public int measureDistanceStartX;
-    public int measureDistanceStartZ;
-    public double measureDistanceRemaining;
-    
-    public boolean lookBehind;
-    public float lookBehindProgress;
-    //public float lookBehindAnimationLength = 125F;
-    // instant because of lag spikes :(
-    public float lookBehindAnimationLength = 1F;
-    public float lookBehindProgressTicks;
-    public long lookBehindProgressTicksLast;
-    
-    public int swappedInventoryState;
+	public KeyBinding keyBindSayLocation;
+	public KeyBinding keyBindWaypoints;
+	
+	public int lastMeasureDistance;
+	public boolean measureDistanceState;
+	public boolean measureDistanceStateMoving;
+	public int measureDistanceStartX;
+	public int measureDistanceStartZ;
+	public double measureDistanceRemaining;
+	
+	public boolean lookBehind;
+	public float lookBehindProgress;
+	//public float lookBehindAnimationLength = 125F;
+	// instant because of lag spikes :(
+	public float lookBehindAnimationLength = 1F;
+	public float lookBehindProgressTicks;
+	public long lookBehindProgressTicksLast;
+	
+	public int swappedInventoryState;
 	
 	public float frontView_rotationPitch;
 	public float frontView_rotationYaw;
 	public float pitchSpeed = 0.2f;
 	public float yawSpeed = 0.2f;
 	
-    private boolean toggleGammaState;
-    private float originalGamma;
-    
+	private boolean toggleGammaState;
+	private float originalGamma;
+	
 	private int isEating = -1;
-    private boolean swapBack;
-    private int swapBackTo;
-    private boolean altKey;
-    private boolean nagged;
-    
-    private boolean isSprinting = false;
+	private boolean swapBack;
+	private int swapBackTo;
+	private boolean altKey;
+	private boolean nagged;
+	
+	private boolean isSprinting = false;
 	
 	public boolean cameraStandMode;
 	public boolean renderingWorld;
 
-    private boolean previouslyPlacedBlock;
-    private int previouslyPlacedBlockID;
-    
-    public Map<String, ControlPackEnumOptions> volumeSettingsMap;
+	private boolean previouslyPlacedBlock;
+	private int previouslyPlacedBlockID;
+	
+	public Map<String, ControlPackEnumOptions> volumeSettingsMap;
 }
 

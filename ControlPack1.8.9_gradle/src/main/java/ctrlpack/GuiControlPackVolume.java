@@ -15,63 +15,63 @@ import net.minecraft.client.gui.GuiScreen;
 
 public class GuiControlPackVolume extends GuiScreen
 {
-    protected String screenTitle;
+	protected String screenTitle;
 	private GuiScreen parentScreen;
 	
-    public GuiControlPackVolume(GuiScreen parent)
-    {
-        screenTitle = "Control Pack";
+	public GuiControlPackVolume(GuiScreen parent)
+	{
+		screenTitle = "Control Pack";
 		parentScreen = parent;
-    }
+	}
 
-    private int func_20080_j()
-    {
-        return width / 2 - 155;
-    }
-    
-    // lifted from gameoptions.java
-    public String getKeyBindingDescription(int i) {
-        return ControlPackMain.translate(ControlPackMain.instance.keyBindings[i].getKeyDescription());
-    }
-    
-    // end lifted
-    
-    @Override
+	private int func_20080_j()
+	{
+		return width / 2 - 155;
+	}
+	
+	// lifted from gameoptions.java
+	public String getKeyBindingDescription(int i) {
+		return ControlPackMain.translate(ControlPackMain.instance.keyBindings[i].getKeyDescription());
+	}
+	
+	// end lifted
+	
+	@Override
 	public void initGui()
-    {
-        screenTitle = ControlPackMain.translate("controlPack.volumeTitle");
+	{
+		screenTitle = ControlPackMain.translate("controlPack.volumeTitle");
 
-        int i = func_20080_j();
-        int j = 0;
+		int i = func_20080_j();
+		int j = 0;
  
-        ControlPackEnumOptions enumoptions[] = ControlPackOptions.volumeOptions;
-        for(int k = 0; k < enumoptions.length; k++) {
-            ControlPackEnumOptions option = enumoptions[k];
-            if(!option.getIsFloat()) {
+		ControlPackEnumOptions enumoptions[] = ControlPackOptions.volumeOptions;
+		for(int k = 0; k < enumoptions.length; k++) {
+			ControlPackEnumOptions option = enumoptions[k];
+			if(!option.getIsFloat()) {
 				buttonList.add(new GuiSmallButtonCP(100 + option.getOrdinal(), i + (j % 2) * 160, (height / 9 + 17 * (j >> 1)) - 10, option, ControlPackMain.instance.getOptionDesc(option)));
-            }
-            else {
+			}
+			else {
 				buttonList.add(new GuiSliderCP(100 + option.getOrdinal(), i + (j % 2) * 160, (height / 9 + 24 * (j >> 1)), option, ControlPackMain.instance.getOptionDesc(option), ControlPackOptions.floatOptions.get(option), 2F));
-            }
-            j++;
-        }
+			}
+			j++;
+		}
 
-        buttonList.add(new GuiButton(200, width / 2 - 100, height / 9 + 190, ControlPackMain.translate("gui.done")));
-    }
-    
-    @Override
+		buttonList.add(new GuiButton(200, width / 2 - 100, height / 9 + 190, ControlPackMain.translate("gui.done")));
+	}
+	
+	@Override
 	protected void actionPerformed(GuiButton guibutton) {
-        if(guibutton.id == 200) {
-            mc.displayGuiScreen(parentScreen);
-        }
-    }
+		if(guibutton.id == 200) {
+			mc.displayGuiScreen(parentScreen);
+		}
+	}
 
-    @Override
+	@Override
 	public void drawScreen(int i, int j, float f) {
-        drawDefaultBackground();
-        drawCenteredString(fontRendererObj, screenTitle, width / 2, 5, 0xffffff);
+		drawDefaultBackground();
+		drawCenteredString(fontRendererObj, screenTitle, width / 2, 5, 0xffffff);
 
-        super.drawScreen(i, j, f);
-    }
+		super.drawScreen(i, j, f);
+	}
 
 }

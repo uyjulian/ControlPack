@@ -22,7 +22,7 @@ public class GuiTextFieldCP extends GuiTextField {
 	private FontRenderer fontRenderer;
 	public boolean isIdList;
 	
-    public GuiTextFieldCP(FontRenderer thefontRenderer, String thelabel, int x, int y, int width, int h, ControlPackEnumOptions opt) {
+	public GuiTextFieldCP(FontRenderer thefontRenderer, String thelabel, int x, int y, int width, int h, ControlPackEnumOptions opt) {
 		super(1, thefontRenderer, x + 80, y, width - 80, h);
 		xpos = x;
 		ypos = y;
@@ -30,7 +30,7 @@ public class GuiTextFieldCP extends GuiTextField {
 		option = opt;
 		fontRenderer = thefontRenderer;
 		height = h;
-    }
+	}
 	
 	@Override
 	public void drawTextBox() {

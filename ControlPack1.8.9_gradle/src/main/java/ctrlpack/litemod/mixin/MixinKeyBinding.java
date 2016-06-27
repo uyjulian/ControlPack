@@ -32,94 +32,94 @@ public abstract class MixinKeyBinding implements Comparable<KeyBinding>, IKeyBin
 	
 	@Inject(method="setKeyBindState", at=@At("HEAD"), cancellable=true)
 	private static void onSetKeyBindState(int p_74510_0_, boolean p_74510_1_, CallbackInfo ci) {
-    	//methodhead
+		//methodhead
 
-        // mod_controlpack
-        // called on every mouse AND keyboard event (mouse button - 100 to avoid colliding numbers)
-        if (ControlPackMain.instance.handleInputEvent(p_74510_0_, p_74510_1_)) {
-            ci.cancel();
-        }
-        
-        // mod_controlpack
-        // ensure the correct keys are in the down state
-        if (ControlPackMain.instance != null) {
-            ControlPackMain.instance.resetPlayerKeyState();
-        }
+		// mod_controlpack
+		// called on every mouse AND keyboard event (mouse button - 100 to avoid colliding numbers)
+		if (ControlPackMain.instance.handleInputEvent(p_74510_0_, p_74510_1_)) {
+			ci.cancel();
+		}
+		
+		// mod_controlpack
+		// ensure the correct keys are in the down state
+		if (ControlPackMain.instance != null) {
+			ControlPackMain.instance.resetPlayerKeyState();
+		}
 	}
 	
 	@Inject(method="unPressAllKeys", at=@At("HEAD"))
 	private static void onUnPressAllKeys(CallbackInfo ci) {
-    	//head
-        // mod_controlpack
-        // Called to 'reset player keystate'.
-        if (ControlPackMain.instance != null) {
-            ControlPackMain.instance.resetPlayerKeyState();
-        }
+		//head
+		// mod_controlpack
+		// Called to 'reset player keystate'.
+		if (ControlPackMain.instance != null) {
+			ControlPackMain.instance.resetPlayerKeyState();
+		}
 	}
 	
 	@Inject(method="resetKeyBindingArrayAndHash", at=@At("HEAD"))
 	private static void onResetKeyBindingArrayAndHash(CallbackInfo ci) {
 		//methodhead
-        // mod_controlpack
-        // Called to 'reset player keystate'.
-        if (ControlPackMain.instance != null) {
-            ControlPackMain.instance.resetPlayerKeyState();
-        }	
+		// mod_controlpack
+		// Called to 'reset player keystate'.
+		if (ControlPackMain.instance != null) {
+			ControlPackMain.instance.resetPlayerKeyState();
+		}	
 	}
 	
 	@Inject(method="isPressed", at=@At("HEAD"))
 	private void onIsPressed(CallbackInfoReturnable<Boolean> ci) {
 		KeyBinding currentkb = ((KeyBinding)(Object)this);
 		// mod_controlpack
-        if (ControlPackMain.instance != null) {
-            if (currentkb == ControlPackMain.mc.gameSettings.keyBindInventory) {
-                ControlPackMain.instance.runAutoTool(false);
-            }
-        }
+		if (ControlPackMain.instance != null) {
+			if (currentkb == ControlPackMain.mc.gameSettings.keyBindInventory) {
+				ControlPackMain.instance.runAutoTool(false);
+			}
+		}
 	}
 	
 	@Override
 	public boolean isDown() {
-        if (keyCode >= 0) {
-            return Keyboard.isKeyDown(keyCode);
-        }
-        else {
-            return Mouse.isButtonDown(keyCode + 100);
-        }
-    }
+		if (keyCode >= 0) {
+			return Keyboard.isKeyDown(keyCode);
+		}
+		else {
+			return Mouse.isButtonDown(keyCode + 100);
+		}
+	}
 	@Override
 	public void reset() {
-        pressTime = 0;
-        pressed = false;
-    }
+		pressTime = 0;
+		pressed = false;
+	}
 	@Override
 	public void applyToggle() {
-        pressed = pressed || toggled;
-    }
+		pressed = pressed || toggled;
+	}
 	@Override
 	public void toggle(boolean state) {
-        if (toggled != state) {
-            toggled = state;
-            if (!toggled) {
-                pressed = false;
-                pressTime = 0;
-            }
-        }
-    }
+		if (toggled != state) {
+			toggled = state;
+			if (!toggled) {
+				pressed = false;
+				pressTime = 0;
+			}
+		}
+	}
 	@Override
 	public void toggle() {
-        toggle(!toggled);
-    }	
+		toggle(!toggled);
+	}	
 	@Override
 	public int getPressTime(){
-    	return this.pressTime;
-    }
+		return this.pressTime;
+	}
 	@Override
 	public void setPressTime(int vp){
-    	this.pressTime = vp;
-    }
+		this.pressTime = vp;
+	}
 	@Override
 	public boolean getToggled() {
-    	return this.toggled;
-    }
+		return this.toggled;
+	}
 }

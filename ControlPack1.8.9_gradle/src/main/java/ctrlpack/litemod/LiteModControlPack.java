@@ -59,7 +59,7 @@ public class LiteModControlPack implements LiteMod, InitCompleteListener {
 	public void onInitCompleted(Minecraft minecraft, LiteLoader loader) {
 		ControlPackMain.instance.postMCInit();
 	}
-    
+	
 	@Override
 	public void upgradeSettings(String version, File configPath, File oldConfigPath) {}
 

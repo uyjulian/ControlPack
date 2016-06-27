@@ -27,8 +27,8 @@ public abstract class MixinSoundManager {
 	@Shadow private float getSoundCategoryVolume(SoundCategory category) {return 1F;}
 
 	@Overwrite
-    private float getNormalizedVolume(ISound sound, SoundPoolEntry entry, SoundCategory category)
-    {
-        return (float)MathHelper.clamp_double(sound.getVolume() * entry.getVolume() * ControlPackMain.instance.getSoundVolume(sound.getSoundLocation().getResourcePath()), 0.0D, 1.0D) * this.getSoundCategoryVolume(category);
-    }
+	private float getNormalizedVolume(ISound sound, SoundPoolEntry entry, SoundCategory category)
+	{
+		return (float)MathHelper.clamp_double(sound.getVolume() * entry.getVolume() * ControlPackMain.instance.getSoundVolume(sound.getSoundLocation().getResourcePath()), 0.0D, 1.0D) * this.getSoundCategoryVolume(category);
+	}
 }

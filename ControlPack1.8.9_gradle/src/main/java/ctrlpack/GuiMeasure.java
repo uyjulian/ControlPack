@@ -21,64 +21,64 @@ import org.lwjgl.input.Keyboard;
 public class GuiMeasure extends GuiScreen
 {
 
-    public GuiMeasure(String defaultDist)
-    {
-    	defaultDistance = defaultDist;
-    }
+	public GuiMeasure(String defaultDist)
+	{
+		defaultDistance = defaultDist;
+	}
 
-    @Override
+	@Override
 	public void initGui()
-    {
-        int i = height / 4 + 48;
-        buttonList.add(new GuiButton(0, width / 2 - 100, i, "Go"));
-        measureDistance = new GuiTextField(1, fontRendererObj, width / 2 - 25, i - 35, 50, 20);
+	{
+		int i = height / 4 + 48;
+		buttonList.add(new GuiButton(0, width / 2 - 100, i, "Go"));
+		measureDistance = new GuiTextField(1, fontRendererObj, width / 2 - 25, i - 35, 50, 20);
 		measureDistance.setText("0".equalsIgnoreCase(defaultDistance) ? "" : defaultDistance);
-        measureDistance.setFocused(true);
-        measureDistance.setMaxStringLength(7);
-    }
-    
-    @Override
+		measureDistance.setFocused(true);
+		measureDistance.setMaxStringLength(7);
+	}
+	
+	@Override
 	protected void keyTyped(char c, int i) throws IOException {
-        if(measureDistance.isFocused() && ((c >= '0' && c <= '9') || i == Keyboard.KEY_BACK)) {
-        	measureDistance.textboxKeyTyped(c, i);
-        }
-        if(c == '\r') {
-            actionPerformed(buttonList.get(0));
-        }
-        super.keyTyped(c, i);
-    }    
-    
-    @Override
+		if(measureDistance.isFocused() && ((c >= '0' && c <= '9') || i == Keyboard.KEY_BACK)) {
+			measureDistance.textboxKeyTyped(c, i);
+		}
+		if(c == '\r') {
+			actionPerformed(buttonList.get(0));
+		}
+		super.keyTyped(c, i);
+	}    
+	
+	@Override
 	protected void mouseClicked(int i, int j, int k) throws IOException {
-        super.mouseClicked(i, j, k);
-        measureDistance.mouseClicked(i, j, k);
-    }    
+		super.mouseClicked(i, j, k);
+		measureDistance.mouseClicked(i, j, k);
+	}    
 
-    @Override
+	@Override
 	public void drawScreen(int i, int j, float f) {
-    	measureDistance.drawTextBox();
-    	super.drawScreen(i, j, f);
-    }
-    
-    @Override
+		measureDistance.drawTextBox();
+		super.drawScreen(i, j, f);
+	}
+	
+	@Override
 	protected void actionPerformed(GuiButton guibutton)
-    {
-        if(guibutton.id == 0)
-        {
-        	int distance = 0;
-        	try {
-        		distance = Integer.parseInt(measureDistance.getText());
-        	}
-        	catch(NumberFormatException ex) {}
-        	
-        	if (distance > 0) {
-        		ControlPackMain.instance.moveByDistance(distance);
-        	}
-            mc.displayGuiScreen(null);
-            mc.setIngameFocus();
-        }
-    }
-    
-    private GuiTextField measureDistance;
-    private String defaultDistance;
+	{
+		if(guibutton.id == 0)
+		{
+			int distance = 0;
+			try {
+				distance = Integer.parseInt(measureDistance.getText());
+			}
+			catch(NumberFormatException ex) {}
+			
+			if (distance > 0) {
+				ControlPackMain.instance.moveByDistance(distance);
+			}
+			mc.displayGuiScreen(null);
+			mc.setIngameFocus();
+		}
+	}
+	
+	private GuiTextField measureDistance;
+	private String defaultDistance;
 }

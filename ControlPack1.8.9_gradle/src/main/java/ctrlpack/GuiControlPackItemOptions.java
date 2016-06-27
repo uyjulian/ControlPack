@@ -13,9 +13,9 @@ package ctrlpack;
 import net.minecraft.client.gui.GuiScreen;
 
 public class GuiControlPackItemOptions extends GuiControlPackOptions {
-    public GuiControlPackItemOptions(GuiScreen parent) {
+	public GuiControlPackItemOptions(GuiScreen parent) {
 		super(parent);
 		options = ControlPackOptions.itemOptions;
 		screenTitle = ControlPackMain.translate("controlPack.itemOptionsTitle");
-    }
+	}
 }

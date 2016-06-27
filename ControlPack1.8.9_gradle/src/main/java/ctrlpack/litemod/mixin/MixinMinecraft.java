@@ -21,9 +21,9 @@ import net.minecraft.util.IThreadListener;
 
 @Mixin(Minecraft.class)
 public abstract class MixinMinecraft implements IThreadListener, IPlayerUsage, IMinecraft {
-    @Shadow public int displayWidth;
-    @Shadow public int displayHeight;
-    @Shadow private void resize(int width, int height) {};
+	@Shadow public int displayWidth;
+	@Shadow public int displayHeight;
+	@Shadow private void resize(int width, int height) {};
 	@Override
 	public void pubCheckWindowResize() {
 		int i = this.displayWidth;

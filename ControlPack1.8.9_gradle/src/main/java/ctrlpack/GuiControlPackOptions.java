@@ -28,27 +28,27 @@ public class GuiControlPackOptions extends GuiScreen
 	protected ControlPackEnumOptions options[];
 	protected List<GuiTextFieldCP> textFields;
 
-    public GuiControlPackOptions(GuiScreen parent)
-    {
+	public GuiControlPackOptions(GuiScreen parent)
+	{
 		textFields = new ArrayList<GuiTextFieldCP>();
-        parentScreen = parent;
-        screenTitle = ControlPackMain.translate("controlPack.optionsTitle");
+		parentScreen = parent;
+		screenTitle = ControlPackMain.translate("controlPack.optionsTitle");
 		options = ControlPackOptions.allOptions;
-    }
+	}
 
-    private int func_20080_j()
-    {
-        return width / 2 - 155;
-    }
-    
-    @Override
+	private int func_20080_j()
+	{
+		return width / 2 - 155;
+	}
+	
+	@Override
 	public void initGui()
-    {
-        int i = func_20080_j();
-        int j = 0;
-        
-        for(int k = 0; k < options.length; k++) {
-            ControlPackEnumOptions option = options[k];
+	{
+		int i = func_20080_j();
+		int j = 0;
+		
+		for(int k = 0; k < options.length; k++) {
+			ControlPackEnumOptions option = options[k];
 			String optionDesc = ControlPackMain.instance.getOptionDesc(option);
 			if (option.getIsString()) {
 				//buttonList.add(new GuiSmallButtonCP(100 + option.getOrdinal(), i + (j % 2) * 160, height / 6 + 24 * (j >> 1), option, mod_ControlPack.instance.getOptionDesc(option)));
@@ -59,17 +59,17 @@ public class GuiControlPackOptions extends GuiScreen
 					field.isIdList = true;
 				}
 			}
-            else if(!option.getIsFloat()) {
-                buttonList.add(new GuiSmallButtonCP(100 + option.getOrdinal(), i + (j % 2) * 160, height / 6 + 24 * (j >> 1) - 30, option, optionDesc));
-            }
-            else {
-                //buttonList.add(new GuiSliderCP(100 + option.getOrdinal(), i + (j % 2) * 160, height / 6 + 24 * (j >> 1), option, optionDesc, mod_ControlPack.instance.floatOptions.get(option)));
-            }
-            j++;
-        }
+			else if(!option.getIsFloat()) {
+				buttonList.add(new GuiSmallButtonCP(100 + option.getOrdinal(), i + (j % 2) * 160, height / 6 + 24 * (j >> 1) - 30, option, optionDesc));
+			}
+			else {
+				//buttonList.add(new GuiSliderCP(100 + option.getOrdinal(), i + (j % 2) * 160, height / 6 + 24 * (j >> 1), option, optionDesc, mod_ControlPack.instance.floatOptions.get(option)));
+			}
+			j++;
+		}
 
-        buttonList.add(new GuiButton(200, width / 2 - 100, height / 9 + 190, 200, 20, ControlPackMain.translate("gui.done")));
-    }
+		buttonList.add(new GuiButton(200, width / 2 - 100, height / 9 + 190, 200, 20, ControlPackMain.translate("gui.done")));
+	}
 	
 	private void saveFields() {
 		// text fields don't update automatically
@@ -82,67 +82,67 @@ public class GuiControlPackOptions extends GuiScreen
 		ControlPackOptions.saveOptions();
 	}
 	
-    @Override
+	@Override
 	protected void actionPerformed(GuiButton guibutton) {
 		if(guibutton.id == 200) {
 			saveFields();
-            mc.displayGuiScreen(parentScreen);
-        }
-        else {
-            if (guibutton instanceof GuiSmallButtonCP) {
-                GuiSmallButtonCP optionButton = (GuiSmallButtonCP)guibutton;
-                ControlPackEnumOptions cpOption = optionButton.getOption();
-                if (cpOption.getIsBool()) {
-                    Boolean value = ControlPackOptions.booleanOptions.get(cpOption);
-                    ControlPackOptions.booleanOptions.put(cpOption, !value);
-                }
-                else {
-                    Integer value = ControlPackOptions.intOptions.get(cpOption);
-                    Integer maxValue = ControlPackOptions.intOptionsMaxValue.get(cpOption);
-                    value++;
-                    if (value > maxValue) {
-                        value = 0;
-                    }
-                    ControlPackOptions.intOptions.put(cpOption, value);
-                }
-                ControlPackOptions.saveOptions();
-                guibutton.displayString = ControlPackMain.instance.getOptionDesc(optionButton.getOption());
-            }
-        }
-    }
+			mc.displayGuiScreen(parentScreen);
+		}
+		else {
+			if (guibutton instanceof GuiSmallButtonCP) {
+				GuiSmallButtonCP optionButton = (GuiSmallButtonCP)guibutton;
+				ControlPackEnumOptions cpOption = optionButton.getOption();
+				if (cpOption.getIsBool()) {
+					Boolean value = ControlPackOptions.booleanOptions.get(cpOption);
+					ControlPackOptions.booleanOptions.put(cpOption, !value);
+				}
+				else {
+					Integer value = ControlPackOptions.intOptions.get(cpOption);
+					Integer maxValue = ControlPackOptions.intOptionsMaxValue.get(cpOption);
+					value++;
+					if (value > maxValue) {
+						value = 0;
+					}
+					ControlPackOptions.intOptions.put(cpOption, value);
+				}
+				ControlPackOptions.saveOptions();
+				guibutton.displayString = ControlPackMain.instance.getOptionDesc(optionButton.getOption());
+			}
+		}
+	}
 
-    @Override
+	@Override
 	public void drawScreen(int i, int j, float f) {
-        drawDefaultBackground();
-        drawCenteredString(fontRendererObj, screenTitle, width / 2, 5, 0xffffff);
-        super.drawScreen(i, j, f);
+		drawDefaultBackground();
+		drawCenteredString(fontRendererObj, screenTitle, width / 2, 5, 0xffffff);
+		super.drawScreen(i, j, f);
 		for (int i2 = 0; i2 < textFields.size(); i2++) {
 			GuiTextFieldCP tf = textFields.get(i2);
 			tf.drawTextBox();
 		}
-    }
+	}
 	
-    @Override
+	@Override
 	protected void mouseClicked(int i, int j, int k) throws IOException {
-        super.mouseClicked(i, j, k);
-        for (int l = 0; l < textFields.size(); l++) {
-            if (textFields.get(l) != null) {
-                ((GuiTextField)textFields.get(l)).mouseClicked(i, j, k);
-            }
-        }
-    }  
+		super.mouseClicked(i, j, k);
+		for (int l = 0; l < textFields.size(); l++) {
+			if (textFields.get(l) != null) {
+				((GuiTextField)textFields.get(l)).mouseClicked(i, j, k);
+			}
+		}
+	}  
 
 	@Override
 	protected void keyTyped(char c, int code) throws IOException {
-        for (int i = 0; i < textFields.size(); i++) {
-            if (textFields.get(i) != null && ((GuiTextField)(textFields.get(i))).isFocused()) {
-                keyTyped(textFields.get(i), c, code);
-            }
-        }
-        super.keyTyped(c, code);
-    } 
+		for (int i = 0; i < textFields.size(); i++) {
+			if (textFields.get(i) != null && ((GuiTextField)(textFields.get(i))).isFocused()) {
+				keyTyped(textFields.get(i), c, code);
+			}
+		}
+		super.keyTyped(c, code);
+	} 
 	
-    private void keyTyped(GuiTextField field, char c, int code) {
+	private void keyTyped(GuiTextField field, char c, int code) {
 		if (field instanceof GuiTextFieldCP && ((GuiTextFieldCP)field).isIdList) {
 			if (c == ',' || (c >= '0' && c <= '9') || code == Keyboard.KEY_BACK) {
 				field.textboxKeyTyped(c, code);
@@ -151,8 +151,8 @@ public class GuiControlPackOptions extends GuiScreen
 		else {
 			field.textboxKeyTyped(c, code);
 		}
-    }
+	}
 
-    private GuiScreen parentScreen;
-    protected String screenTitle;
+	private GuiScreen parentScreen;
+	protected String screenTitle;
 }
