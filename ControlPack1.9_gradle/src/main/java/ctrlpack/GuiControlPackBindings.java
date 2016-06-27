@@ -17,8 +17,9 @@ import org.lwjgl.input.Keyboard;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 
 public class GuiControlPackBindings extends GuiScreen
 {
@@ -48,7 +49,7 @@ public class GuiControlPackBindings extends GuiScreen
 		int j = ControlPackMain.instance.keyBindings[i].getKeyCode();
 		if(j < 0)
 		{
-			return StatCollector.translateToLocalFormatted("key.mouseButton", new Object[] {
+			return I18n.translateToLocalFormatted("key.mouseButton", new Object[] {
 				Integer.valueOf(j + 101)
 			});
 		}
@@ -115,7 +116,7 @@ public class GuiControlPackBindings extends GuiScreen
 
 						buttonList.get(guibutton.id).displayString = getOptionDisplayString(guibutton.id);
 						buttonId = -1;
-						this.mc.getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("random.click"), 1.0F));
+						this.mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
 						return;
 					}
 				}

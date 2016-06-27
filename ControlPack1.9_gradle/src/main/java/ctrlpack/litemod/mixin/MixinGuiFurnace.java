@@ -21,13 +21,14 @@ import ctrlpack.ControlPackMain;
 import ctrlpack.ControlPackOptions;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiFurnace;
+import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.network.play.client.C0EPacketClickWindow;
+import net.minecraft.network.play.client.CPacketClickWindow;
 import net.minecraft.tileentity.TileEntityFurnace;
 
 @Mixin(GuiFurnace.class)
@@ -310,7 +311,7 @@ public abstract class MixinGuiFurnace extends GuiContainer {
 		//if (mc.isMultiplayerWorld()) {
 			short actionnum = mc.thePlayer.openContainer.getNextTransactionID(mc.thePlayer.inventory);
 			// i = windowid, slot num, mouse, shift, itemstack, action
-			mc.getNetHandler().addToSendQueue(new C0EPacketClickWindow(inventorySlots.windowId, slotNumber, mouseButton, 0, stack, actionnum));
+			mc.getConnection().sendPacket(new CPacketClickWindow(inventorySlots.windowId, slotNumber, mouseButton, ClickType.PICKUP, stack, actionnum));
 		//}
 	}
 	

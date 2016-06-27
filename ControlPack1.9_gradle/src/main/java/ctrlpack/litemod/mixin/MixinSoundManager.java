@@ -16,19 +16,18 @@ import org.spongepowered.asm.mixin.Shadow;
 
 import ctrlpack.ControlPackMain;
 import net.minecraft.client.audio.ISound;
-import net.minecraft.client.audio.SoundCategory;
 import net.minecraft.client.audio.SoundManager;
-import net.minecraft.client.audio.SoundPoolEntry;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.MathHelper;
 
 @Mixin(SoundManager.class)
 public abstract class MixinSoundManager {
 	
-	@Shadow private float getSoundCategoryVolume(SoundCategory category) {return 1F;}
+	@Shadow private float getVolume(SoundCategory category) {return 1F;}
 
 	@Overwrite
-	private float getNormalizedVolume(ISound sound, SoundPoolEntry entry, SoundCategory category)
+	private float getClampedVolume(ISound soundIn)
 	{
-		return (float)MathHelper.clamp_double(sound.getVolume() * entry.getVolume() * ControlPackMain.instance.getSoundVolume(sound.getSoundLocation().getResourcePath()), 0.0D, 1.0D) * this.getSoundCategoryVolume(category);
+		return MathHelper.clamp_float(soundIn.getVolume() * this.getVolume(soundIn.getCategory()) * ControlPackMain.instance.getSoundVolume(soundIn.getSoundLocation().getResourcePath()), 0.0F, 1.0F);
 	}
 }

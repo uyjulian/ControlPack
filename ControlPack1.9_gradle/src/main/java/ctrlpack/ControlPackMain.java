@@ -39,11 +39,11 @@ import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.item.ItemTool;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult.Type;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.TextComponentString;
 import ctrlpack.litemod.LiteModControlPack;
 
 public class ControlPackMain implements Runnable {
@@ -140,7 +140,7 @@ public class ControlPackMain implements Runnable {
 				//drawArrow(10, 10, 100, 100);
 				//drawArrow(200, 200, 100, 175);
 				
-				boolean isNether = mc.theWorld != null && (mc.theWorld.provider.getDimensionName() == "Nether");
+				boolean isNether = mc.theWorld != null && (mc.theWorld.provider.getDimensionType().getName() == "Nether");
 
 				for (int i = 0; i < (isNether ? ControlPackOptions.waypointNetherOptions.length : ControlPackOptions.waypointOptions.length); i++) {
 					ControlPackEnumOptions locationOption = isNether ? ControlPackOptions.waypointNetherOptions[i] : ControlPackOptions.waypointOptions[i];
@@ -161,7 +161,7 @@ public class ControlPackMain implements Runnable {
 							double wpX = Integer.parseInt(parts[0].trim()) + 0.5;
 							double wpZ = Integer.parseInt(parts[1].trim()) + 0.5;
 							double wpY = Integer.parseInt(parts[2].trim()) + 0.5;
-							Vec3 v_waypoint = new Vec3(wpX, 0, wpZ);
+							Vec3d v_waypoint = new Vec3d(wpX, 0, wpZ);
 							BlockPos v_currents = mc.thePlayer.getPosition();
 							BlockPos v_current = new BlockPos(v_currents.getX(),0,v_currents.getZ());
 
@@ -170,7 +170,7 @@ public class ControlPackMain implements Runnable {
 							int currentZ = (int) wpZ;
 							location = ControlPackOptions.stringOptions.get(ControlPackEnumOptions.COORDINATE_FORMAT).replace("{X}", ""+currentX).replace("{Y}", ""+currentY).replace("{Z}", ""+currentZ);
 							
-							Vec3 v_directionFromHere = v_waypoint.subtract(v_current.getX(), v_current.getY(), v_current.getZ());
+							Vec3d v_directionFromHere = v_waypoint.subtract(v_current.getX(), v_current.getY(), v_current.getZ());
 							if (v_directionFromHere.lengthVector() <= 0.5) {
 								DrawString((name == null || name.length() == 0) ? location : (name + ": " + location), coordLocation, lineNum, 0xbbbbbb, null, true);
 							}
@@ -212,7 +212,7 @@ public class ControlPackMain implements Runnable {
 								int count = 0;
 								for (int i = 0; i < mc.thePlayer.inventory.mainInventory.length; i++)
 								{
-									if (mc.thePlayer.inventory.mainInventory[i] != null && mc.thePlayer.inventory.mainInventory[i] == new ItemStack(Item.itemRegistry.getObject(new ResourceLocation("minecraft:arrow"))))
+									if (mc.thePlayer.inventory.mainInventory[i] != null && mc.thePlayer.inventory.mainInventory[i] == new ItemStack(Item.REGISTRY.getObject(new ResourceLocation("minecraft:arrow"))))
 									{
 										count += mc.thePlayer.inventory.mainInventory[i].stackSize;
 									}
@@ -464,14 +464,14 @@ public class ControlPackMain implements Runnable {
 
 	private float blockStrength(Block block, Item item) {
 		// adapted from block.java
-		if(block.getBlockHardness(mc.theWorld, new BlockPos(1, 1, 1)) < 0.0F) {
+		if(block.getBlockHardness(block.getDefaultState(), mc.theWorld, new BlockPos(1, 1, 1)) < 0.0F) {
 			return 0.0F;
 		}
-		if(item == null || !canHarvestBlock(item, block) || (getIsHarvestable(block) && item.getStrVsBlock(new ItemStack(block), block) == 1.0F)) {
-			return 1.0F / block.getBlockHardness(mc.theWorld, new BlockPos(1, 1, 1)) / 100F;
+		if(item == null || !canHarvestBlock(item, block) || (getIsHarvestable(block) && item.getStrVsBlock(new ItemStack(block), block.getDefaultState()) == 1.0F)) {
+			return 1.0F / block.getBlockHardness(block.getDefaultState(), mc.theWorld, new BlockPos(1, 1, 1)) / 100F;
 		}
 		else {
-			return item.getStrVsBlock(new ItemStack(block), block) / block.getBlockHardness(mc.theWorld, new BlockPos(1, 1, 1)) / 30F;
+			return item.getStrVsBlock(new ItemStack(block), block.getDefaultState()) / block.getBlockHardness(block.getDefaultState(), mc.theWorld, new BlockPos(1, 1, 1)) / 30F;
 		}
 	}	
 	
@@ -481,7 +481,7 @@ public class ControlPackMain implements Runnable {
 	
 	private boolean canHarvestBlock(Item item, Block block, boolean forReals) {
 		if (!forReals && getIsHarvestable(block)) return true;
-		boolean canHarvest = item.canHarvestBlock(block);
+		boolean canHarvest = item.canHarvestBlock(block.getDefaultState());
 		if (canHarvest) return true;
 		
 		// shears are wierd.. they dont say they can harvest vines, and their str vs vines is 1,
@@ -493,7 +493,7 @@ public class ControlPackMain implements Runnable {
 	}
 	
 	private boolean getIsHarvestable(Block block) {
-		if (!block.getMaterial().isToolNotRequired()) {
+		if (!block.getMaterial(block.getDefaultState()).isToolNotRequired()) {
 			return false;
 		}
 		if (block instanceof BlockVine || block instanceof BlockLeaves) {
@@ -841,7 +841,7 @@ public class ControlPackMain implements Runnable {
 		int inventoryIndex = mc.thePlayer.inventory.currentItem;
 		ItemStack currentStack = mc.thePlayer.inventory.getCurrentItem();
 		Item currentItem = currentStack == null ? null : currentStack.getItem();
-		boolean easilyBreakable = block.getBlockHardness(mc.theWorld, new BlockPos(1, 1, 1)) <= 0.20001F; // leaves are 0.2. Saplings, redstone dust, etc are 0 (1 hit).
+		boolean easilyBreakable = block.getBlockHardness(block.getDefaultState(), mc.theWorld, new BlockPos(1, 1, 1)) <= 0.20001F; // leaves are 0.2. Saplings, redstone dust, etc are 0 (1 hit).
 		boolean harvestable = getIsHarvestable(block);
 		boolean hasSword = currentItem != null && isSword(currentItem);
 		boolean hasTool = isTool(currentItem);
@@ -908,13 +908,13 @@ public class ControlPackMain implements Runnable {
 		// currently mining? and not using swap command?
 		if (swappedInventoryState == 0 && (proactive || mc.gameSettings.keyBindAttack.isKeyDown()) && mc.objectMouseOver != null) {
 			// get the block being targetted
-			if (!mc.playerController.isInCreativeMode() && ControlPackOptions.booleanOptions.get(ControlPackEnumOptions.AUTOTOOL) && mc.objectMouseOver.typeOfHit == MovingObjectType.BLOCK) {
+			if (!mc.playerController.isInCreativeMode() && ControlPackOptions.booleanOptions.get(ControlPackEnumOptions.AUTOTOOL) && mc.objectMouseOver.typeOfHit == Type.BLOCK) {
 				Block block = mc.theWorld.getBlockState(mc.objectMouseOver.getBlockPos()).getBlock();
 				if (block != null) {
 					ensureCorrectToolSelected(block);
 				}
 			}
-			else if (ControlPackOptions.booleanOptions.get(ControlPackEnumOptions.AUTOSWORD) && (mc.objectMouseOver.typeOfHit == MovingObjectType.ENTITY && mc.objectMouseOver.entityHit instanceof EntityLivingBase)) {
+			else if (ControlPackOptions.booleanOptions.get(ControlPackEnumOptions.AUTOSWORD) && (mc.objectMouseOver.typeOfHit == Type.ENTITY && mc.objectMouseOver.entityHit instanceof EntityLivingBase)) {
 				ensureSwordSelected();
 			}
 			// fyi change item: thePlayer.inventory.changeCurrentItem(k);, or thePlayer.inventory.currentItem = i;
@@ -1091,7 +1091,7 @@ public class ControlPackMain implements Runnable {
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 	}
 	
-	private void drawDirectionalArrow(ScaledResolution sr, double x, double y, Vec3 v, int color) {
+	private void drawDirectionalArrow(ScaledResolution sr, double x, double y, Vec3d v, int color) {
 		double size = 7;
 		double startx = x + (size / 2) - (size / 2) * v.xCoord;
 		double starty = y + (size / 2) - (size / 2) * v.zCoord;
@@ -1139,11 +1139,11 @@ public class ControlPackMain implements Runnable {
 		GL11.glEnd();
 	}
 	
-	private void DrawString(String str, int position, int lineNum, int color, Vec3 arrow) {
+	private void DrawString(String str, int position, int lineNum, int color, Vec3d arrow) {
 		DrawString(str, position, lineNum, color, arrow, false);
 	}
 	
-	private void DrawString(String str, int position, int lineNum, int color, Vec3 arrow, Boolean square) {
+	private void DrawString(String str, int position, int lineNum, int color, Vec3d arrow, Boolean square) {
 		FontRenderer fr = mc.fontRendererObj;
 		ScaledResolution sr = new ScaledResolution(mc);
 		int xPos;
@@ -1187,7 +1187,7 @@ public class ControlPackMain implements Runnable {
 	}
 	
 	private void addDeathWaypoint() {
-		boolean isNether = ControlPackMain.mc.theWorld != null && (mc.theWorld.provider.getDimensionName() == "Nether");
+		boolean isNether = ControlPackMain.mc.theWorld != null && (mc.theWorld.provider.getDimensionType().getName() == "Nether");
 		ControlPackEnumOptions[] nameoptions = isNether ? ControlPackOptions.waypointNetherNameOptions : ControlPackOptions.waypointNameOptions;
 		ControlPackEnumOptions[] locationoptions = isNether ? ControlPackOptions.waypointNetherOptions : ControlPackOptions.waypointOptions;
 		ControlPackEnumOptions[] hudoptions = isNether ? ControlPackOptions.waypointNetherHUDOptions : ControlPackOptions.waypointHUDOptions;
@@ -1608,7 +1608,7 @@ public class ControlPackMain implements Runnable {
 	
 	public void chatMsg(String msg)
 	{
-		mc.ingameGUI.getChatGUI().printChatMessage(new ChatComponentText("\u00A7c[ControlPack]\u00A7r " + msg));
+		mc.ingameGUI.getChatGUI().printChatMessage(new TextComponentString("\u00A7c[ControlPack]\u00A7r " + msg));
 	}
 	
 	public boolean compareItemType(Item i1, Item i2) {

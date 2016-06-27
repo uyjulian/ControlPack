@@ -16,11 +16,11 @@ import org.spongepowered.asm.mixin.Shadow;
 
 import ctrlpack.IMinecraft;
 import net.minecraft.client.Minecraft;
-import net.minecraft.profiler.IPlayerUsage;
+import net.minecraft.profiler.ISnooperInfo;
 import net.minecraft.util.IThreadListener;
 
 @Mixin(Minecraft.class)
-public abstract class MixinMinecraft implements IThreadListener, IPlayerUsage, IMinecraft {
+public abstract class MixinMinecraft implements IThreadListener, ISnooperInfo, IMinecraft {
 	@Shadow public int displayWidth;
 	@Shadow public int displayHeight;
 	@Shadow private void resize(int width, int height) {};
