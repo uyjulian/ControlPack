@@ -16,8 +16,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Properties;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockColored;
@@ -82,77 +81,9 @@ public class ControlPackMain implements Runnable {
 		
 		
 		ControlPackOptions.loadOptions();
-
-		volumeSettingsMap = new HashMap<String, ControlPackEnumOptions>();
-		volumeSettingsMap.put("tile.piston.in", ControlPackEnumOptions.VOLUMEPISTON);
-		volumeSettingsMap.put("tile.piston.out", ControlPackEnumOptions.VOLUMEPISTON);
-		volumeSettingsMap.put("ambient.weather.rain", ControlPackEnumOptions.VOLUMERAIN);
-		volumeSettingsMap.put("random.splash", ControlPackEnumOptions.VOLUMESPLASH);
-		volumeSettingsMap.put("liquid.splash", ControlPackEnumOptions.VOLUMESPLASH);
-		volumeSettingsMap.put("liquid.swim", ControlPackEnumOptions.VOLUMEWATER);
-		volumeSettingsMap.put("liquid.water", ControlPackEnumOptions.VOLUMEWATER);
-		volumeSettingsMap.put("random.door_open", ControlPackEnumOptions.VOLUMEDOOR);
-		volumeSettingsMap.put("random.door_close", ControlPackEnumOptions.VOLUMEDOOR);
-		volumeSettingsMap.put("random.chestopen", ControlPackEnumOptions.VOLUMEDOOR);
-		volumeSettingsMap.put("random.chestclosed", ControlPackEnumOptions.VOLUMEDOOR);
-		volumeSettingsMap.put("random.explode", ControlPackEnumOptions.VOLUMEEXPLODE); 
-		volumeSettingsMap.put("random.bow", ControlPackEnumOptions.VOLUMEBOW); 
-		volumeSettingsMap.put("portal.portal", ControlPackEnumOptions.VOLUMEPORTAL); 
-		volumeSettingsMap.put("random.eat", ControlPackEnumOptions.VOLUMEEATDRINK); 
-		volumeSettingsMap.put("random.drink", ControlPackEnumOptions.VOLUMEEATDRINK); 
-		// 5.4
-		volumeSettingsMap.put("dig.cloth", ControlPackEnumOptions.VOLUMEDIG); 
-		volumeSettingsMap.put("dig.grass", ControlPackEnumOptions.VOLUMEDIG); 
-		volumeSettingsMap.put("dig.gravel", ControlPackEnumOptions.VOLUMEDIG); 
-		volumeSettingsMap.put("dig.sand", ControlPackEnumOptions.VOLUMEDIG); 
-		volumeSettingsMap.put("dig.snow", ControlPackEnumOptions.VOLUMEDIG); 
-		volumeSettingsMap.put("dig.stone", ControlPackEnumOptions.VOLUMEDIG); 
-		volumeSettingsMap.put("dig.wood", ControlPackEnumOptions.VOLUMEDIG); 
-
-		volumeSettingsMap.put("step.cloth", ControlPackEnumOptions.VOLUMESTEP); 
-		volumeSettingsMap.put("step.grass", ControlPackEnumOptions.VOLUMESTEP); 
-		volumeSettingsMap.put("step.gravel", ControlPackEnumOptions.VOLUMESTEP); 
-		volumeSettingsMap.put("step.sand", ControlPackEnumOptions.VOLUMESTEP); 
-		volumeSettingsMap.put("step.snow", ControlPackEnumOptions.VOLUMESTEP); 
-		volumeSettingsMap.put("step.stone", ControlPackEnumOptions.VOLUMESTEP); 
-		volumeSettingsMap.put("step.wood", ControlPackEnumOptions.VOLUMESTEP); 
-		volumeSettingsMap.put("step.ladder", ControlPackEnumOptions.VOLUMESTEP); 
-
-		volumeSettingsMap.put("damage.fallbig", ControlPackEnumOptions.VOLUMEHIT); 
-		volumeSettingsMap.put("damage.fallsmall", ControlPackEnumOptions.VOLUMEHIT); 
-		volumeSettingsMap.put("damage.hit", ControlPackEnumOptions.VOLUMEHIT); 
-
-		volumeSettingsMap.put("mob.slime.attack", ControlPackEnumOptions.VOLUMESLIME); 
-		volumeSettingsMap.put("mob.slime.big", ControlPackEnumOptions.VOLUMESLIME); 
-		volumeSettingsMap.put("mob.slime.small", ControlPackEnumOptions.VOLUMESLIME); 
-
-		volumeSettingsMap.put("mob.chicken.plop", ControlPackEnumOptions.VOLUMEANIMALS); 
-		volumeSettingsMap.put("mob.chicken.step", ControlPackEnumOptions.VOLUMEANIMALS); 
-		volumeSettingsMap.put("mob.chicken.say", ControlPackEnumOptions.VOLUMEANIMALS); 
-		volumeSettingsMap.put("mob.chicken.hurt", ControlPackEnumOptions.VOLUMEANIMALS); 
-		volumeSettingsMap.put("mob.cow.step", ControlPackEnumOptions.VOLUMEANIMALS); 
-		volumeSettingsMap.put("mob.cow.hurt", ControlPackEnumOptions.VOLUMEANIMALS); 
-		volumeSettingsMap.put("mob.cow.say", ControlPackEnumOptions.VOLUMEANIMALS); 
-		volumeSettingsMap.put("mob.pig.step", ControlPackEnumOptions.VOLUMEANIMALS); 
-		volumeSettingsMap.put("mob.pig.say", ControlPackEnumOptions.VOLUMEANIMALS); 
-		volumeSettingsMap.put("mob.pig.death", ControlPackEnumOptions.VOLUMEANIMALS); 
-		volumeSettingsMap.put("mob.sheep.step", ControlPackEnumOptions.VOLUMEANIMALS); 
-		volumeSettingsMap.put("mob.sheep.sheer", ControlPackEnumOptions.VOLUMEANIMALS); 
-		volumeSettingsMap.put("mob.sheep.say", ControlPackEnumOptions.VOLUMEANIMALS); 
-		volumeSettingsMap.put("mob.wolf.step", ControlPackEnumOptions.VOLUMEANIMALS); 
-		volumeSettingsMap.put("mob.wolf.shake", ControlPackEnumOptions.VOLUMEANIMALS); 
-		volumeSettingsMap.put("mob.wolf.bark", ControlPackEnumOptions.VOLUMEANIMALS); 
-		volumeSettingsMap.put("mob.wolf.death", ControlPackEnumOptions.VOLUMEANIMALS); 
-		volumeSettingsMap.put("mob.wolf.growl", ControlPackEnumOptions.VOLUMEANIMALS); 
-		volumeSettingsMap.put("mob.wolf.howl", ControlPackEnumOptions.VOLUMEANIMALS); 
-		volumeSettingsMap.put("mob.wolf.hurt", ControlPackEnumOptions.VOLUMEANIMALS); 
-		volumeSettingsMap.put("mob.wolf.panting", ControlPackEnumOptions.VOLUMEANIMALS); 
-		volumeSettingsMap.put("mob.wolf.whine", ControlPackEnumOptions.VOLUMEANIMALS); 
-		volumeSettingsMap.put("mob.cat.hitt", ControlPackEnumOptions.VOLUMEANIMALS); 
-		volumeSettingsMap.put("mob.cat.meow", ControlPackEnumOptions.VOLUMEANIMALS); 
-		volumeSettingsMap.put("mob.cat.purr", ControlPackEnumOptions.VOLUMEANIMALS); 
-		volumeSettingsMap.put("mob.cat.hiss", ControlPackEnumOptions.VOLUMEANIMALS); 
-		volumeSettingsMap.put("mob.cat.purreow", ControlPackEnumOptions.VOLUMEANIMALS); 
+		volumeSettingsProperties = new Properties();
+		volumeSettingsProperties.load(getClass().getResourceAsStream("/assets/ctrlpack/map/volumesettings.map"));
+ 
 	}
 	@Override
 	public void run() {
@@ -509,9 +440,11 @@ public class ControlPackMain implements Runnable {
 	
 	public float getSoundVolume(String name) {
 		try {
-			ControlPackEnumOptions setting = volumeSettingsMap.get(name);
+			String setting = volumeSettingsProperties.getProperty(name);
 			if (setting == null) { return 1F; }
-			float vol = ControlPackOptions.floatOptions.get(setting);
+			ControlPackEnumOptions option = ControlPackEnumOptions.getOption(setting);
+			if (option == null) { return 1F; }
+			float vol = ControlPackOptions.floatOptions.get(option);
 			return vol;
 		}
 		catch(Exception ex) {
@@ -1779,7 +1712,6 @@ public class ControlPackMain implements Runnable {
 
 	private boolean previouslyPlacedBlock;
 	private int previouslyPlacedBlockID;
-	
-	public Map<String, ControlPackEnumOptions> volumeSettingsMap;
+	private Properties volumeSettingsProperties;
 }
 
