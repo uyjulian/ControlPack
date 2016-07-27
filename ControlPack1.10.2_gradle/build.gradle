@@ -43,7 +43,7 @@ archivesBaseName = "ControlPack"
 
 minecraft {
     version = "1.10.2"
-    mappings = "snapshot_20160627"
+    mappings = "snapshot_20160727"
     runDir = "run"
 }
 
@@ -80,7 +80,7 @@ litemod {
         name = "ControlPack"
         displayName = "Control Pack"
         author = "uyjulian"
-        mcversion = "1.10.2"
+        mcversion = "1.10.r1"
         mixinConfigs += "mixins.ControlPack.json"
         version = project.version
     }
