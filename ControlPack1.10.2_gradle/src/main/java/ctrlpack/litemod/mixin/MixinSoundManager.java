@@ -11,8 +11,10 @@
 package ctrlpack.litemod.mixin;
 
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import ctrlpack.ControlPackMain;
 import net.minecraft.client.audio.ISound;
@@ -25,9 +27,9 @@ public abstract class MixinSoundManager {
 	
 	@Shadow private float getVolume(SoundCategory category) {return 1F;}
 
-	@Overwrite
-	private float getClampedVolume(ISound soundIn)
+	@Inject(method="getClampedVolume", at=@At("HEAD"), cancellable=true)
+	private void onGetClampedVolume(ISound soundIn, CallbackInfoReturnable<Float> ci)
 	{
-		return MathHelper.clamp_float(soundIn.getVolume() * this.getVolume(soundIn.getCategory()) * ControlPackMain.instance.getSoundVolume(soundIn.getSoundLocation().getResourcePath()), 0.0F, 1.0F);
+		ci.setReturnValue(MathHelper.clamp_float(soundIn.getVolume() * this.getVolume(soundIn.getCategory()) * ControlPackMain.instance.getSoundVolume(soundIn.getSoundLocation().getResourcePath()), 0.0F, 1.0F));
 	}
 }
