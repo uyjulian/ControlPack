@@ -28,7 +28,7 @@ public class LiteModControlPack implements LiteMod, InitCompleteListener {
 
 	@Override
 	public String getVersion() {
-		return "5.93-beta1";
+		return "5.93-beta2";
 	}
 	
 	public static void regKeys(KeyBinding[] keyArray) {
