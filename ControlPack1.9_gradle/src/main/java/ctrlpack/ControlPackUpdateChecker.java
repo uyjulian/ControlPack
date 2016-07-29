@@ -19,7 +19,7 @@ import java.net.URL;
 
 public class ControlPackUpdateChecker implements Runnable {
 	private final String UpdateURL = "http://pastebin.com/raw/LxFxp7Xv";
-	private final String CurrentVersion = "1";
+	private final String CurrentVersion = "2";
 
 	@Override
 	public void run() {
