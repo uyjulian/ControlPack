@@ -43,7 +43,7 @@ archivesBaseName = "ControlPack"
 
 minecraft {
     version = "1.10.2"
-    mappings = "snapshot_20160727"
+    mappings = "stable_29"
     runDir = "run"
 }
 
