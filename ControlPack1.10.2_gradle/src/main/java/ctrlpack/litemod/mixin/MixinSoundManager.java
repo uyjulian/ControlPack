@@ -30,6 +30,6 @@ public abstract class MixinSoundManager {
 	@Inject(method="getClampedVolume", at=@At("HEAD"), cancellable=true)
 	private void onGetClampedVolume(ISound soundIn, CallbackInfoReturnable<Float> ci)
 	{
-		ci.setReturnValue(MathHelper.clamp_float(soundIn.getVolume() * this.getVolume(soundIn.getCategory()) * ControlPackMain.instance.getSoundVolume(soundIn.getSoundLocation().getResourcePath()), 0.0F, 1.0F));
+		ci.setReturnValue(MathHelper.clamp(soundIn.getVolume() * this.getVolume(soundIn.getCategory()) * ControlPackMain.instance.getSoundVolume(soundIn.getSoundLocation().getResourcePath()), 0.0F, 1.0F));
 	}
 }

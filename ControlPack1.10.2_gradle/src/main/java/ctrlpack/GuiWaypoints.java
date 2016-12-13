@@ -35,7 +35,7 @@ public class GuiWaypoints extends GuiScreen
 	{
 		screenTitle = ControlPackMain.translate("controlPack.waypointsTitle");
 		
-		isNether = ControlPackMain.mc.theWorld != null && (ControlPackMain.mc.theWorld.provider.getDimensionType().getName() == "Nether");
+		isNether = ControlPackMain.mc.world != null && (ControlPackMain.mc.world.provider.getDimensionType().getName() == "Nether");
 
 		ControlPackEnumOptions options[] = isNether ? ControlPackOptions.waypointNetherOptions : ControlPackOptions.waypointOptions;
 		for(int k = 0; k < options.length; k++) {

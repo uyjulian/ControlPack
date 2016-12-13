@@ -140,7 +140,7 @@ public class ControlPackMain implements Runnable {
 				//drawArrow(10, 10, 100, 100);
 				//drawArrow(200, 200, 100, 175);
 				
-				boolean isNether = mc.theWorld != null && (mc.theWorld.provider.getDimensionType().getName() == "Nether");
+				boolean isNether = mc.world != null && (mc.world.provider.getDimensionType().getName() == "Nether");
 
 				for (int i = 0; i < (isNether ? ControlPackOptions.waypointNetherOptions.length : ControlPackOptions.waypointOptions.length); i++) {
 					ControlPackEnumOptions locationOption = isNether ? ControlPackOptions.waypointNetherOptions[i] : ControlPackOptions.waypointOptions[i];
@@ -162,7 +162,7 @@ public class ControlPackMain implements Runnable {
 							double wpZ = Integer.parseInt(parts[1].trim()) + 0.5;
 							double wpY = Integer.parseInt(parts[2].trim()) + 0.5;
 							Vec3d v_waypoint = new Vec3d(wpX, 0, wpZ);
-							BlockPos v_currents = mc.thePlayer.getPosition();
+							BlockPos v_currents = mc.player.getPosition();
 							BlockPos v_current = new BlockPos(v_currents.getX(),0,v_currents.getZ());
 
 							int currentX = (int) wpX;
@@ -175,7 +175,7 @@ public class ControlPackMain implements Runnable {
 								DrawString((name == null || name.length() == 0) ? location : (name + ": " + location), coordLocation, lineNum, 0xbbbbbb, null, true);
 							}
 							else {
-								v_directionFromHere.rotateYaw((mc.thePlayer.rotationYaw * 0.01745329F));
+								v_directionFromHere.rotateYaw((mc.player.rotationYaw * 0.01745329F));
 								v_directionFromHere = v_directionFromHere.normalize();
 								DrawString((name == null || name.length() == 0) ? location : (name + ": " + location), coordLocation, lineNum, 0xbbbbbb, v_directionFromHere);
 							}
@@ -200,7 +200,7 @@ public class ControlPackMain implements Runnable {
 				}
 				
 				if (!mc.playerController.isInCreativeMode() && ControlPackOptions.booleanOptions.get(ControlPackEnumOptions.USECOUNT)) {
-					ItemStack currentStack = mc.thePlayer.inventory.mainInventory[mc.thePlayer.inventory.currentItem];
+					ItemStack currentStack = mc.player.inventory.mainInventory[mc.player.inventory.currentItem];
 					if (currentStack != null) {
 						int maxdmg = currentStack.getMaxDamage();
 						if (maxdmg > 0) {
@@ -210,11 +210,11 @@ public class ControlPackMain implements Runnable {
 							// bow? show arrow count
 							if (currentStack.getItem() instanceof ItemBow) {
 								int count = 0;
-								for (int i = 0; i < mc.thePlayer.inventory.mainInventory.length; i++)
+								for (int i = 0; i < mc.player.inventory.mainInventory.length; i++)
 								{
-									if (mc.thePlayer.inventory.mainInventory[i] != null && mc.thePlayer.inventory.mainInventory[i] == new ItemStack(Item.REGISTRY.getObject(new ResourceLocation("minecraft:arrow"))))
+									if (mc.player.inventory.mainInventory[i] != null && mc.player.inventory.mainInventory[i] == new ItemStack(Item.REGISTRY.getObject(new ResourceLocation("minecraft:arrow"))))
 									{
-										count += mc.thePlayer.inventory.mainInventory[i].stackSize;
+										count += mc.player.inventory.mainInventory[i].stackSize;
 									}
 								}							
 								text += " / Arrows: " + count;
@@ -242,7 +242,7 @@ public class ControlPackMain implements Runnable {
 		if (keyBindingGetToggled(mc.gameSettings.keyBindUseItem)) {
 			// they are auto right clicking
 			previouslyPlacedBlock = true;
-			ItemStack stack = mc.thePlayer.inventory.getCurrentItem();
+			ItemStack stack = mc.player.inventory.getCurrentItem();
 			previouslyPlacedBlockID = stack == null ? -1 : Item.getIdFromItem(stack.getItem());
 		 }
 		 
@@ -265,11 +265,11 @@ public class ControlPackMain implements Runnable {
 		}
 		if (swapBack) {
 			swapBack = false;
-			mc.thePlayer.inventory.currentItem = swapBackTo;
+			mc.player.inventory.currentItem = swapBackTo;
 		}
 
 		// lookbehind animation progress
-		if (lookBehind && mc.thePlayer.isDead) {
+		if (lookBehind && mc.player.isDead) {
 			lookBehind = false;
 			lookBehindProgress = 0;
 			lookBehindProgressTicks = 0;
@@ -313,7 +313,7 @@ public class ControlPackMain implements Runnable {
 
 		// handle measure distance mode
 		if (measureDistanceState) {
-			BlockPos currentPos = mc.thePlayer.getPosition();
+			BlockPos currentPos = mc.player.getPosition();
 			int currentX = (int) (currentPos.getX() < 0 ? Math.ceil(currentPos.getX()) : Math.floor(currentPos.getX()));
 			//int currentY = (int) (currentPos.getY() < 0 ? Math.ceil(currentPos.getY()) : Math.floor(currentPos.getY()));
 			int currentZ = (int) (currentPos.getZ() < 0 ? Math.ceil(currentPos.getZ()) : Math.floor(currentPos.getZ()));
@@ -355,7 +355,7 @@ public class ControlPackMain implements Runnable {
 			}
 		}
 		//avoid sprint glitch
-		mc.thePlayer.setSprinting(isSprinting);
+		mc.player.setSprinting(isSprinting);
 	}
 	
 	public static String translate(String key) {
@@ -464,14 +464,14 @@ public class ControlPackMain implements Runnable {
 
 	private float blockStrength(Block block, Item item) {
 		// adapted from block.java
-		if(block.getBlockHardness(block.getDefaultState(), mc.theWorld, new BlockPos(1, 1, 1)) < 0.0F) {
+		if(block.getBlockHardness(block.getDefaultState(), mc.world, new BlockPos(1, 1, 1)) < 0.0F) {
 			return 0.0F;
 		}
 		if(item == null || !canHarvestBlock(item, block) || (getIsHarvestable(block) && item.getStrVsBlock(new ItemStack(block), block.getDefaultState()) == 1.0F)) {
-			return 1.0F / block.getBlockHardness(block.getDefaultState(), mc.theWorld, new BlockPos(1, 1, 1)) / 100F;
+			return 1.0F / block.getBlockHardness(block.getDefaultState(), mc.world, new BlockPos(1, 1, 1)) / 100F;
 		}
 		else {
-			return item.getStrVsBlock(new ItemStack(block), block.getDefaultState()) / block.getBlockHardness(block.getDefaultState(), mc.theWorld, new BlockPos(1, 1, 1)) / 30F;
+			return item.getStrVsBlock(new ItemStack(block), block.getDefaultState()) / block.getBlockHardness(block.getDefaultState(), mc.world, new BlockPos(1, 1, 1)) / 30F;
 		}
 	}	
 	
@@ -510,18 +510,18 @@ public class ControlPackMain implements Runnable {
 	
 	public void ensureSwordSelected() {
 		for(int i = 0; i < 9; i++) {
-			ItemStack stack = mc.thePlayer.inventory.mainInventory[i];
+			ItemStack stack = mc.player.inventory.mainInventory[i];
 			if (stack != null) {
 				if (isSword(stack.getItem())) {
-					if (i != mc.thePlayer.inventory.currentItem) {
-						mc.thePlayer.inventory.currentItem = i;
+					if (i != mc.player.inventory.currentItem) {
+						mc.player.inventory.currentItem = i;
 					}
 					return;
 				}
 			}
 		}
 		// no sword.. at least make sure we're not holding a tool
-		ItemStack currentStack = mc.thePlayer.inventory.mainInventory[mc.thePlayer.inventory.currentItem];
+		ItemStack currentStack = mc.player.inventory.mainInventory[mc.player.inventory.currentItem];
 		if (currentStack != null && isTool(currentStack.getItem())) {
 			swapToHand();
 		}
@@ -530,19 +530,19 @@ public class ControlPackMain implements Runnable {
 	private boolean swapToHand() {
 		// look for an empty slot
 		for(int i = 0; i < 9; i++) {
-			ItemStack stack = mc.thePlayer.inventory.mainInventory[i];
+			ItemStack stack = mc.player.inventory.mainInventory[i];
 			if (stack == null) {
-				mc.thePlayer.inventory.currentItem = i;
+				mc.player.inventory.currentItem = i;
 				return true;
 			}
 		}
 		// no empty slots so look for a lame item instead
 		for(int i = 0; i < 9; i++) {
-			ItemStack stack = mc.thePlayer.inventory.mainInventory[i];
+			ItemStack stack = mc.player.inventory.mainInventory[i];
 			if (stack != null) {
 				Item item = stack.getItem();
 				if (item != null && (!isSword(item) && !isTool(item))) {
-					mc.thePlayer.inventory.currentItem = i;
+					mc.player.inventory.currentItem = i;
 					return true;
 				}
 			}
@@ -656,7 +656,7 @@ public class ControlPackMain implements Runnable {
 	
 	private boolean swapToFirstTool(Block block, Item currentItem) {
 		for(int i = 0; i < 9; i++) {
-			ItemStack stack = mc.thePlayer.inventory.mainInventory[i];
+			ItemStack stack = mc.player.inventory.mainInventory[i];
 			if (stack != null) {
 				Item item = stack.getItem();
 				if (item == null || !isTool(item)) {
@@ -664,7 +664,7 @@ public class ControlPackMain implements Runnable {
 				}
 				// found a good tool to use as long as it offers better strength than no-tool strength
 				if (blockStrength(block, item) > blockStrength(block, null)) {
-					mc.thePlayer.inventory.currentItem = i;
+					mc.player.inventory.currentItem = i;
 					return true;
 				}
 			}
@@ -674,13 +674,13 @@ public class ControlPackMain implements Runnable {
 	
 	private boolean swapToFirstSword() {
 		for(int i = 0; i < 9; i++) {
-			ItemStack stack = mc.thePlayer.inventory.mainInventory[i];
+			ItemStack stack = mc.player.inventory.mainInventory[i];
 			if (stack != null) {
 				Item item = stack.getItem();
 				if (item == null || !isSword(item)) {
 					continue;
 				}
-				mc.thePlayer.inventory.currentItem = i;
+				mc.player.inventory.currentItem = i;
 				return true;
 			}
 		}
@@ -689,7 +689,7 @@ public class ControlPackMain implements Runnable {
 	
 	private boolean swapToLastTool(Block block, Item currentItem) {
 		for(int i = 8; i >= 0; i--) {
-			ItemStack stack = mc.thePlayer.inventory.mainInventory[i];
+			ItemStack stack = mc.player.inventory.mainInventory[i];
 			if (stack != null) {
 				Item item = stack.getItem();
 				if (item == null || !isTool(item)) {
@@ -697,7 +697,7 @@ public class ControlPackMain implements Runnable {
 				}
 				// found a good tool to use as long as it offers better strength than no-tool strength
 				if (blockStrength(block, item) > blockStrength(block, null)) {
-					mc.thePlayer.inventory.currentItem = i;
+					mc.player.inventory.currentItem = i;
 					return true;
 				}
 			}
@@ -707,13 +707,13 @@ public class ControlPackMain implements Runnable {
 	
 	private boolean swapToLastSword() {
 		for(int i = 8; i >= 0; i--) {
-			ItemStack stack = mc.thePlayer.inventory.mainInventory[i];
+			ItemStack stack = mc.player.inventory.mainInventory[i];
 			if (stack != null) {
 				Item item = stack.getItem();
 				if (item == null || !isSword(item)) {
 					continue;
 				}
-				mc.thePlayer.inventory.currentItem = i;
+				mc.player.inventory.currentItem = i;
 				return true;
 			}
 		}
@@ -740,7 +740,7 @@ public class ControlPackMain implements Runnable {
 		Item currentItem = null;
 		
 		for(int i = 0; i < 9; i++) {
-			ItemStack stack = mc.thePlayer.inventory.mainInventory[i];
+			ItemStack stack = mc.player.inventory.mainInventory[i];
 			if (stack != null) {
 				Item item = stack.getItem();
 				if (item == null || !isSword(item)) {
@@ -753,7 +753,7 @@ public class ControlPackMain implements Runnable {
 			}
 		}
 		if (currentItemIndex != -1) {
-			mc.thePlayer.inventory.currentItem = currentItemIndex;
+			mc.player.inventory.currentItem = currentItemIndex;
 			return true;
 		}
 		return false;
@@ -774,7 +774,7 @@ public class ControlPackMain implements Runnable {
 		int originalIndex = currentItemIndex;
 		
 		for(int i = 0; i < 9; i++) {
-			ItemStack stack = mc.thePlayer.inventory.mainInventory[i];
+			ItemStack stack = mc.player.inventory.mainInventory[i];
 			if (stack != null) {
 				Item item = stack.getItem();
 				if (item == null || !isTool(item)) {
@@ -787,7 +787,7 @@ public class ControlPackMain implements Runnable {
 			}
 		}
 		if (currentItemIndex != originalIndex) {
-			mc.thePlayer.inventory.currentItem = currentItemIndex;
+			mc.player.inventory.currentItem = currentItemIndex;
 			return true;
 		}
 		return false;
@@ -838,10 +838,10 @@ public class ControlPackMain implements Runnable {
 			 F            F         TOOL           F                 F            H
 			 
 		*/
-		int inventoryIndex = mc.thePlayer.inventory.currentItem;
-		ItemStack currentStack = mc.thePlayer.inventory.getCurrentItem();
+		int inventoryIndex = mc.player.inventory.currentItem;
+		ItemStack currentStack = mc.player.inventory.getCurrentItem();
 		Item currentItem = currentStack == null ? null : currentStack.getItem();
-		boolean easilyBreakable = block.getBlockHardness(block.getDefaultState(), mc.theWorld, new BlockPos(1, 1, 1)) <= 0.20001F; // leaves are 0.2. Saplings, redstone dust, etc are 0 (1 hit).
+		boolean easilyBreakable = block.getBlockHardness(block.getDefaultState(), mc.world, new BlockPos(1, 1, 1)) <= 0.20001F; // leaves are 0.2. Saplings, redstone dust, etc are 0 (1 hit).
 		boolean harvestable = getIsHarvestable(block);
 		boolean hasSword = currentItem != null && isSword(currentItem);
 		boolean hasTool = isTool(currentItem);
@@ -892,7 +892,7 @@ public class ControlPackMain implements Runnable {
 		// after all this if we still don't have a tool, and it's a sword whitelisted block
 		// then try to select a sword.
 		if (shouldUseSword(block)) {
-			currentStack = mc.thePlayer.inventory.getCurrentItem();
+			currentStack = mc.player.inventory.getCurrentItem();
 			currentItem = currentStack == null ? null : currentStack.getItem();
 			hasSword = currentItem != null && isSword(currentItem);
 			hasTool = isTool(currentItem);
@@ -909,7 +909,7 @@ public class ControlPackMain implements Runnable {
 		if (swappedInventoryState == 0 && (proactive || mc.gameSettings.keyBindAttack.isKeyDown()) && mc.objectMouseOver != null) {
 			// get the block being targetted
 			if (!mc.playerController.isInCreativeMode() && ControlPackOptions.booleanOptions.get(ControlPackEnumOptions.AUTOTOOL) && mc.objectMouseOver.typeOfHit == Type.BLOCK) {
-				Block block = mc.theWorld.getBlockState(mc.objectMouseOver.getBlockPos()).getBlock();
+				Block block = mc.world.getBlockState(mc.objectMouseOver.getBlockPos()).getBlock();
 				if (block != null) {
 					ensureCorrectToolSelected(block);
 				}
@@ -929,12 +929,12 @@ public class ControlPackMain implements Runnable {
 	
 	public boolean swapToFood() {
 		for (int i = 0; i < 9; i++) {
-			ItemStack possibleBlock = mc.thePlayer.inventory.mainInventory[i];
+			ItemStack possibleBlock = mc.player.inventory.mainInventory[i];
 			if (possibleBlock != null && possibleBlock.getItem() instanceof ItemFood) {
 				//ItemFood food = (ItemFood) possibleBlock.getItem();
 				//int healAmount = food.getHealAmount();
-				swapBackTo = mc.thePlayer.inventory.currentItem;
-				mc.thePlayer.inventory.currentItem = i;
+				swapBackTo = mc.player.inventory.currentItem;
+				mc.player.inventory.currentItem = i;
 				return true;
 			}
 		}
@@ -943,11 +943,11 @@ public class ControlPackMain implements Runnable {
 	
 	public void placeTorch() {
 		for (int i = 0; i < 9; i++) {
-			ItemStack possibleBlock = mc.thePlayer.inventory.mainInventory[i];
+			ItemStack possibleBlock = mc.player.inventory.mainInventory[i];
 			if (possibleBlock != null && (Block.getBlockFromItem(possibleBlock.getItem()) instanceof BlockTorch)) { // torch block id = 50: http://www.minecraftwiki.net/wiki/Data_values#Block_IDs_.28Minecraft_Beta.29
 				swapBack = true;
-				swapBackTo = mc.thePlayer.inventory.currentItem;
-				mc.thePlayer.inventory.currentItem = i;
+				swapBackTo = mc.player.inventory.currentItem;
+				mc.player.inventory.currentItem = i;
 				// make MC think they did a right click..
 				KeyBinding.onTick(mc.gameSettings.keyBindUseItem.getKeyCode());
 				return;
@@ -955,11 +955,11 @@ public class ControlPackMain implements Runnable {
 		}
 		// no torch... try a redstone torch instead
 		for (int i = 0; i < 9; i++) {
-			ItemStack possibleBlock = mc.thePlayer.inventory.mainInventory[i];
+			ItemStack possibleBlock = mc.player.inventory.mainInventory[i];
 			if (possibleBlock != null && ((Block.getBlockFromItem(possibleBlock.getItem()) instanceof BlockRedstoneTorch))) { // redstone torch block id = 75 or 76 (on or off)
 				swapBack = true;
-				swapBackTo = mc.thePlayer.inventory.currentItem;
-				mc.thePlayer.inventory.currentItem = i;
+				swapBackTo = mc.player.inventory.currentItem;
+				mc.player.inventory.currentItem = i;
 				// make MC think they did a right click..
 				KeyBinding.onTick(mc.gameSettings.keyBindUseItem.getKeyCode());
 				return;
@@ -968,13 +968,13 @@ public class ControlPackMain implements Runnable {
 	}
 
 	public void runAutoBlockOnExpend() {
-		ItemStack currentItem = mc.thePlayer.inventory.getCurrentItem();
+		ItemStack currentItem = mc.player.inventory.getCurrentItem();
 		if (currentItem == null || currentItem.stackSize <= 0) {
 			// they just placed the last item in a stack, switch to another stack of the same item
 			for (int i = 0; i < 9; i++) {
-				ItemStack possibleBlock = mc.thePlayer.inventory.mainInventory[i];
+				ItemStack possibleBlock = mc.player.inventory.mainInventory[i];
 				if (possibleBlock != null && Item.getIdFromItem(possibleBlock.getItem()) == previouslyPlacedBlockID) {
-					mc.thePlayer.inventory.currentItem = i;
+					mc.player.inventory.currentItem = i;
 					break;
 				}
 			}
@@ -983,32 +983,32 @@ public class ControlPackMain implements Runnable {
 	
 	public void runAutoBlock() {
 		// See if they have a tool currently selected, which won't do anything.
-		ItemStack currentItem = mc.thePlayer.inventory.getCurrentItem();
+		ItemStack currentItem = mc.player.inventory.getCurrentItem();
 		if (currentItem == null || isTool(currentItem.getItem())) {
 			Integer mode = ControlPackOptions.intOptions.get(ControlPackEnumOptions.AUTOBLOCKMODE);
 			//int foundBlockId = -1;
 			if (mode == 0) { // leftmost
 				for (int i = 0; i < 9; i++) {
-					ItemStack possibleBlock = mc.thePlayer.inventory.mainInventory[i];
+					ItemStack possibleBlock = mc.player.inventory.mainInventory[i];
 					if (possibleBlock != null && possibleBlock.getItem() instanceof ItemBlock) {
-						mc.thePlayer.inventory.currentItem = i;
+						mc.player.inventory.currentItem = i;
 						break;
 					}
 				}
 			}
 			else if (mode == 1) { // rightmost
 				for (int i = 8; i >= 0; i--) {
-					ItemStack possibleBlock = mc.thePlayer.inventory.mainInventory[i];
+					ItemStack possibleBlock = mc.player.inventory.mainInventory[i];
 					if (possibleBlock != null && possibleBlock.getItem() instanceof ItemBlock) {
-						mc.thePlayer.inventory.currentItem = i;
+						mc.player.inventory.currentItem = i;
 						break;
 					}
 				}
 			}
 			else if (mode < 11) { // slot #
-				ItemStack possibleBlock = mc.thePlayer.inventory.mainInventory[mode - 2];
+				ItemStack possibleBlock = mc.player.inventory.mainInventory[mode - 2];
 				if (possibleBlock != null && possibleBlock.getItem() instanceof ItemBlock) {
-					mc.thePlayer.inventory.currentItem = mode - 2;
+					mc.player.inventory.currentItem = mode - 2;
 				}
 			}
 		}
@@ -1052,8 +1052,8 @@ public class ControlPackMain implements Runnable {
 	}
 	
 	public String getLocation(boolean shouldFormat) {
-		if (mc == null || mc.thePlayer == null) return "";
-		BlockPos currentPos = mc.thePlayer.getPosition();
+		if (mc == null || mc.player == null) return "";
+		BlockPos currentPos = mc.player.getPosition();
 		int currentX = (int) Math.ceil(currentPos.getX()) - 1;
 		int currentY = (int) Math.ceil(currentPos.getY()) - 1;
 		int currentZ = (int) Math.ceil(currentPos.getZ()) - 1;
@@ -1187,7 +1187,7 @@ public class ControlPackMain implements Runnable {
 	}
 	
 	private void addDeathWaypoint() {
-		boolean isNether = ControlPackMain.mc.theWorld != null && (mc.theWorld.provider.getDimensionType().getName() == "Nether");
+		boolean isNether = ControlPackMain.mc.world != null && (mc.world.provider.getDimensionType().getName() == "Nether");
 		ControlPackEnumOptions[] nameoptions = isNether ? ControlPackOptions.waypointNetherNameOptions : ControlPackOptions.waypointNameOptions;
 		ControlPackEnumOptions[] locationoptions = isNether ? ControlPackOptions.waypointNetherOptions : ControlPackOptions.waypointOptions;
 		ControlPackEnumOptions[] hudoptions = isNether ? ControlPackOptions.waypointNetherHUDOptions : ControlPackOptions.waypointHUDOptions;
@@ -1228,7 +1228,7 @@ public class ControlPackMain implements Runnable {
 	private boolean deathKnown;
 	private void setDeathWaypoint() {
 		if (ControlPackOptions.booleanOptions.get(ControlPackEnumOptions.CORPSELOCATION)) {
-			if (!mc.thePlayer.isEntityAlive()) {
+			if (!mc.player.isEntityAlive()) {
 				if (!deathKnown) {
 					addDeathWaypoint();
 					deathKnown = true;
@@ -1272,7 +1272,7 @@ public class ControlPackMain implements Runnable {
 	
 	public void moveByDistance(int numTiles) {
 		lastMeasureDistance = numTiles;
-		BlockPos pos = mc.thePlayer.getPosition();
+		BlockPos pos = mc.player.getPosition();
 		measureDistanceStartX = (int) (pos.getX() < 0 ? Math.ceil(pos.getX()) : Math.floor(pos.getX()));
 		measureDistanceStartZ = (int) (pos.getZ() < 0 ? Math.ceil(pos.getZ()) : Math.floor(pos.getZ()));
 		measureDistanceState = true;
@@ -1332,7 +1332,7 @@ public class ControlPackMain implements Runnable {
 		if (code == keyBindEat.getKeyCode()) {
 			if (down) {
 				if (swapToFood()) {
-					isEating = mc.thePlayer.inventory.currentItem;
+					isEating = mc.player.inventory.currentItem;
 					keyBindingToggle(mc.gameSettings.keyBindUseItem,true);
 				}
 			}
@@ -1342,7 +1342,7 @@ public class ControlPackMain implements Runnable {
 				keyBindingToggle(mc.gameSettings.keyBindUseItem,false);
 			}
 		}
-		else if (isEating != -1 && isEating != mc.thePlayer.inventory.currentItem) {
+		else if (isEating != -1 && isEating != mc.player.inventory.currentItem) {
 			isEating = -1;
 			swapBack = true;
 			keyBindingToggle(mc.gameSettings.keyBindUseItem,false);
@@ -1355,7 +1355,7 @@ public class ControlPackMain implements Runnable {
 
 		if (down && code == keyBindSprint.getKeyCode() && mc.gameSettings.keyBindForward.isKeyDown()) {
 			isSprinting = !isSprinting;
-			mc.thePlayer.setSprinting(isSprinting);
+			mc.player.setSprinting(isSprinting);
 		}
 		
 		// open controlpack options
@@ -1417,10 +1417,10 @@ public class ControlPackMain implements Runnable {
 		if (code == keyBindAlternateLeft.getKeyCode()) {
 			if (down) {
 				swappedInventoryState = -1;
-				mc.thePlayer.inventory.changeCurrentItem(1);
+				mc.player.inventory.changeCurrentItem(1);
 			}
 			else if (swappedInventoryState != 0) {
-				mc.thePlayer.inventory.changeCurrentItem(swappedInventoryState);
+				mc.player.inventory.changeCurrentItem(swappedInventoryState);
 				swappedInventoryState = 0;
 			}
 			return true;
@@ -1428,10 +1428,10 @@ public class ControlPackMain implements Runnable {
 		if (code == keyBindAlternateRight.getKeyCode()) {
 			if (down) {
 				swappedInventoryState = 1;
-				mc.thePlayer.inventory.changeCurrentItem(-1);
+				mc.player.inventory.changeCurrentItem(-1);
 			}
 			else if (swappedInventoryState != 0) {
-				mc.thePlayer.inventory.changeCurrentItem(swappedInventoryState);
+				mc.player.inventory.changeCurrentItem(swappedInventoryState);
 				swappedInventoryState = 0;
 			}
 			return true;
@@ -1466,7 +1466,7 @@ public class ControlPackMain implements Runnable {
 				
 				// they just 'used' the current item. remember what kind of item it was for autoblock expending feature.
 				previouslyPlacedBlock = true;
-				ItemStack stack = mc.thePlayer.inventory.getCurrentItem();
+				ItemStack stack = mc.player.inventory.getCurrentItem();
 				previouslyPlacedBlockID = stack == null ? -1 : Item.getIdFromItem(stack.getItem());
 			}
 			
