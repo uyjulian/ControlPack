@@ -107,10 +107,10 @@ public abstract class MixinGuiFurnace extends GuiContainer {
 				
 				putItBack(currentItemStack, emptySlot);
 			}
-			else if (burningStack.stackSize + itemStack.stackSize <= itemStack.getMaxStackSize()) {
+			else if (burningStack.getCount() + itemStack.getCount() <= itemStack.getMaxStackSize()) {
 				// Burning stack has stuff on it, and all of it will fit, so, dropping it all.
 				ItemStack burningStackCopy = burningStack.copy();
-				burningStack.stackSize = burningStack.stackSize + itemStack.stackSize;
+				burningStack.grow(itemStack.getCount());
 				tileFurnace.setInventorySlotContents(0, burningStack);
 				slot.putStack(null);
 				// pick it up
@@ -122,10 +122,10 @@ public abstract class MixinGuiFurnace extends GuiContainer {
 			}
 			else {
 				// Burning stack has stuff on it, but wont fit all of it, so filling to max size.
-				int remainingSizeLeft = itemStack.getMaxStackSize() - burningStack.stackSize;
+				int remainingSizeLeft = itemStack.getMaxStackSize() - burningStack.getCount();
 				ItemStack burningStackcopy = burningStack.copy();
 				ItemStack itemStackCopy = itemStack.copy();
-				burningStack.stackSize = itemStack.getMaxStackSize();
+				burningStack.setCount(itemStack.getMaxStackSize());
 				tileFurnace.setInventorySlotContents(0, burningStack);
 				slot.decrStackSize(remainingSizeLeft);
 				// pick it up
@@ -148,21 +148,21 @@ public abstract class MixinGuiFurnace extends GuiContainer {
 					return;
 				}
 				float smeltsPerItem = (burnTime) / 200F;
-				int stacksNeeded = burningStack == null ? 0 : (int)Math.ceil(burningStack.stackSize / smeltsPerItem);
-				int existingFuelSize = fuelStack == null ? 0 : fuelStack.stackSize;
-				// need stacksNeeded, have existingFuelSize, stacksize = itemStack.stackSize
+				int stacksNeeded = burningStack == null ? 0 : (int)Math.ceil(burningStack.getCount() / smeltsPerItem);
+				int existingFuelSize = fuelStack == null ? 0 : fuelStack.getCount();
+				// need stacksNeeded, have existingFuelSize, stacksize = itemStack.getCount()
 				if (existingFuelSize < stacksNeeded) {
-					int toDrop = Math.min(itemStack.stackSize, stacksNeeded - existingFuelSize);
+					int toDrop = Math.min(itemStack.getCount(), stacksNeeded - existingFuelSize);
 					if (fuelStack == null) {
 						// No fuel yet, so creating new fuel stack.
 						ItemStack itemStackCopy = itemStack.copy();
 						ItemStack fuelStackCopy = itemStack.copy();
-						fuelStackCopy.stackSize = 0;
+						fuelStackCopy.setCount(0);
 						fuelStack = itemStack.splitStack(toDrop);
 						tileFurnace.setInventorySlotContents(1, fuelStack);
 						// pick it up
 						addToSendQueue(slot.slotNumber, 0, itemStackCopy);
-						if (itemStack.stackSize <= 0) {
+						if (itemStack.getCount() <= 0) {
 							// all of the picked up fuel was dropped
 							// local client, clear clicked slot
 							slot.putStack(null);
@@ -177,12 +177,12 @@ public abstract class MixinGuiFurnace extends GuiContainer {
 						}
 					}
 					else {
-						toDrop = Math.min(toDrop, fuelStack.getMaxStackSize() - fuelStack.stackSize);
+						toDrop = Math.min(toDrop, fuelStack.getMaxStackSize() - fuelStack.getCount());
 						// Existing fuel, so increase size
 						ItemStack itemStackCopy = itemStack.copy();
 						ItemStack fuelStackCopy = fuelStack.copy();
 						// client side
-						fuelStack.stackSize += toDrop;
+						fuelStack.grow(toDrop);
 						slot.decrStackSize(toDrop);
 						// server side
 						// pick it up
@@ -241,15 +241,15 @@ public abstract class MixinGuiFurnace extends GuiContainer {
 			if (existingStack == null || Item.getIdFromItem(existingStack.getItem()) != Item.getIdFromItem(stack.getItem()) || existingStack.getItemDamage() != stack.getItemDamage()) {
 				continue;
 			}
-			int canDrop = existingStack.getMaxStackSize() - existingStack.stackSize;
+			int canDrop = existingStack.getMaxStackSize() - existingStack.getCount();
 			if (canDrop > 0) {
-				if (stack.stackSize <= canDrop) {
+				if (stack.getCount() <= canDrop) {
 					// there's enough room to drop everything
 					ItemStack existingStackCopy = existingStack.copy();
 					ItemStack stackCopy = stack.copy();
 					// client:
-					existingStack.stackSize += stack.stackSize;
-					stack.stackSize = 0;
+					existingStack.grow(stack.getCount());
+					stack.setCount(0);
 					fromSlot.putStack(null);
 					// server:
 					if (!holdingStack) {
@@ -266,8 +266,8 @@ public abstract class MixinGuiFurnace extends GuiContainer {
 					ItemStack existingStackCopy = existingStack.copy();
 					ItemStack stackCopy = stack.copy();
 					// client:
-					existingStack.stackSize += canDrop;
-					stack.stackSize -= canDrop;
+					existingStack.grow(canDrop);
+					stack.shrink(canDrop);
 					// server:
 					if (!holdingStack) {
 						// 	pick it up
@@ -293,7 +293,7 @@ public abstract class MixinGuiFurnace extends GuiContainer {
 			ItemStack stackCopy = stack.copy();
 			// client:
 			slot.putStack(stack.copy());
-			stack.stackSize = 0;
+			stack.setCount(0);
 			fromSlot.putStack(null);
 			// server:
 			if (!holdingStack) {
@@ -318,8 +318,8 @@ public abstract class MixinGuiFurnace extends GuiContainer {
 	private void addToSendQueueDrop1(int slotNumber, int count, ItemStack stack) {
 		for (int i = 0; i < count; i++) {
 			ItemStack copy = stack.copy();
-			addToSendQueue(slotNumber, 1, copy.stackSize == 0 ? null : copy);
-			stack.stackSize++;
+			addToSendQueue(slotNumber, 1, copy.getCount() == 0 ? null : copy);
+			stack.grow(1);
 		}
 	}
 	
