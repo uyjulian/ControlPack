@@ -1,0 +1,84 @@
+# ControlPack translation file
+
+key.ctrlpack.walkDistance=Run Distance
+key.ctrlpack.lookBehind=Look Behind
+key.ctrlpack.toggleMine=Toggle Mining
+key.ctrlpack.toggleUse=Toggle Use Item
+key.ctrlpack.autoJump=Toggle Jump
+key.ctrlpack.autoRun=Toggle Run
+key.ctrlpack.toggleSneak=Toggle Sneak
+key.ctrlpack.altleft=Swap L (Hold)
+key.ctrlpack.altright=Swap R (Hold)
+key.ctrlpack.toggleGamma=Toggle Brightness
+key.ctrlpack.startSprint=Start Sprinting
+key.ctrlpack.placeTorch=Place Torch
+key.ctrlpack.eatFood=Eat Food
+key.ctrlpack.saylocation=Chat Location
+key.ctrlpack.waypoints=Waypoints
+        
+measure.go=Go
+controlPack.settings=Welcome to ControlPack
+controlPack.title=Welcome to ControlPack
+controlPack.volumeTitle=ControlPack Settings - SFX Volume
+controlPack.optionsTitle=ControlPack Settings - Options
+controlPack.itemOptionsTitle=ControlPack Settings - Other Options
+controlPack.bindingsTitle=ControlPack Settings - Key Bindings
+controlPack.waypointsTitle=ControlPack Settings - Waypoints
+
+options.controlPack=ControlPack...
+options.volume=SFX Volume...
+options.cpbindings=Extra Key Bindings...
+options.cpoptions=Configure Options...
+options.cpwaypoints=Waypoints...
+options.itemSettings=Other Options...
+options.cpopendocs=Open Documentation...
+options.set=Set
+		
+options.item_swords=Sword Item Ids
+options.coordinateformat=Coord. Format
+
+options.lessrain=Render Less Rain
+options.lookbehind-withback=LookBehind w/ Back+Fwd
+options.front3rdperson=Better 3rd Person View
+options.windowrestoration=Auto Window Restore
+options.smartfurnace=Smart Furnace
+options.holdtoattack=Hold to Attack
+options.corpselocation=Auto Corpse Waypoint
+options.volume_rain=Rain Falling
+options.volume_piston=Piston In & Out
+options.volume_splash=Splashing Water
+options.volume_water=Flowing Water
+options.volume_door=Door & Chest
+options.volume_explode=Explosion
+options.volume_bow=Shoot With Bow
+options.volume_portal=Near a Portal
+options.volume_eatdrink=Eat & Drink
+options.volume_animals=Peaceful Animals
+options.volume_slime=Slimes
+options.volume_minecart=Minecarts
+options.volume_hit=Take Damage
+options.volume_dig=Dug/Put Block
+options.volume_step=Walk/Dig Sound
+
+options.autotool=Auto Tool
+options.autotoolmode=Auto Tool Mode
+options.autosword=Auto Sword
+options.autoblock=Auto Block
+options.autoblockmode=Auto Block Mode
+options.voidfog=Render Void Fog
+options.usecount=Uses Remaining
+options.statuslocation=Status Overlay
+options.coordinateslocation=My Coordinates
+options.updatecheck=Update Check
+
+options.waypointhud1=HUD
+options.waypointhud2=HUD
+options.waypointhud3=HUD
+options.waypointhud4=HUD
+options.waypointhud5=HUD
+
+options.waypointhudnether1=HUD
+options.waypointhudnether2=HUD
+options.waypointhudnether3=HUD
+options.waypointhudnether4=HUD
+options.waypointhudnether5=HUD
