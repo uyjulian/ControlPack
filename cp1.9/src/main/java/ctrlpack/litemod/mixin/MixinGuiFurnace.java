@@ -59,7 +59,7 @@ public abstract class MixinGuiFurnace extends GuiContainer {
 			super.mouseClicked(row, col, mouseButton);
 			return;
 		}
-		ItemStack currentItemStack = mc.thePlayer.inventory.getItemStack();
+		ItemStack currentItemStack = mc.player.inventory.getItemStack();
 		Slot emptySlot = null;
 		// temporarily drop off anything currently being held
 		if (currentItemStack != null) {
@@ -309,7 +309,7 @@ public abstract class MixinGuiFurnace extends GuiContainer {
 	
 	private void addToSendQueue(int slotNumber, int mouseButton, ItemStack stack) {
 		//if (mc.isMultiplayerWorld()) {
-			short actionnum = mc.thePlayer.openContainer.getNextTransactionID(mc.thePlayer.inventory);
+			short actionnum = mc.player.openContainer.getNextTransactionID(mc.player.inventory);
 			// i = windowid, slot num, mouse, shift, itemstack, action
 			mc.getConnection().sendPacket(new CPacketClickWindow(inventorySlots.windowId, slotNumber, mouseButton, ClickType.PICKUP, stack, actionnum));
 		//}
@@ -340,7 +340,7 @@ public abstract class MixinGuiFurnace extends GuiContainer {
 		int l = (height - ySize) / 2;
 		i -= k;
 		j -= l;
-		return i >= slot.xDisplayPosition - 1 && i < slot.xDisplayPosition + 16 + 1 && j >= slot.yDisplayPosition - 1 && j < slot.yDisplayPosition + 16 + 1;
+		return i >= slot.xPos - 1 && i < slot.xPos + 16 + 1 && j >= slot.yPos - 1 && j < slot.yPos + 16 + 1;
 	}	
 
 }

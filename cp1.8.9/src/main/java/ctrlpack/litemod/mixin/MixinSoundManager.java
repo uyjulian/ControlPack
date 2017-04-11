@@ -26,11 +26,11 @@ import net.minecraft.util.MathHelper;
 @Mixin(SoundManager.class)
 public abstract class MixinSoundManager {
 	
-	@Shadow private float getSoundCategoryVolume(SoundCategory category) {return 1F;}
+	@Shadow private float func_148595_a(SoundCategory category) {return 1F;}
 
-	@Inject(method="getNormalizedVolume", at=@At("HEAD"), cancellable=true)
+	@Inject(method="func_148594_a", at=@At("HEAD"), cancellable=true)
 	private void onGetNormalizedVolume(ISound sound, SoundPoolEntry entry, SoundCategory category, CallbackInfoReturnable<Float> ci)
 	{
-		ci.setReturnValue((float)MathHelper.clamp_double(sound.getVolume() * entry.getVolume() * ControlPackMain.instance.getSoundVolume(sound.getSoundLocation().getResourcePath()), 0.0D, 1.0D) * this.getSoundCategoryVolume(category));
+		ci.setReturnValue((float)MathHelper.clamp(sound.getVolume() * entry.func_148649_c() * ControlPackMain.instance.getSoundVolume(sound.getSoundLocation().getResourcePath()), 0.0D, 1.0D) * this.func_148595_a(category));
 	}
 }

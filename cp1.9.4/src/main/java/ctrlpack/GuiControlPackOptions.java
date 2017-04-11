@@ -52,7 +52,7 @@ public class GuiControlPackOptions extends GuiScreen
 			String optionDesc = ControlPackMain.instance.getOptionDesc(option);
 			if (option.getIsString()) {
 				//buttonList.add(new GuiSmallButtonCP(100 + option.getOrdinal(), i + (j % 2) * 160, height / 6 + 24 * (j >> 1), option, mod_ControlPack.instance.getOptionDesc(option)));
-				GuiTextFieldCP field = new GuiTextFieldCP(fontRendererObj, ControlPackMain.instance.getOptionDesc(option), i, height / 6 + 24 * j - 30, 300, 20, option);
+				GuiTextFieldCP field = new GuiTextFieldCP(fontRenderer, ControlPackMain.instance.getOptionDesc(option), i, height / 6 + 24 * j - 30, 300, 20, option);
 				field.setText(ControlPackOptions.stringOptions.get(option));
 				textFields.add(field);
 				if (option == ControlPackEnumOptions.ITEM_SWORDS) {
@@ -114,7 +114,7 @@ public class GuiControlPackOptions extends GuiScreen
 	@Override
 	public void drawScreen(int i, int j, float f) {
 		drawDefaultBackground();
-		drawCenteredString(fontRendererObj, screenTitle, width / 2, 5, 0xffffff);
+		drawCenteredString(fontRenderer, screenTitle, width / 2, 5, 0xffffff);
 		super.drawScreen(i, j, f);
 		for (int i2 = 0; i2 < textFields.size(); i2++) {
 			GuiTextFieldCP tf = textFields.get(i2);

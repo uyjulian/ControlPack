@@ -69,7 +69,7 @@ public class GuiControlPackVolume extends GuiScreen
 	@Override
 	public void drawScreen(int i, int j, float f) {
 		drawDefaultBackground();
-		drawCenteredString(fontRendererObj, screenTitle, width / 2, 5, 0xffffff);
+		drawCenteredString(fontRenderer, screenTitle, width / 2, 5, 0xffffff);
 
 		super.drawScreen(i, j, f);
 	}

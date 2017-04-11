@@ -85,14 +85,14 @@ public class GuiControlPack extends GuiScreen implements GuiYesNoCallback
 	@Override
 	public void drawScreen(int i, int j, float f) {
 		drawDefaultBackground();
-		drawCenteredString(fontRendererObj, screenTitle, width / 2, 5, 0xffffff);
+		drawCenteredString(fontRenderer, screenTitle, width / 2, 5, 0xffffff);
 
-		drawCenteredString(fontRendererObj, "Here you can configure all of the key bindings used in ControlPack,", width / 2, 30, 0xffffff);
-		drawCenteredString(fontRendererObj, "turn features on and off, and adjust sound effect volume levels.", width / 2, 45, 0xffffff);
+		drawCenteredString(fontRenderer, "Here you can configure all of the key bindings used in ControlPack,", width / 2, 30, 0xffffff);
+		drawCenteredString(fontRenderer, "turn features on and off, and adjust sound effect volume levels.", width / 2, 45, 0xffffff);
 		
-		drawCenteredString(fontRendererObj, "***** ALSO CLICK OPEN DOCUMENTATION TO OPEN YOUR WEB BROWSER *****", width / 2, 70, 0xff0000);
-		drawCenteredString(fontRendererObj, "It contains great information about the features that you", width / 2, 85, 0xaaaaaa);
-		drawCenteredString(fontRendererObj, " WILL NOT figure out on your own!", width / 2, 100, 0xaaaaaa);
+		drawCenteredString(fontRenderer, "***** ALSO CLICK OPEN DOCUMENTATION TO OPEN YOUR WEB BROWSER *****", width / 2, 70, 0xff0000);
+		drawCenteredString(fontRenderer, "It contains great information about the features that you", width / 2, 85, 0xaaaaaa);
+		drawCenteredString(fontRenderer, " WILL NOT figure out on your own!", width / 2, 100, 0xaaaaaa);
 		super.drawScreen(i, j, f);
 	}
 	

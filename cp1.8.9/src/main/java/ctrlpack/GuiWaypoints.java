@@ -35,7 +35,7 @@ public class GuiWaypoints extends GuiScreen
 	{
 		screenTitle = ControlPackMain.translate("controlPack.waypointsTitle");
 		
-		isNether = ControlPackMain.mc.theWorld != null && (ControlPackMain.mc.theWorld.provider.getDimensionName() == "Nether");
+		isNether = ControlPackMain.mc.world != null && (ControlPackMain.mc.world.provider.func_80007_l() == "Nether");
 
 		ControlPackEnumOptions options[] = isNether ? ControlPackOptions.waypointNetherOptions : ControlPackOptions.waypointOptions;
 		for(int k = 0; k < options.length; k++) {
@@ -50,12 +50,12 @@ public class GuiWaypoints extends GuiScreen
 			int y = 100 + k * 25;
 			
 			// name
-			waypointNames[k] = new GuiTextField(1, fontRendererObj, x, y, 75, 20);
+			waypointNames[k] = new GuiTextField(1, fontRenderer, x, y, 75, 20);
 			waypointNames[k].setText(name);
 			waypointNames[k].setMaxStringLength(12);
 			x+= 85;
 			// location
-			waypointLocations[k] = new GuiTextField(1, fontRendererObj, x, y, 125, 20);
+			waypointLocations[k] = new GuiTextField(1, fontRenderer, x, y, 125, 20);
 			waypointLocations[k].setText(location);
 			waypointLocations[k].setMaxStringLength("-1000000, -1000000, -999".length());
 			x += 135;
@@ -167,11 +167,11 @@ public class GuiWaypoints extends GuiScreen
 	@Override
 	public void drawScreen(int i, int j, float f) {
 		drawDefaultBackground();
-		drawCenteredString(fontRendererObj, screenTitle + (isNether ? " (Nether)" : ""), width / 2, 5, 0xffffff);
+		drawCenteredString(fontRenderer, screenTitle + (isNether ? " (Nether)" : ""), width / 2, 5, 0xffffff);
 		
-		drawCenteredString(fontRendererObj, "Click 'Set' to set a waypoint to your current position.", width / 2, 35, 0x6666ff);
-		drawCenteredString(fontRendererObj, "Click it again to clear it.", width / 2, 45, 0x6666ff);
-		drawCenteredString(fontRendererObj, "Or just type coordinates in X, Z, Y format.", width / 2, 65, 0x666666);
+		drawCenteredString(fontRenderer, "Click 'Set' to set a waypoint to your current position.", width / 2, 35, 0x6666ff);
+		drawCenteredString(fontRenderer, "Click it again to clear it.", width / 2, 45, 0x6666ff);
+		drawCenteredString(fontRenderer, "Or just type coordinates in X, Z, Y format.", width / 2, 65, 0x666666);
 		
 		for (int k = 0; k < waypointNames.length; k++) {
 			GuiTextField field = waypointNames[k];

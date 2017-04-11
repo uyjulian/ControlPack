@@ -115,7 +115,7 @@ public class GuiControlPackBindings extends GuiScreen
 
 						buttonList.get(guibutton.id).displayString = getOptionDisplayString(guibutton.id);
 						buttonId = -1;
-						this.mc.getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("random.click"), 1.0F));
+						this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("random.click"), 1.0F));
 						return;
 					}
 				}
@@ -142,8 +142,8 @@ public class GuiControlPackBindings extends GuiScreen
 	@Override
 	public void drawScreen(int i, int j, float f) {
 		drawDefaultBackground();
-		drawCenteredString(fontRendererObj, screenTitle, width / 2, 2, 0xffffff);
-		drawCenteredString(fontRendererObj, "You may RIGHT CLICK to disable a command.", width / 2, 15, 0x5555ff);
+		drawCenteredString(fontRenderer, screenTitle, width / 2, 2, 0xffffff);
+		drawCenteredString(fontRenderer, "You may RIGHT CLICK to disable a command.", width / 2, 15, 0x5555ff);
 		
 		int k = func_20080_j();
 		
@@ -169,7 +169,7 @@ public class GuiControlPackBindings extends GuiScreen
 			else {
 				buttonList.get(j1).displayString = getOptionDisplayString(j1);
 			}
-			drawString(fontRendererObj, getKeyBindingDescription(l), k + (l % 2) * 160 + 70 + 6, height / 6 + 20 * (l >> 1) + 7, -1);
+			drawString(fontRenderer, getKeyBindingDescription(l), k + (l % 2) * 160 + 70 + 6, height / 6 + 20 * (l >> 1) + 7, -1);
 		}
 
 		super.drawScreen(i, j, f);

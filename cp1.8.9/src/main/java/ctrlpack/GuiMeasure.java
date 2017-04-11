@@ -31,7 +31,7 @@ public class GuiMeasure extends GuiScreen
 	{
 		int i = height / 4 + 48;
 		buttonList.add(new GuiButton(0, width / 2 - 100, i, "Go"));
-		measureDistance = new GuiTextField(1, fontRendererObj, width / 2 - 25, i - 35, 50, 20);
+		measureDistance = new GuiTextField(1, fontRenderer, width / 2 - 25, i - 35, 50, 20);
 		measureDistance.setText("0".equalsIgnoreCase(defaultDistance) ? "" : defaultDistance);
 		measureDistance.setFocused(true);
 		measureDistance.setMaxStringLength(7);

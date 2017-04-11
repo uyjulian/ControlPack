@@ -594,7 +594,7 @@ public class ControlPackMain implements Runnable {
 			float testStrength = blockStrength(block, testTool);
 			float existingStrength = blockStrength(block, tool);
 			float handStrength = blockStrength(block, null);
-			//mc.thePlayer.addChatMessage(testTool.getItemName() + "=" + testStrength + ". hand=" + handStrength + ". exist=" + existingStrength);
+			//mc.player.addChatMessage(testTool.getItemName() + "=" + testStrength + ". hand=" + handStrength + ". exist=" + existingStrength);
 
 			// dont even consider tools that have the same strength as hand-based strength
 			if (testStrength <= handStrength) {
@@ -917,7 +917,7 @@ public class ControlPackMain implements Runnable {
 			else if (ControlPackOptions.booleanOptions.get(ControlPackEnumOptions.AUTOSWORD) && (mc.objectMouseOver.typeOfHit == Type.ENTITY && mc.objectMouseOver.entityHit instanceof EntityLivingBase)) {
 				ensureSwordSelected();
 			}
-			// fyi change item: thePlayer.inventory.changeCurrentItem(k);, or thePlayer.inventory.currentItem = i;
+			// fyi change item: player.inventory.changeCurrentItem(k);, or player.inventory.currentItem = i;
 			// mc.objectMouseOver
 			// objectMouseOver.typeOfHit == EnumMovingObjectType.TILE
 			// objectMouseOver.typeOfHit == EnumMovingObjectType.ENTITY
@@ -1144,7 +1144,7 @@ public class ControlPackMain implements Runnable {
 	}
 	
 	private void DrawString(String str, int position, int lineNum, int color, Vec3d arrow, Boolean square) {
-		FontRenderer fr = mc.fontRendererObj;
+		FontRenderer fr = mc.fontRenderer;
 		ScaledResolution sr = new ScaledResolution(mc);
 		int xPos;
 		int yPos;
