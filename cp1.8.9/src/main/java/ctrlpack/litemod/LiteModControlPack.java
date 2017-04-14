@@ -16,10 +16,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import com.mumfrey.liteloader.InitCompleteListener;
 import com.mumfrey.liteloader.LiteMod;
+import com.mumfrey.liteloader.Tickable;
 import com.mumfrey.liteloader.core.LiteLoader;
 import ctrlpack.ControlPackMain;
 
-public class LiteModControlPack implements LiteMod, InitCompleteListener {
+public class LiteModControlPack implements LiteMod, Tickable, InitCompleteListener {
 
 	@Override
 	public String getName() {

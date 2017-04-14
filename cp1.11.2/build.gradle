@@ -47,6 +47,21 @@ minecraft {
     runDir = "run"
 }
 
+sourceSets {
+    main {
+        java {
+            srcDir project(':cp1.11').file("src/main/java")
+            srcDir project(':cpshare').file("src/main/java")
+        }
+        resources {
+            srcDir project(':cp1.11').file("src/main/resources")
+            srcDir project(':cpshare').file("src/main/resources")
+        }
+        // Refmap declaration must match the refmap name specified in the json config
+        refMap = "mixins.ControlPack.refmap.json"
+    }
+}
+
 bintray {
     user = System.getenv('BINTRAY_USER')
     key = System.getenv('BINTRAY_KEY')
@@ -61,13 +76,6 @@ bintray {
             name = project.version
             released = new Date()
         }
-    }
-}
-
-sourceSets {
-    main {
-        // Refmap declaration must match the refmap name specified in the json config
-        refMap = "mixins.ControlPack.refmap.json"
     }
 }
 
