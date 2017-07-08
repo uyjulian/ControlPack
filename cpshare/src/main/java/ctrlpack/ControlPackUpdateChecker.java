@@ -12,31 +12,44 @@ package ctrlpack;
 
 import java.io.*;
 import java.net.URL;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ControlPackUpdateChecker implements Runnable {
-	private final String UpdateURL = "http://pastebin.com/raw/LxFxp7Xv";
-	private final String CurrentVersion = "2";
+	private final String UpdateURL = "https://api.github.com/repos/uyjulian/ControlPack/releases/latest";
+	private final String CurrentVersion = "5.94.0";
 
 	@Override
 	public void run() {
 		Boolean foundNewVersion = false;
 		while (!foundNewVersion) {
 			InputStream currentInputStream = null;
-			ByteArrayOutputStream currentByteArrayOutputStream = null;
+			ByteArrayOutputStream currentByteArrayOutputStream;
 			try {
 				URL currentURL = new URL(UpdateURL);
 				currentInputStream = currentURL.openStream();
 				currentByteArrayOutputStream = new ByteArrayOutputStream();
 				copy(currentInputStream, currentByteArrayOutputStream);
-				String NewVersion = new String(currentByteArrayOutputStream.toByteArray()).trim();
+				Pattern pattern = Pattern.compile("\"tag_name\":\"(.+?)\"");
+				String NewVersionJSON = new String(currentByteArrayOutputStream.toByteArray());
+
+				Matcher matcher = pattern.matcher(NewVersionJSON);
+				matcher.find();
+				String NewVersion = matcher.group(1);
+
 				if (!(NewVersion.equals(CurrentVersion)) && (NewVersion.length() <= 100)) {
-					foundNewVersion = true;
 					ControlPackMain.instance.chatMsg("§c§lUpdate available§r; check website for details");
+					foundNewVersion = true;
 				}
 				Thread.sleep((1000 * 60) * 2);
 			}
 			catch (Exception currentException) {
 				currentException.printStackTrace();
+				try {
+					Thread.sleep((1000 * 60) * 2);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 			finally {
 				closeQuietly(currentInputStream);
