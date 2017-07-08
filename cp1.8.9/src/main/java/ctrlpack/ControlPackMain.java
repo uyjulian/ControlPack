@@ -51,13 +51,12 @@ public class ControlPackMain implements Runnable {
 		keyBindWalkDistance = new KeyBinding("key.ctrlpack.walkDistance", Keyboard.KEY_EQUALS, "ControlPack");
 		keyBindLookBehind = new KeyBinding("key.ctrlpack.lookBehind", 2-100, "ControlPack");
 		keyBindToggleGamma = new KeyBinding("key.ctrlpack.toggleGamma", Keyboard.KEY_B, "ControlPack");
-		keyBindSprint = new KeyBinding("key.ctrlpack.startSprint", Keyboard.KEY_F, "ControlPack");
 		keyBindTorch = new KeyBinding("key.ctrlpack.placeTorch", Keyboard.KEY_V, "ControlPack");
 		keyBindEat = new KeyBinding("key.ctrlpack.eatFood", Keyboard.KEY_HOME, "ControlPack");
 		keyBindWaypoints = new KeyBinding("key.ctrlpack.waypoints", Keyboard.KEY_PERIOD, "ControlPack");
 		keyBindSayLocation = new KeyBinding("key.ctrlpack.saylocation", Keyboard.KEY_INSERT, "ControlPack");
 		keyBindings = new KeyBinding[] {
-			keyBindSprint, keyBindTorch,
+			keyBindTorch,
 			keyBindAlternateLeft, keyBindAlternateRight,
 			keyBindEat,
 			keyBindToggleSneak, keyBindToggleRun, keyBindToggleJump, keyBindToggleMine, keyBindToggleUse,
@@ -340,8 +339,6 @@ public class ControlPackMain implements Runnable {
 				}
 			}
 		}
-		//avoid sprint glitch
-		mc.player.setSprinting(isSprinting);
 	}
 	
 	public static String translate(String key) {
@@ -361,6 +358,7 @@ public class ControlPackMain implements Runnable {
 					Display.setDisplayMode(new DisplayMode(ControlPackOptions.intOptions.get(ControlPackEnumOptions.LASTBOUNDSW), ControlPackOptions.intOptions.get(ControlPackEnumOptions.LASTBOUNDSH)));
 					IMinecraft imc = (IMinecraft)mc;
 					imc.pubCheckWindowResize();
+					Display.setResizable(true);
 				}
 			}
 			catch(Exception ex) {
@@ -1329,11 +1327,6 @@ public class ControlPackMain implements Runnable {
 			placeTorch();
 		}
 
-		if (down && code == keyBindSprint.getKeyCode() && mc.gameSettings.keyBindForward.isKeyDown()) {
-			isSprinting = !isSprinting;
-			mc.player.setSprinting(isSprinting);
-		}
-		
 		// open controlpack options
 		if (down && altKey && code == Keyboard.KEY_C) {
 			// open controlpack options gui
@@ -1650,7 +1643,6 @@ public class ControlPackMain implements Runnable {
 	public KeyBinding keyBindWalkDistance;
 	public KeyBinding keyBindLookBehind;
 	public KeyBinding keyBindToggleGamma;
-	public KeyBinding keyBindSprint;
 	public KeyBinding keyBindTorch;
 	public KeyBinding keyBindEat;
 	public KeyBinding keyBindSayLocation;
@@ -1686,9 +1678,7 @@ public class ControlPackMain implements Runnable {
 	private int swapBackTo;
 	private boolean altKey;
 	private boolean nagged;
-	
-	private boolean isSprinting = false;
-	
+
 	public boolean cameraStandMode;
 	public boolean renderingWorld;
 
