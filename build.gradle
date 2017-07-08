@@ -20,7 +20,7 @@ ext.author = 'Julian Uy'
 github {
     owner = 'uyjulian'
     repo = 'ControlPack'
-    token = System.getenv('GRADLE_GITHUB_API_TOKEN') || ''
+    token = System.getenv('GRADLE_GITHUB_API_TOKEN') ?: ''
     tagName = project.version
     targetCommitish = 'master'
     name = 'v' + project.version
