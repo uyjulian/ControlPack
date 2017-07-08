@@ -10,17 +10,16 @@
 
 package ctrlpack.litemod.mixin;
 
+import ctrlpack.ControlPackMain;
+import net.minecraft.client.gui.GuiChat;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.GuiTextField;
 import org.lwjgl.input.Keyboard;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import ctrlpack.ControlPackMain;
-import net.minecraft.client.gui.GuiChat;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.GuiTextField;
 
 @Mixin(GuiChat.class)
 public abstract class MixinGuiChat extends GuiScreen {

@@ -45,12 +45,10 @@ public class GuiControlPackVolume extends GuiScreen
 		int j = 0;
  
 		ControlPackEnumOptions enumoptions[] = ControlPackOptions.volumeOptions;
-		for(int k = 0; k < enumoptions.length; k++) {
-			ControlPackEnumOptions option = enumoptions[k];
-			if(!option.getIsFloat()) {
+		for (ControlPackEnumOptions option : enumoptions) {
+			if (!option.getIsFloat()) {
 				buttonList.add(new GuiSmallButtonCP(100 + option.getOrdinal(), i + (j % 2) * 160, (height / 9 + 17 * (j >> 1)) - 10, option, ControlPackMain.instance.getOptionDesc(option)));
-			}
-			else {
+			} else {
 				buttonList.add(new GuiSliderCP(100 + option.getOrdinal(), i + (j % 2) * 160, (height / 9 + 24 * (j >> 1)), option, ControlPackMain.instance.getOptionDesc(option), ControlPackOptions.floatOptions.get(option), 2F));
 			}
 			j++;

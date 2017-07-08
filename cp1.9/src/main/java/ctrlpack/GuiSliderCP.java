@@ -12,7 +12,6 @@ package ctrlpack;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
-
 import org.lwjgl.opengl.GL11;
 
 public class GuiSliderCP extends GuiButton
@@ -44,7 +43,7 @@ public class GuiSliderCP extends GuiButton
 		}
 		if(dragging)
 		{
-			sliderValue = (float)(i - (xPosition + 4)) / (float)(width - 8);
+			sliderValue = (float)(i - (x + 4)) / (float)(width - 8);
 			sliderValue = sliderValue * maxValue;
 			if(sliderValue < 0.0F)
 			{
@@ -59,8 +58,8 @@ public class GuiSliderCP extends GuiButton
 			displayString = ControlPackMain.instance.getOptionDesc(idFloat);
 		}
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		drawTexturedModalRect(xPosition + (int)((sliderValue/maxValue) * (width - 8)), yPosition, 0, 66, 4, 20);
-		drawTexturedModalRect(xPosition + (int)((sliderValue/maxValue) * (width - 8)) + 4, yPosition, 196, 66, 4, 20);
+		drawTexturedModalRect(x + (int)((sliderValue/maxValue) * (width - 8)), y, 0, 66, 4, 20);
+		drawTexturedModalRect(x + (int)((sliderValue/maxValue) * (width - 8)) + 4, y, 196, 66, 4, 20);
 	}
 
 	@Override
@@ -68,7 +67,7 @@ public class GuiSliderCP extends GuiButton
 	{
 		if(super.mousePressed(minecraft, i, j))
 		{
-			sliderValue = (float)(i - (xPosition + 4)) / (float)(width - 8);
+			sliderValue = (float)(i - (x + 4)) / (float)(width - 8);
 			sliderValue = sliderValue * maxValue;
 			if(sliderValue < 0.0F)
 			{

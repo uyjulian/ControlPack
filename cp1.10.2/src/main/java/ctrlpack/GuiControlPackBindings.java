@@ -10,16 +10,14 @@
 
 package ctrlpack;
 
-import java.io.IOException;
-
-import org.lwjgl.input.Keyboard;
-
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
+import org.lwjgl.input.Keyboard;
+
+import java.io.IOException;
 
 public class GuiControlPackBindings extends GuiScreen
 {
@@ -49,9 +47,7 @@ public class GuiControlPackBindings extends GuiScreen
 		int j = ControlPackMain.instance.keyBindings[i].getKeyCode();
 		if(j < 0)
 		{
-			return I18n.translateToLocalFormatted("key.mouseButton", new Object[] {
-				Integer.valueOf(j + 101)
-			});
+			return I18n.translateToLocalFormatted("key.mouseButton", j + 101);
 		}
 		else if (j < 99999)
 		{
@@ -105,12 +101,8 @@ public class GuiControlPackBindings extends GuiScreen
 		else {
 			if (k == 1) /* right click */
 			{
-				for (int ci = 0; ci < buttonList.size(); ci++)
-				{
-					GuiButton guibutton = buttonList.get(ci);
-
-					if (guibutton.mousePressed(mc, i, j))
-					{
+				for (GuiButton guibutton : buttonList) {
+					if (guibutton.mousePressed(mc, i, j)) {
 						ControlPackMain.instance.keyBindings[guibutton.id].setKeyCode(99999);
 						ControlPackOptions.saveOptions();
 
@@ -160,15 +152,14 @@ public class GuiControlPackBindings extends GuiScreen
 				}
 			}
 
-			int j1 = l;
 			if(buttonId == l) {
-				buttonList.get(j1).displayString = "\247f> \247e??? \247f<";
+				buttonList.get(l).displayString = "\247f> \247e??? \247f<";
 			}
 			else if(flag) {
-				buttonList.get(j1).displayString = (new StringBuilder()).append("\247c").append(getOptionDisplayString(j1)).toString();
+				buttonList.get(l).displayString = (new StringBuilder()).append("\247c").append(getOptionDisplayString(l)).toString();
 			}
 			else {
-				buttonList.get(j1).displayString = getOptionDisplayString(j1);
+				buttonList.get(l).displayString = getOptionDisplayString(l);
 			}
 			drawString(fontRenderer, getKeyBindingDescription(l), k + (l % 2) * 160 + 70 + 6, height / 6 + 20 * (l >> 1) + 7, -1);
 		}

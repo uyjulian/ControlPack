@@ -10,41 +10,28 @@
 
 package ctrlpack;
 
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.DisplayMode;
-import org.lwjgl.opengl.GL11;
-
-import java.util.Properties;
-
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockColored;
-import net.minecraft.block.BlockLeaves;
-import net.minecraft.block.BlockRedstoneTorch;
-import net.minecraft.block.BlockTorch;
-import net.minecraft.block.BlockVine;
-import net.minecraft.block.BlockWeb;
+import ctrlpack.litemod.LiteModControlPack;
+import net.minecraft.block.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemBow;
-import net.minecraft.item.ItemFood;
-import net.minecraft.item.ItemShears;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
-import net.minecraft.item.ItemTool;
+import net.minecraft.item.*;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
-import ctrlpack.litemod.LiteModControlPack;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.DisplayMode;
+import org.lwjgl.opengl.GL11;
+
+import java.util.Objects;
+import java.util.Properties;
 
 public class ControlPackMain implements Runnable {
 	public static ControlPackMain instance;
@@ -140,7 +127,7 @@ public class ControlPackMain implements Runnable {
 				//drawArrow(10, 10, 100, 100);
 				//drawArrow(200, 200, 100, 175);
 				
-				boolean isNether = mc.world != null && (mc.world.provider.getDimensionType().getName() == "Nether");
+				boolean isNether = mc.world != null && (Objects.equals(mc.world.provider.getDimensionType().getName(), "Nether"));
 
 				for (int i = 0; i < (isNether ? ControlPackOptions.waypointNetherOptions.length : ControlPackOptions.waypointOptions.length); i++) {
 					ControlPackEnumOptions locationOption = isNether ? ControlPackOptions.waypointNetherOptions[i] : ControlPackOptions.waypointOptions[i];
@@ -216,10 +203,10 @@ public class ControlPackMain implements Runnable {
 									{
 										count += mc.player.inventory.mainInventory.get(i).getCount();
 									}
-								}							
+								}
 								text += " / Arrows: " + count;
 							}
-							
+
 							if (remaining <= 10) {
 								DrawString(text, statusLocation, lineNum, 0xdd0000, null);
 							}
@@ -450,8 +437,7 @@ public class ControlPackMain implements Runnable {
 			if (setting == null) { return 1F; }
 			ControlPackEnumOptions option = ControlPackEnumOptions.getOption(setting);
 			if (option == null) { return 1F; }
-			float vol = ControlPackOptions.floatOptions.get(option);
-			return vol;
+			return ControlPackOptions.floatOptions.get(option);
 		}
 		catch(Exception ex) {
 			return 1F;
@@ -483,23 +469,14 @@ public class ControlPackMain implements Runnable {
 		if (!forReals && getIsHarvestable(block)) return true;
 		boolean canHarvest = item.canHarvestBlock(block.getDefaultState());
 		if (canHarvest) return true;
-		
+
 		// shears are wierd.. they dont say they can harvest vines, and their str vs vines is 1,
 		// and vines are harvestable even though they arent. arg!
-		if (item instanceof ItemShears) {
-			return block instanceof BlockVine || block instanceof BlockLeaves || block instanceof BlockColored;
-		}
-		return false;
+		return item instanceof ItemShears && (block instanceof BlockVine || block instanceof BlockLeaves || block instanceof BlockColored);
 	}
 	
 	private boolean getIsHarvestable(Block block) {
-		if (!block.getMaterial(block.getDefaultState()).isToolNotRequired()) {
-			return false;
-		}
-		if (block instanceof BlockVine || block instanceof BlockLeaves) {
-			return false;
-		}
-		return true;
+		return block.getMaterial(block.getDefaultState()).isToolNotRequired() && !(block instanceof BlockVine || block instanceof BlockLeaves);
 	}
 	
 	private boolean isSword(Item item) {
@@ -1093,10 +1070,10 @@ public class ControlPackMain implements Runnable {
 	
 	private void drawDirectionalArrow(ScaledResolution sr, double x, double y, Vec3d v, int color) {
 		double size = 7;
-		double startx = x + (size / 2) - (size / 2) * v.xCoord;
-		double starty = y + (size / 2) - (size / 2) * v.zCoord;
-		double endx = x + (size / 2) + (size / 2) * v.xCoord;
-		double endy = y + (size / 2) + (size / 2) * v.zCoord;
+		double startx = x + (size / 2) - (size / 2) * v.x;
+		double starty = y + (size / 2) - (size / 2) * v.z;
+		double endx = x + (size / 2) + (size / 2) * v.x;
+		double endy = y + (size / 2) + (size / 2) * v.z;
 			
 		int l = color & 0xff000000;
 		int shadowColor = (color & 0xfcfcfc) >> 2;
@@ -1187,7 +1164,7 @@ public class ControlPackMain implements Runnable {
 	}
 	
 	private void addDeathWaypoint() {
-		boolean isNether = ControlPackMain.mc.world != null && (mc.world.provider.getDimensionType().getName() == "Nether");
+		boolean isNether = ControlPackMain.mc.world != null && (Objects.equals(mc.world.provider.getDimensionType().getName(), "Nether"));
 		ControlPackEnumOptions[] nameoptions = isNether ? ControlPackOptions.waypointNetherNameOptions : ControlPackOptions.waypointNameOptions;
 		ControlPackEnumOptions[] locationoptions = isNether ? ControlPackOptions.waypointNetherOptions : ControlPackOptions.waypointOptions;
 		ControlPackEnumOptions[] hudoptions = isNether ? ControlPackOptions.waypointNetherHUDOptions : ControlPackOptions.waypointHUDOptions;

@@ -27,7 +27,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
         classpath 'org.spongepowered:mixingradle:0.4-SNAPSHOT'
     }
 }
@@ -40,7 +40,7 @@ group = rootProject.group
 
 minecraft {
     version = "1.11"
-    mappings = "snapshot_20170409"
+    mappings = "snapshot_20170708"
     runDir = "run"
 }
 

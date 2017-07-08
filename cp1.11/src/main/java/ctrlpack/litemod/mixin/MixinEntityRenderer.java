@@ -10,18 +10,17 @@
 
 package ctrlpack.litemod.mixin;
 
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
 import ctrlpack.ControlPackMain;
 import ctrlpack.IEntityRenderer;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.resources.IResourceManagerReloadListener;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(EntityRenderer.class)
 public abstract class MixinEntityRenderer implements IResourceManagerReloadListener, IEntityRenderer {

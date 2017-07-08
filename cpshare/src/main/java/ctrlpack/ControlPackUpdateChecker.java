@@ -10,11 +10,7 @@
 
 package ctrlpack;
 
-import java.io.ByteArrayOutputStream;
-import java.io.Closeable;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.URL;
 
 public class ControlPackUpdateChecker implements Runnable {
@@ -24,7 +20,7 @@ public class ControlPackUpdateChecker implements Runnable {
 	@Override
 	public void run() {
 		Boolean foundNewVersion = false;
-		while (foundNewVersion == false) {
+		while (!foundNewVersion) {
 			InputStream currentInputStream = null;
 			ByteArrayOutputStream currentByteArrayOutputStream = null;
 			try {

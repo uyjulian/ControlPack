@@ -10,15 +10,15 @@
 
 package ctrlpack.litemod;
 
-import java.io.File;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.settings.KeyBinding;
 import com.mumfrey.liteloader.InitCompleteListener;
 import com.mumfrey.liteloader.LiteMod;
 import com.mumfrey.liteloader.Tickable;
 import com.mumfrey.liteloader.core.LiteLoader;
 import ctrlpack.ControlPackMain;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.settings.KeyBinding;
+
+import java.io.File;
 
 public class LiteModControlPack implements LiteMod, Tickable, InitCompleteListener {
 
@@ -51,7 +51,7 @@ public class LiteModControlPack implements LiteMod, Tickable, InitCompleteListen
 	
 	@Override
 	public void onTick(Minecraft minecraft, float partialTicks, boolean inGame, boolean clock) {
-		if (inGame == true) {
+		if (inGame) {
 			ControlPackMain.instance.tickInGame();
 		}
 	}

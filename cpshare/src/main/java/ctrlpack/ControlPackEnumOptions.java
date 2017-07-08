@@ -99,9 +99,8 @@ public enum ControlPackEnumOptions {
 	public static ControlPackEnumOptions getOption(int i) {
 		ControlPackEnumOptions aenumoptions[] = values();
 		int j = aenumoptions.length;
-		for(int k = 0; k < j; k++) {
-			ControlPackEnumOptions enumoptions = aenumoptions[k];
-			if(enumoptions.getOrdinal() == i) {
+		for (ControlPackEnumOptions enumoptions : aenumoptions) {
+			if (enumoptions.getOrdinal() == i) {
 				return enumoptions;
 			}
 		}
@@ -111,22 +110,21 @@ public enum ControlPackEnumOptions {
 	public static ControlPackEnumOptions getOption(String name) {
 		ControlPackEnumOptions aenumoptions[] = values();
 		int j = aenumoptions.length;
-		for(int k = 0; k < j; k++) {
-			ControlPackEnumOptions enumoptions = aenumoptions[k];
-			if(enumoptions.getName().equals(name)) {
+		for (ControlPackEnumOptions enumoptions : aenumoptions) {
+			if (enumoptions.getName().equals(name)) {
 				return enumoptions;
 			}
 		}
 		return null;
 	}
 
-	private ControlPackEnumOptions(String name, boolean isFloat, boolean isBool, boolean isString) {
+	ControlPackEnumOptions(String name, boolean isFloat, boolean isBool, boolean isString) {
 		this.name = name;
 		this.isFloat = isFloat;
 		this.isBool = isBool;
 		this.isString = isString;
 	}
-	private ControlPackEnumOptions(String name, boolean isFloat, boolean isBool) {
+	ControlPackEnumOptions(String name, boolean isFloat, boolean isBool) {
 		this.name = name;
 		this.isFloat = isFloat;
 		this.isBool = isBool;

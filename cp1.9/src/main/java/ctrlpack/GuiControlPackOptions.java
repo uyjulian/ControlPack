@@ -10,17 +10,14 @@
 
 package ctrlpack;
 
-import java.io.IOException;
-import java.util.List;
-
-import org.lwjgl.input.Keyboard;
-
-import java.util.ArrayList;
-
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
-
 import net.minecraft.client.gui.GuiTextField;
+import org.lwjgl.input.Keyboard;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GuiControlPackOptions extends GuiScreen
 {
@@ -30,7 +27,7 @@ public class GuiControlPackOptions extends GuiScreen
 
 	public GuiControlPackOptions(GuiScreen parent)
 	{
-		textFields = new ArrayList<GuiTextFieldCP>();
+		textFields = new ArrayList<>();
 		parentScreen = parent;
 		screenTitle = ControlPackMain.translate("controlPack.optionsTitle");
 		options = ControlPackOptions.allOptions;
@@ -46,9 +43,8 @@ public class GuiControlPackOptions extends GuiScreen
 	{
 		int i = func_20080_j();
 		int j = 0;
-		
-		for(int k = 0; k < options.length; k++) {
-			ControlPackEnumOptions option = options[k];
+
+		for (ControlPackEnumOptions option : options) {
 			String optionDesc = ControlPackMain.instance.getOptionDesc(option);
 			if (option.getIsString()) {
 				//buttonList.add(new GuiSmallButtonCP(100 + option.getOrdinal(), i + (j % 2) * 160, height / 6 + 24 * (j >> 1), option, mod_ControlPack.instance.getOptionDesc(option)));
@@ -58,11 +54,9 @@ public class GuiControlPackOptions extends GuiScreen
 				if (option == ControlPackEnumOptions.ITEM_SWORDS) {
 					field.isIdList = true;
 				}
-			}
-			else if(!option.getIsFloat()) {
+			} else if (!option.getIsFloat()) {
 				buttonList.add(new GuiSmallButtonCP(100 + option.getOrdinal(), i + (j % 2) * 160, height / 6 + 24 * (j >> 1) - 30, option, optionDesc));
-			}
-			else {
+			} else {
 				//buttonList.add(new GuiSliderCP(100 + option.getOrdinal(), i + (j % 2) * 160, height / 6 + 24 * (j >> 1), option, optionDesc, mod_ControlPack.instance.floatOptions.get(option)));
 			}
 			j++;
@@ -73,8 +67,7 @@ public class GuiControlPackOptions extends GuiScreen
 	
 	private void saveFields() {
 		// text fields don't update automatically
-		for (int i = 0; i < textFields.size(); i++) {
-			GuiTextFieldCP tf = textFields.get(i);
+		for (GuiTextFieldCP tf : textFields) {
 			ControlPackEnumOptions option = tf.option;
 			//String value = ControlPackMain.instance.stringOptions.get(option);
 			ControlPackOptions.stringOptions.put(option, tf.getText());
@@ -116,8 +109,7 @@ public class GuiControlPackOptions extends GuiScreen
 		drawDefaultBackground();
 		drawCenteredString(fontRenderer, screenTitle, width / 2, 5, 0xffffff);
 		super.drawScreen(i, j, f);
-		for (int i2 = 0; i2 < textFields.size(); i2++) {
-			GuiTextFieldCP tf = textFields.get(i2);
+		for (GuiTextFieldCP tf : textFields) {
 			tf.drawTextBox();
 		}
 	}
@@ -125,18 +117,18 @@ public class GuiControlPackOptions extends GuiScreen
 	@Override
 	protected void mouseClicked(int i, int j, int k) throws IOException {
 		super.mouseClicked(i, j, k);
-		for (int l = 0; l < textFields.size(); l++) {
-			if (textFields.get(l) != null) {
-				((GuiTextField)textFields.get(l)).mouseClicked(i, j, k);
+		for (GuiTextFieldCP textField : textFields) {
+			if (textField != null) {
+				textField.mouseClicked(i, j, k);
 			}
 		}
 	}  
 
 	@Override
 	protected void keyTyped(char c, int code) throws IOException {
-		for (int i = 0; i < textFields.size(); i++) {
-			if (textFields.get(i) != null && ((GuiTextField)(textFields.get(i))).isFocused()) {
-				keyTyped(textFields.get(i), c, code);
+		for (GuiTextFieldCP textField : textFields) {
+			if (textField != null && textField.isFocused()) {
+				keyTyped(textField, c, code);
 			}
 		}
 		super.keyTyped(c, code);

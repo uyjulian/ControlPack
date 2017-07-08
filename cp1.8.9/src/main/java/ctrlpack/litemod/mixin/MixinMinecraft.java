@@ -10,20 +10,20 @@
 
 package ctrlpack.litemod.mixin;
 
-import org.lwjgl.opengl.Display;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-
 import ctrlpack.IMinecraft;
 import net.minecraft.client.Minecraft;
 import net.minecraft.profiler.IPlayerUsage;
 import net.minecraft.util.IThreadListener;
+import org.lwjgl.opengl.Display;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(Minecraft.class)
 public abstract class MixinMinecraft implements IThreadListener, IPlayerUsage, IMinecraft {
 	@Shadow public int displayWidth;
 	@Shadow public int displayHeight;
-	@Shadow private void resize(int width, int height) {};
+	@Shadow private void resize(int width, int height) {}
+
 	@Override
 	public void pubCheckWindowResize() {
 		int i = this.displayWidth;

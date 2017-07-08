@@ -10,13 +10,13 @@
 
 package ctrlpack;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiConfirmOpenLink;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiYesNoCallback;
+
+import java.net.URI;
+import java.net.URISyntaxException;
 
 public class GuiControlPack extends GuiScreen implements GuiYesNoCallback
 {
@@ -117,8 +117,8 @@ public class GuiControlPack extends GuiScreen implements GuiYesNoCallback
 		try
 		{
 			Class<?> var2 = Class.forName("java.awt.Desktop");
-			Object var3 = var2.getMethod("getDesktop", new Class[0]).invoke((Object)null, new Object[0]);
-			var2.getMethod("browse", new Class[] {URI.class}).invoke(var3, new Object[] {uri});
+			Object var3 = var2.getMethod("getDesktop", new Class[0]).invoke(null);
+			var2.getMethod("browse", new Class[] {URI.class}).invoke(var3, uri);
 		}
 		catch (Throwable var4)
 		{}

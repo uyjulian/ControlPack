@@ -10,13 +10,13 @@
 
 package ctrlpack;
 
-import java.io.IOException;
-
-import org.lwjgl.input.Keyboard;
-
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
+import org.lwjgl.input.Keyboard;
+
+import java.io.IOException;
+import java.util.Objects;
 
 public class GuiWaypoints extends GuiScreen
 {
@@ -35,7 +35,7 @@ public class GuiWaypoints extends GuiScreen
 	{
 		screenTitle = ControlPackMain.translate("controlPack.waypointsTitle");
 		
-		isNether = ControlPackMain.mc.world != null && (ControlPackMain.mc.world.provider.getDimensionType().getName() == "Nether");
+		isNether = ControlPackMain.mc.world != null && (Objects.equals(ControlPackMain.mc.world.provider.getDimensionType().getName(), "Nether"));
 
 		ControlPackEnumOptions options[] = isNether ? ControlPackOptions.waypointNetherOptions : ControlPackOptions.waypointOptions;
 		for(int k = 0; k < options.length; k++) {
