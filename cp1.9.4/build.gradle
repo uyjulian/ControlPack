@@ -29,17 +29,14 @@ buildscript {
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
         classpath 'org.spongepowered:mixingradle:0.4-SNAPSHOT'
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7'
     }
 }
 
 apply plugin: 'net.minecraftforge.gradle.liteloader'
 apply plugin: 'org.spongepowered.mixin'
-apply plugin: 'com.jfrog.bintray'
 
-version = "5.93-beta2"
-group = "ctrlpack" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "ControlPack"
+version = rootProject.version
+group = rootProject.group
 
 minecraft {
     version = "1.9.4"
@@ -57,25 +54,6 @@ sourceSets {
             srcDir project(':cp1.9').file("src/main/resources")
             srcDir project(':cpshare').file("src/main/resources")
         }
-        // Refmap declaration must match the refmap name specified in the json config
-        refMap = "mixins.ControlPack.refmap.json"
-    }
-}
-
-bintray {
-    user = System.getenv('BINTRAY_USER')
-    key = System.getenv('BINTRAY_KEY')
-    filesSpec {
-        from 'build/libs'
-        into '.'
-    }
-    pkg {
-        repo = 'MinecraftMods'
-        name = 'ControlPack'
-        version {
-            name = project.version
-            released = new Date()
-        }
     }
 }
 
@@ -85,9 +63,8 @@ mixin {
 
 litemod {
     json {
-        name = "ControlPack"
-        displayName = "Control Pack"
-        author = "uyjulian"
+        displayName = project.property('displayName')
+        author = project.property('author')
         mcversion = "1.9.4"
         mixinConfigs += "mixins.ControlPack.json"
         version = project.version
