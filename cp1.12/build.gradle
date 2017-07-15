@@ -59,6 +59,7 @@ sourceSets {
 
 mixin {
     defaultObfuscationEnv notch
+    add sourceSets.main, "mixins.ControlPack.refmap.json"
 }
 
 litemod {

@@ -27,7 +27,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
         classpath 'org.spongepowered:mixingradle:0.4-SNAPSHOT'
     }
 }
@@ -59,6 +59,7 @@ sourceSets {
 
 mixin {
     defaultObfuscationEnv notch
+    add sourceSets.main, "mixins.ControlPack.refmap.json"
 }
 
 litemod {

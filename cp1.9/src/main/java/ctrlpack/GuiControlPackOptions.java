@@ -27,7 +27,7 @@ public class GuiControlPackOptions extends GuiScreen
 
 	public GuiControlPackOptions(GuiScreen parent)
 	{
-		textFields = new ArrayList<>();
+		textFields = new ArrayList<GuiTextFieldCP>();
 		parentScreen = parent;
 		screenTitle = ControlPackMain.translate("controlPack.optionsTitle");
 		options = ControlPackOptions.allOptions;

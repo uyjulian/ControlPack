@@ -2,7 +2,7 @@
     "required": true,
     "minVersion": "0.5.3",
     "package": "ctrlpack.litemod.mixin",
-    "refmap": "mixin.refmap.json",
+    "refmap": "mixins.ControlPack.refmap.json",
     "mixins": [
         "MixinKeyBinding",
         "MixinGuiFurnace",

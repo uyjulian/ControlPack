@@ -121,7 +121,7 @@ public class ControlPackOptions {
 			optionsFile = new File(ControlPackMain.mc.mcDataDir, "controlpack.txt");
 			
 			// load defaults
-			floatOptions = new HashMap<>();
+			floatOptions = new HashMap<ControlPackEnumOptions, Float>();
 			floatOptions.put(ControlPackEnumOptions.VOLUMERAIN, 1.0F);
 			floatOptions.put(ControlPackEnumOptions.VOLUMEPISTON, 1.0F);
 			floatOptions.put(ControlPackEnumOptions.VOLUMESPLASH, 1.0F);
@@ -137,7 +137,7 @@ public class ControlPackOptions {
 			floatOptions.put(ControlPackEnumOptions.VOLUMEDIG, 1.0F);
 			floatOptions.put(ControlPackEnumOptions.VOLUMESTEP, 1.0F);	
 			
-			stringOptions = new HashMap<>();
+			stringOptions = new HashMap<ControlPackEnumOptions, String>();
 			stringOptions.put(ControlPackEnumOptions.WAYPOINT1, "");
 			stringOptions.put(ControlPackEnumOptions.WAYPOINT2, "");
 			stringOptions.put(ControlPackEnumOptions.WAYPOINT3, "");
@@ -163,7 +163,7 @@ public class ControlPackOptions {
 			stringOptions.put(ControlPackEnumOptions.WAYPOINTNETHERNAME4, "");
 			stringOptions.put(ControlPackEnumOptions.WAYPOINTNETHERNAME5, "");
 			
-			booleanOptions = new HashMap<>();
+			booleanOptions = new HashMap<ControlPackEnumOptions, Boolean>();
 			//booleanOptions.put(ControlPackEnumOptions.LESSRAIN, true);
 			booleanOptions.put(ControlPackEnumOptions.FRONTVIEW, true);
 			booleanOptions.put(ControlPackEnumOptions.WINDOWRESTORE, true);
@@ -194,7 +194,7 @@ public class ControlPackOptions {
 			booleanOptions.put(ControlPackEnumOptions.WAYPOINTNETHERHUD4, true);
 			booleanOptions.put(ControlPackEnumOptions.WAYPOINTNETHERHUD5, true);
 			
-			intOptions = new HashMap<>();
+			intOptions = new HashMap<ControlPackEnumOptions, Integer>();
 			intOptions.put(ControlPackEnumOptions.AUTOTOOLMODE, 0);
 			intOptions.put(ControlPackEnumOptions.AUTOBLOCKMODE, 0);
 			intOptions.put(ControlPackEnumOptions.STATUSLOCATION, 0);
@@ -204,7 +204,7 @@ public class ControlPackOptions {
 			intOptions.put(ControlPackEnumOptions.LASTBOUNDSW, 0);
 			intOptions.put(ControlPackEnumOptions.LASTBOUNDSH, 0);
 
-			intOptionsMaxValue = new HashMap<>();
+			intOptionsMaxValue = new HashMap<ControlPackEnumOptions, Integer>();
 			intOptionsMaxValue.put(ControlPackEnumOptions.AUTOTOOLMODE, 3);
 			intOptionsMaxValue.put(ControlPackEnumOptions.AUTOBLOCKMODE, 10);
 			intOptionsMaxValue.put(ControlPackEnumOptions.STATUSLOCATION, 4);

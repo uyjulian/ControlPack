@@ -12,7 +12,7 @@ plugins {
     id "co.riiid.gradle" version "0.4.2"
 }
 
-version = '5.94.0'
+version = '5.94.1'
 group = 'ctrlpack'
 ext.displayName = 'Control Pack'
 ext.author = 'Julian Uy'

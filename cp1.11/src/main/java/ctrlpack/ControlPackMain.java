@@ -30,7 +30,6 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 
-import java.util.Objects;
 import java.util.Properties;
 
 public class ControlPackMain implements Runnable {
@@ -94,7 +93,7 @@ public class ControlPackMain implements Runnable {
 	}
 	
 	public String currentVersion() {
-		return "5.94.0";
+		return "5.94.1";
 	}
 	
 	private void startUpdateChecker() {
@@ -126,7 +125,7 @@ public class ControlPackMain implements Runnable {
 				//drawArrow(10, 10, 100, 100);
 				//drawArrow(200, 200, 100, 175);
 				
-				boolean isNether = mc.world != null && (Objects.equals(mc.world.provider.getDimensionType().getName(), "Nether"));
+				boolean isNether = mc.world != null && mc.world.provider.getDimensionType().getName().equals("Nether");
 
 				for (int i = 0; i < (isNether ? ControlPackOptions.waypointNetherOptions.length : ControlPackOptions.waypointOptions.length); i++) {
 					ControlPackEnumOptions locationOption = isNether ? ControlPackOptions.waypointNetherOptions[i] : ControlPackOptions.waypointOptions[i];
@@ -1162,7 +1161,7 @@ public class ControlPackMain implements Runnable {
 	}
 	
 	private void addDeathWaypoint() {
-		boolean isNether = ControlPackMain.mc.world != null && (Objects.equals(mc.world.provider.getDimensionType().getName(), "Nether"));
+		boolean isNether = ControlPackMain.mc.world != null && mc.world.provider.getDimensionType().getName().equals("Nether");
 		ControlPackEnumOptions[] nameoptions = isNether ? ControlPackOptions.waypointNetherNameOptions : ControlPackOptions.waypointNameOptions;
 		ControlPackEnumOptions[] locationoptions = isNether ? ControlPackOptions.waypointNetherOptions : ControlPackOptions.waypointOptions;
 		ControlPackEnumOptions[] hudoptions = isNether ? ControlPackOptions.waypointNetherHUDOptions : ControlPackOptions.waypointHUDOptions;

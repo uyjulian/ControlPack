@@ -93,7 +93,7 @@ public class ControlPackMain implements Runnable {
 	}
 	
 	public String currentVersion() {
-		return "5.94.0";
+		return "5.94.1";
 	}
 	
 	private void startUpdateChecker() {
