@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
 
 public class ControlPackUpdateChecker implements Runnable {
 	private final String UpdateURL = "https://api.github.com/repos/uyjulian/ControlPack/releases/latest";
-	private final String CurrentVersion = "5.94.1";
+	private final String CurrentVersion = "5.94.3";
 
 	@Override
 	public void run() {

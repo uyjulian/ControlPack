@@ -39,7 +39,7 @@ version = rootProject.version
 group = rootProject.group
 
 minecraft {
-    version = "1.12.1"
+    version = "1.12.2"
     mappings = "snapshot_20170708"
     runDir = "run"
 }
@@ -66,7 +66,7 @@ litemod {
     json {
         displayName = project.property('displayName')
         author = project.property('author')
-        mcversion = "1.12.1"
+        mcversion = "1.12.r2"
         mixinConfigs += "mixins.ControlPack.json"
         version = project.version
     }

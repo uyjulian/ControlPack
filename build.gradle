@@ -12,7 +12,7 @@ plugins {
     id "co.riiid.gradle" version "0.4.2"
 }
 
-version = '5.94.1'
+version = '5.94.3'
 group = 'ctrlpack'
 ext.displayName = 'Control Pack'
 ext.author = 'Julian Uy'
@@ -34,6 +34,6 @@ github {
         'cp1.11/build/libs/mod-cp1.11-' + project.version + '-mc1.11.litemod',
         'cp1.11.2/build/libs/mod-cp1.11.2-' + project.version + '-mc1.11.2.litemod',
         'cp1.12/build/libs/mod-cp1.12-' + project.version + '-mc1.12.litemod',
-        'cp1.12.1/build/libs/mod-cp1.12.1-' + project.version + '-mc1.12.1.litemod'
+        'cp1.12.1/build/libs/mod-cp1.12.2-' + project.version + '-mc1.12.2.litemod'
     ]
 }
