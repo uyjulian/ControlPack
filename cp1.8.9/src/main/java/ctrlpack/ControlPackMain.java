@@ -450,11 +450,11 @@ public class ControlPackMain implements Runnable {
 		if(block.getBlockHardness(mc.world, new BlockPos(1, 1, 1)) < 0.0F) {
 			return 0.0F;
 		}
-		if(item == null || !canHarvestBlock(item, block) || (getIsHarvestable(block) && item.getStrVsBlock(new ItemStack(block), block) == 1.0F)) {
+		if(item == null || !canHarvestBlock(item, block) || (getIsHarvestable(block) && item.getDestroySpeed(new ItemStack(block), block) == 1.0F)) {
 			return 1.0F / block.getBlockHardness(mc.world, new BlockPos(1, 1, 1)) / 100F;
 		}
 		else {
-			return item.getStrVsBlock(new ItemStack(block), block) / block.getBlockHardness(mc.world, new BlockPos(1, 1, 1)) / 30F;
+			return item.getDestroySpeed(new ItemStack(block), block) / block.getBlockHardness(mc.world, new BlockPos(1, 1, 1)) / 30F;
 		}
 	}	
 	
